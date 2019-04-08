@@ -50,6 +50,52 @@ public class BinanceChain {
         case oneMonth = "1M"
     }
 
+    public enum Limit: Int {
+        case five = 5
+        case ten = 10
+        case twenty = 20
+        case fifty = 50
+        case oneHundred = 100
+        case fiveHundred = 500
+        case oneThousand = 1000
+    }
+    
+    public enum Side: Int {
+        case buy = 1
+        case sell = 2
+    }
+    
+    public enum Status: String {
+        case acknowledge = "Ack"
+        case partialFill = "PartialFill"
+        case iocNoFill = "IocNoFill"
+        case fullyFill = "FullyFill"
+        case canceled = "Canceled"
+        case expired = "Expired"
+        case failedBlocking = "FailedBlocking"
+        case failedMatching = "FailedMatching"
+    }
+
+    public enum Total: Int {
+        case notRequired = 0
+        case required = 1
+    }
+    
+    public enum TxType: String {
+        case newOrder = "NEW_ORDER"
+        case issueToken = "ISSUE_TOKEN"
+        case burnToken = "BURN_TOKEN"
+        case listToken = "LIST_TOKEN"
+        case cancelOrder = "CANCEL_ORDER"
+        case freezeToken = "FREEZE_TOKEN"
+        case unfreezeToken = "UN_FREEZE_TOKEN"
+        case transfer = "TRANSFER"
+        case proposal = "PROPOSAL"
+        case vote = "VOTE"
+        case mint = "MINT"
+        case deposit = "DEPOSIT"
+    }
+    
     typealias Completion = ()->()
     typealias Success = (BinanceChain.Result)->()
     typealias Failure = (Error)->()
@@ -76,53 +122,86 @@ public class BinanceChain {
     }
     
     public func account(address: String) {
-        let path = String(format: "%@/%@", Path.validators.rawValue, address)
-        self.api(path: path, method: .get, completion: nil, success: nil, failure: nil)
+        var parameters: Parameters = [:]
+        parameters["address"] = address
+        self.api(path: .validators, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
 
     public func sequence(address: String) {
-        // ?format=json
+        var parameters: Parameters = [:]
+        parameters["format"] = "json"
         let path = String(format: "%@/%@/%@", Path.account.rawValue, address, Path.sequence.rawValue)
-        self.api(path: path, method: .get, completion: nil, success: nil, failure: nil)
+        self.api(path: path, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
     
     public func tx(hash: String) {
         let path = String(format: "%@/%@", Path.tx.rawValue, hash)
         self.api(path: path, method: .get, completion: nil, success: nil, failure: nil)
     }
-    
-    public func tokens() {
-        self.api(path: .tokens, method: .get, completion: nil, success: nil, failure: nil)
+
+    public func tokens(limit: Limit? = nil, offset: Int? = nil) {
+        var parameters: Parameters = [:]
+        if let limit = limit { parameters["limit"] = limit.rawValue }
+        if let offset = offset { parameters["offset"] = offset }
+        self.api(path: .tokens, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
-    
-    public func markets() {
-        self.api(path: .markets, method: .get, completion: nil, success: nil, failure: nil)
+
+    public func markets(limit: Limit? = nil, offset: Int? = nil) {
+        var parameters: Parameters = [:]
+        if let limit = limit { parameters["limit"] = limit.rawValue }
+        if let offset = offset { parameters["offset"] = offset }
+        self.api(path: .markets, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
-    
+
     public func fees() {
         self.api(path: .fees, method: .get, completion: nil, success: nil, failure: nil)
     }
-    
-    public func depth(symbol: String) {
-        let path = String(format: "%@?symbol=%@", Path.depth.rawValue, symbol)
-        self.api(path: path, method: .get, completion: nil, success: nil, failure: nil)
+
+    public func depth(symbol: String, limit: Limit? = nil) {
+        var parameters: Parameters = [:]
+        parameters["symbol"] = symbol
+        if let limit = limit { parameters["limit"] = limit.rawValue }
+        self.api(path: .depth, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
 
-    public func broadcast() {
-        self.api(path: .broadcast, method: .post, completion: nil, success: nil, failure: nil)
+    public func broadcast(sync: Bool? = nil, body: Data) {
+        var parameters: Parameters = [:]
+        if let sync = sync { parameters["sync"] = (sync) ? "true" : "false" }
+        self.api(path: .broadcast, method: .post, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
     
-    public func klines(symbol: String, interval: Interval) {
-        let path = String(format: "%@?symbol=%@&interval=%@", Path.klines.rawValue, symbol, interval.rawValue)
-        self.api(path: path, method: .get, completion: nil, success: nil, failure: nil)
+    public func klines(symbol: String, interval: Interval? = nil, limit: Limit? = nil, startTime: TimeInterval? = nil, endTime: TimeInterval? = nil) {
+        var parameters: Parameters = [:]
+        parameters["symbol"] = symbol
+        if let interval = interval { parameters["interval"] = interval.rawValue }
+        if let limit = limit { parameters["limit"] = limit }
+        if let startTime = startTime { parameters["startTime"] = startTime }
+        if let endTime = endTime { parameters["endTime"] = endTime }
+        self.api(path: .klines, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
-    
-    public func closedOrders() {
-        self.api(path: .closedOrders, method: .get, completion: nil, success: nil, failure: nil)
+
+    public func closedOrders(address: String, endTime: TimeInterval? = nil, limit: Limit? = nil, offset: Int? = nil, side: Side? = nil, startTime: TimeInterval? = nil, status: Status? = nil, symbol: String? = nil, total: Total? = nil) {
+        var parameters: Parameters = [:]
+        parameters["address"] = address
+        if let endTime = endTime { parameters["endTime"] = endTime }
+        if let limit = limit { parameters["limit"] = limit.rawValue }
+        if let offset = offset { parameters["offset"] = offset }
+        if let side = side { parameters["side"] = side.rawValue }
+        if let startTime = startTime { parameters["startTime"] = startTime }
+        if let status = status { parameters["status"] = status.rawValue }
+        if let symbol = symbol { parameters["symbol"] = symbol }
+        if let total = total { parameters["total"] = total.rawValue }
+        self.api(path: .closedOrders, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
-    
-    public func openOrders() {
-        self.api(path: .openOrders, method: .get, completion: nil, success: nil, failure: nil)
+ 
+    public func openOrders(address: String, limit: Limit? = nil, offset: Int? = nil, symbol: String? = nil, total: Total? = nil) {
+        var parameters: Parameters = [:]
+        parameters["address"] = address
+        if let limit = limit { parameters["limit"] = limit.rawValue }
+        if let offset = offset { parameters["offset"] = offset }
+        if let symbol = symbol { parameters["symbol"] = symbol }
+        if let total = total { parameters["total"] = total.rawValue }
+        self.api(path: .openOrders, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
 
     public func orders(id: String) {
@@ -130,18 +209,40 @@ public class BinanceChain {
         self.api(path: path, method: .get, completion: nil, success: nil, failure: nil)
     }
 
-    public func ticker() {
-        self.api(path: .ticker, method: .get, completion: nil, success: nil, failure: nil)
+    public func ticker(symbol: String) {
+        let path = String(format: "%@/%@", Path.ticker.rawValue, symbol)
+        self.api(path: path, method: .get, completion: nil, success: nil, failure: nil)
     }
     
-    public func trades() {
-        self.api(path: .trades, method: .get, completion: nil, success: nil, failure: nil)
+    public func trades(address: String? = nil, buyerOrderId: String? = nil, end: TimeInterval? = nil, height: Double? = nil, offset: Int? = nil, quoteAsset: String? = nil, sellerOrderId: String? = nil, side: Side? = nil, start: TimeInterval? = nil, symbol: String? = nil, total: Total? = nil) {
+        var parameters: Parameters = [:]
+        parameters["address"] = address
+        if let end = end { parameters["end"] = end }
+        if let height = height { parameters["height"] = height }
+        if let offset = offset { parameters["offset"] = offset }
+        if let quoteAsset = quoteAsset { parameters["quoteAsset"] = quoteAsset }
+        if let sellerOrderId = sellerOrderId { parameters["sellerOrderId"] = sellerOrderId }
+        if let side = side { parameters["side"] = side.rawValue }
+        if let start = start { parameters["start"] = start }
+        if let symbol = symbol { parameters["symbol"] = symbol }
+        if let total = total { parameters["total"] = total.rawValue }
+        self.api(path: .trades, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
 
-    public func transactions() {
-        self.api(path: .transactions, method: .get, completion: nil, success: nil, failure: nil)
+    public func transactions(address: String, blockHeight: Double? = nil, endTime: TimeInterval? = nil, limit: Limit? = nil, offset: Int? = nil, side: Side? = nil, startTime: TimeInterval? = nil, txAsset: String? = nil, txType: TxType? = nil) {
+        var parameters: Parameters = [:]
+        parameters["address"] = address
+        if let blockHeight = blockHeight { parameters["blockHeight"] = blockHeight }
+        if let endTime = endTime { parameters["endTime"] = endTime }
+        if let limit = limit { parameters["limit"] = limit }
+        if let offset = offset { parameters["offset"] = offset }
+        if let side = side { parameters["side"] = side.rawValue }
+        if let startTime = startTime { parameters["startTime"] = startTime }
+        if let txAsset = txAsset { parameters["txAsset"] = txAsset }
+        if let txType = txType { parameters["txType"] = txType.rawValue }
+        self.api(path: .transactions, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
-    
+
     // MARK: - Utils
 
     @discardableResult
