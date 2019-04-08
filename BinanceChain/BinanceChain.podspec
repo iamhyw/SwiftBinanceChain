@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.summary      = 'BinanceChain'
   s.author       = { 'Michael Henderson' => 'roadkillrabbit@gmail.com' }
   s.homepage     = 'http://binance.org/'
-  s.osx.deployment_target = '10.9'
+  s.osx.deployment_target = '10.10'
   s.ios.deployment_target = '10.0'
   s.tvos.deployment_target = '10.0'
   s.watchos.deployment_target = '2.0'
@@ -22,5 +22,6 @@ Pod::Spec.new do |s|
     sub.dependency 'SwiftProtobuf'
     sub.dependency 'Starscream'
     sub.dependency 'Bech32'
+    sub.dependency 'XCGLogger'
   end
 end

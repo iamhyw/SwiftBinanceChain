@@ -14,6 +14,6 @@ target "BinanceChain" do
 end
 
 target "Desktop" do
-	platform :macos, '10.14'
+	platform :macos, '10.10'
 	common
 end

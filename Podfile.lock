@@ -9,9 +9,17 @@ PODS:
     - Starscream
     - SwiftProtobuf
     - SwiftyJSON
+    - XCGLogger
+  - ObjcExceptionBridging (1.0.1):
+    - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
+  - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
   - Starscream (3.1.0)
   - SwiftProtobuf (1.4.0)
   - SwiftyJSON (4.3.0)
+  - XCGLogger (7.0.0):
+    - XCGLogger/Core (= 7.0.0)
+  - XCGLogger/Core (7.0.0):
+    - ObjcExceptionBridging
 
 DEPENDENCIES:
   - Bech32 (from `.podspecs/Bech32.podspec`)
@@ -22,9 +30,11 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - ObjcExceptionBridging
     - Starscream
     - SwiftProtobuf
     - SwiftyJSON
+    - XCGLogger
 
 EXTERNAL SOURCES:
   Bech32:
@@ -40,11 +50,13 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Bech32: 8c50fe0aaf170cbb94deb5953647a104332f8917
-  BinanceChain: b810c9b416b81e4744aaf269713046ca7a416b4c
+  BinanceChain: 0b852d39fc063d996396d01502be338409aaef8a
+  ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
   SwiftProtobuf: b06646ed6cdcfc3fecd074c6000fe0c413140e4f
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
+  XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: e51dd481986fc02cdd4b182fbbfb1f18f8b57a7f
+PODFILE CHECKSUM: 13a170024bd03b28d6cfbdb776a99212378b1951
 
 COCOAPODS: 1.6.1
