@@ -1,9 +1,11 @@
 PODS:
   - Alamofire (4.8.2)
+  - Bech32 (1.0.0)
   - BinanceChain (1.0.0):
     - BinanceChain/Core (= 1.0.0)
   - BinanceChain/Core (1.0.0):
     - Alamofire
+    - Bech32
     - Starscream
     - SwiftProtobuf
     - SwiftyJSON
@@ -12,6 +14,7 @@ PODS:
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
+  - Bech32 (from `.podspecs/Bech32.podspec`)
   - BinanceChain (from `BinanceChain`)
   - Starscream
   - SwiftProtobuf
@@ -24,16 +27,24 @@ SPEC REPOS:
     - SwiftyJSON
 
 EXTERNAL SOURCES:
+  Bech32:
+    :podspec: ".podspecs/Bech32.podspec"
   BinanceChain:
     :path: BinanceChain
 
+CHECKOUT OPTIONS:
+  Bech32:
+    :commit: 791fcda8a2010d3c6a22f1654eaa6303185925c0
+    :git: "git@github.com:0xDEADP00L/Bech32.git"
+
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  BinanceChain: 504dcad0b446814c801dc9762138db2060c2542f
+  Bech32: 8c50fe0aaf170cbb94deb5953647a104332f8917
+  BinanceChain: b810c9b416b81e4744aaf269713046ca7a416b4c
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
   SwiftProtobuf: b06646ed6cdcfc3fecd074c6000fe0c413140e4f
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: a12a51f40d90fa74b505b71a518acd904339f101
+PODFILE CHECKSUM: e51dd481986fc02cdd4b182fbbfb1f18f8b57a7f
 
 COCOAPODS: 1.6.1

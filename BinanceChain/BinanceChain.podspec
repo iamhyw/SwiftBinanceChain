@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.summary      = 'BinanceChain'
   s.author       = { 'Michael Henderson' => 'roadkillrabbit@gmail.com' }
   s.homepage     = 'http://binance.org/'
-  s.osx.deployment_target = '10.0'
+  s.osx.deployment_target = '10.9'
   s.ios.deployment_target = '10.0'
   s.tvos.deployment_target = '10.0'
   s.watchos.deployment_target = '2.0'
@@ -16,9 +16,11 @@ Pod::Spec.new do |s|
   }
   s.default_subspecs = 'Core'
   s.subspec 'Core' do |sub|
+    sub.source_files = 'Sources/Core/*.swift'
     sub.dependency 'Alamofire'
     sub.dependency 'SwiftyJSON'
     sub.dependency 'SwiftProtobuf'
     sub.dependency 'Starscream'
+    sub.dependency 'Bech32'
   end
 end

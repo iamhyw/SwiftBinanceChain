@@ -5,6 +5,7 @@ def common
 	pod 'BinanceChain', :path => 'BinanceChain'
 	pod 'SwiftProtobuf', :inhibit_warnings => true
 	pod 'Starscream', :inhibit_warnings => true
+	pod 'Bech32', :podspec => '.podspecs/Bech32.podspec'
 end
 
 target "BinanceChain" do
