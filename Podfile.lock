@@ -1,0 +1,39 @@
+PODS:
+  - Alamofire (4.8.2)
+  - BinanceChain (1.0.0):
+    - BinanceChain/Core (= 1.0.0)
+  - BinanceChain/Core (1.0.0):
+    - Alamofire
+    - Starscream
+    - SwiftProtobuf
+    - SwiftyJSON
+  - Starscream (3.1.0)
+  - SwiftProtobuf (1.4.0)
+  - SwiftyJSON (4.3.0)
+
+DEPENDENCIES:
+  - BinanceChain (from `BinanceChain`)
+  - Starscream
+  - SwiftProtobuf
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - Starscream
+    - SwiftProtobuf
+    - SwiftyJSON
+
+EXTERNAL SOURCES:
+  BinanceChain:
+    :path: BinanceChain
+
+SPEC CHECKSUMS:
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  BinanceChain: 504dcad0b446814c801dc9762138db2060c2542f
+  Starscream: 08172b481e145289c4930cb567230fb55897cfa4
+  SwiftProtobuf: b06646ed6cdcfc3fecd074c6000fe0c413140e4f
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
+
+PODFILE CHECKSUM: a12a51f40d90fa74b505b71a518acd904339f101
+
+COCOAPODS: 1.6.1
