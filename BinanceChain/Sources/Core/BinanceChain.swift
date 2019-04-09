@@ -224,9 +224,10 @@ public class BinanceChain {
         self.api(path: .klines, method: .get, parameters: parameters, parser: CandlestickParser(), completion: completion)
     }
 
-    public func closedOrders(address: String, endTime: TimeInterval? = nil, limit: Limit? = nil, offset: Int? = nil, side: Side? = nil, startTime: TimeInterval? = nil, status: Status? = nil, symbol: String? = nil, total: Total? = nil, completion: Completion? = nil) {
+    public func closedOrders(address: String, endTime: TimeInterval? = nil, limit: Limit? = nil, offset: Int? = nil, side: Side? = nil, startTime: TimeInterval? = nil, status: Status? = nil, symbol: String? = nil, total: Total = .required, completion: Completion? = nil) {
         var parameters: Parameters = [:]
         parameters["address"] = address
+        parameters["total"] = total.rawValue
         if let endTime = endTime { parameters["endTime"] = endTime }
         if let limit = limit { parameters["limit"] = limit.rawValue }
         if let offset = offset { parameters["offset"] = offset }
@@ -234,21 +235,22 @@ public class BinanceChain {
         if let startTime = startTime { parameters["startTime"] = startTime }
         if let status = status { parameters["status"] = status.rawValue }
         if let symbol = symbol { parameters["symbol"] = symbol }
-        if let total = total { parameters["total"] = total.rawValue }
-        self.api(path: .closedOrders, method: .get, parameters: parameters, parser: OrderListParser(), completion: completion)
+        let path = String(format: "%@/?%@", Path.closedOrders.rawValue, parameters.urlEncoded)
+        self.api(path: path, method: .get, parser: OrderListParser(), completion: completion)
     }
  
-    public func openOrders(address: String, limit: Limit? = nil, offset: Int? = nil, symbol: String? = nil, total: Total? = nil, completion: Completion? = nil) {
+    public func openOrders(address: String, limit: Limit? = nil, offset: Int? = nil, symbol: String? = nil, total: Total = .required, completion: Completion? = nil) {
         var parameters: Parameters = [:]
         parameters["address"] = address
+        parameters["total"] = total.rawValue
         if let limit = limit { parameters["limit"] = limit.rawValue }
         if let offset = offset { parameters["offset"] = offset }
         if let symbol = symbol { parameters["symbol"] = symbol }
-        if let total = total { parameters["total"] = total.rawValue }
-        self.api(path: .openOrders, method: .get, parameters: parameters, parser: OrderListParser(), completion: completion)
+        let path = String(format: "%@/?%@", Path.openOrders.rawValue, parameters.urlEncoded)
+        self.api(path: path, method: .get, parser: OrderListParser(), completion: completion)
     }
 
-    public func orders(id: String, completion: Completion? = nil) {
+    public func order(id: String, completion: Completion? = nil) {
         let path = String(format: "%@/%@", Path.orders.rawValue, id)
         self.api(path: path, method: .get, parser: OrderParser(), completion: completion)
     }
@@ -309,15 +311,7 @@ public class BinanceChain {
                 case .success(let data):
 
                     do {
-
-/*                        if let utf8Text = String(data: data, encoding: .utf8) {
-                            print("\(path)")
-                            print(utf8Text)
-                        }
-*/
-
                         try parser.parse(response: response, data: data)
-
                     } catch {
                         response.isError = true
                         response.error = error as? Error
@@ -340,5 +334,14 @@ public class BinanceChain {
         return request
 
     }
-    
+
+}
+
+extension Dictionary {
+
+    var urlEncoded: String {
+        // TODO: use URLQueryItem and URLComponents to generate this, properly escaped
+        return (self.compactMap({ (key, value) -> String in return "\(key)=\(value)" }) as Array).joined(separator: "&")
+    }
+
 }

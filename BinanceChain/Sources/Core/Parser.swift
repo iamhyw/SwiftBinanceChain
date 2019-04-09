@@ -189,58 +189,58 @@ class Parser {
 
     func parseTickerStatistics(_ json: JSON) -> TickerStatistics {
         let ticker = TickerStatistics()
-        ticker.askPrice = json["ask_price"].stringValue
-        ticker.askQuantity = json["ask_quantity"].stringValue
-        ticker.bidPrice = json["bid_price"].stringValue
-        ticker.bidQuantity = json["bid_quantity"].stringValue
+        ticker.askPrice = json["askPrice"].stringValue
+        ticker.askQuantity = json["askQuantity"].stringValue
+        ticker.bidPrice = json["bidPrice"].stringValue
+        ticker.bidQuantity = json["bidQuantity"].stringValue
         // TODO
         //ticker.closeTime = TimeInterval = 0
         ticker.count = json["count"].intValue
-        ticker.firstId = json["first_id"].stringValue
+        ticker.firstId = json["firstId"].stringValue
         ticker.highPrice = json["high_price"].stringValue
-        ticker.lastId = json["last_id"].stringValue
-        ticker.lastPrice = json["last_price"].stringValue
-        ticker.lastQuantity = json["last_quantity"].stringValue
-        ticker.lowPrice = json["low_price"].stringValue
-        ticker.openPrice = json["open_price"].stringValue
+        ticker.lastId = json["lastId"].stringValue
+        ticker.lastPrice = json["lastPrice"].stringValue
+        ticker.lastQuantity = json["lastQuantity"].stringValue
+        ticker.lowPrice = json["lowPrice"].stringValue
+        ticker.openPrice = json["openTime"].stringValue
         //TODO
         //ticker.openTime = TimeInterval = 0
-        ticker.prevClosePrice = json["prev_close_price"].stringValue
-        ticker.priceChange = json["price_change"].stringValue
-        ticker.priceChangePercent = json["price_change_percent"].stringValue
-        ticker.quoteVolume = json["quote_volume"].stringValue
+        ticker.prevClosePrice = json["prevClosePrice"].stringValue
+        ticker.priceChange = json["priceChange"].stringValue
+        ticker.priceChangePercent = json["priceChangePercent"].stringValue
+        ticker.quoteVolume = json["quoteVolume"].stringValue
         ticker.symbol = json["symbol"].stringValue
         ticker.volume = json["volume"].stringValue
-        ticker.weightedAvgPrice = json["weighted_avg_price"].stringValue
+        ticker.weightedAvgPrice = json["weightedAvgPrice"].stringValue
         return ticker
     }
     
     func parseOrder(_ json: JSON) -> Order {
         let order = Order()
-        order.cumulateQuantity = json[""].stringValue
-        order.fee = json[""].stringValue
-        order.lastExecutedPrice = json[""].stringValue
-        order.lastExecuteQuantity = json[""].stringValue
+        order.cumulateQuantity = json["cumulateQuantity"].stringValue
+        order.fee = json["fee"].stringValue
+        order.lastExecutedPrice = json["lastExecutedPrice"].stringValue
+        order.lastExecuteQuantity = json["lastExecutedQuantity"].stringValue
         // TODO
         //order.orderCreateTime: Date = Date()
-        order.orderId = json[""].stringValue
-        order.owner = json[""].stringValue
-        order.price = json[""].stringValue
-        order.status = json[""].stringValue
-        order.symbol = json[""].stringValue
-        order.timeInForce = json[""].intValue
-        order.tradeId = json[""].stringValue
-        order.transactionHash = json[""].stringValue
+        order.orderId = json["orderId"].stringValue
+        order.owner = json["owner"].stringValue
+        order.price = json["price"].stringValue
+        order.status = json["status"].stringValue
+        order.symbol = json["symbol"].stringValue
+        order.timeInForce = json["timeInForce"].intValue
+        order.tradeId = json["tradeId"].stringValue
+        order.transactionHash = json["transactionHash"].stringValue
         // TODO
         //order.transactionTime: Date = Date()
-        order.type = json[""].intValue
+        order.type = json["type"].intValue
         return order
     }
     
     func parseOrderList(_ json: JSON) -> OrderList {
         let orderList = OrderList()
         orderList.total = json["total"].intValue
-        orderList.orders = json["orders"].map({ self.parseOrder($0.1) })
+        orderList.orders = json["order"].map({ self.parseOrder($0.1) })
         return orderList
     }
     

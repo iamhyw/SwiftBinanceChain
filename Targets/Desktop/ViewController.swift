@@ -12,7 +12,7 @@ class ViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
         let symbol = "BNB_BTC.B-918"
         let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
@@ -83,13 +83,17 @@ class ViewController: NSViewController {
         }
 
         binance.closedOrders(address: address) { (response) in
+            print("Found \(response.orderList.orders.count) closed orders")
+            response.orderList.orders.forEach({ print("\($0.symbol) \($0.orderId)") })
         }
 
         binance.openOrders(address: address) { (response) in
+            print("Found \(response.orderList.orders.count) open orders")
+            response.orderList.orders.forEach({ print("\($0.symbol) \($0.orderId)") })
         }
 
-        binance.orders(id: hashId) { (response) in
-            
+        binance.order(id: hashId) { (response) in
+            print("Found order: \(response.order.symbol) \(response.order.orderId)")
         }
 
         binance.ticker(symbol: symbol) { (response) in

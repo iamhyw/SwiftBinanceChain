@@ -43,7 +43,7 @@ public class WebSocket {
 
         self.socket = socket
         socket.connect()
-
+        
     }
 
     // MARK: - Subscribe
