@@ -10,6 +10,8 @@ import BinanceChain
 
 class ViewController: NSViewController {
 
+    private var webSocket: WebSocket?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -112,8 +114,8 @@ class ViewController: NSViewController {
         }
      
         // Test WebSocket
-        let ws = WebSocket()
-        ws.connect(endpoint: .test)
+        self.webSocket = WebSocket()
+        self.webSocket?.connect(endpoint: .test)
         
     }
 

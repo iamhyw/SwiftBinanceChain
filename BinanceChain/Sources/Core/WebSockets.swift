@@ -7,8 +7,8 @@ public class WebSocket {
         case production = "wss://dex.binance.org/api/ws"
         case test = "wss://testnet-dex.binance.org/api/ws"
     }
-    
-    var socket: Starscream.WebSocket?
+
+    private var socket: Starscream.WebSocket?
 
     public init() { }
 
@@ -36,7 +36,7 @@ public class WebSocket {
         socket.onData = { (data: Data) in
             print("got some data: \(data.count)")
         }
-        
+
         socket.onPong = { (data: Data?) in
             print("got pong: \(data?.count)")
         }
