@@ -6,6 +6,7 @@ PODS:
   - BinanceChain/Core (1.0.0):
     - Alamofire
     - Bech32
+    - secp256k1.swift
     - Starscream
     - SwiftProtobuf
     - SwiftyJSON
@@ -13,6 +14,7 @@ PODS:
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
+  - secp256k1.swift (0.1.4)
   - Starscream (3.1.0)
   - SwiftProtobuf (1.4.0)
   - SwiftyJSON (4.3.0)
@@ -31,6 +33,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - ObjcExceptionBridging
+    - secp256k1.swift
     - Starscream
     - SwiftProtobuf
     - SwiftyJSON
@@ -50,8 +53,9 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Bech32: 8c50fe0aaf170cbb94deb5953647a104332f8917
-  BinanceChain: 0b852d39fc063d996396d01502be338409aaef8a
+  BinanceChain: 712e7fc3964a632960c447c1ebc34f1e91a83d17
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
+  secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
   SwiftProtobuf: b06646ed6cdcfc3fecd074c6000fe0c413140e4f
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
