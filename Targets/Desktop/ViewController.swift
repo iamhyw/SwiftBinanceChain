@@ -36,6 +36,10 @@ class ViewController: NSViewController {
         binance.ticker(symbol: symbol)
         binance.trades()
         binance.transactions(address: address)
+     
+        // Test WebSocket
+        let ws = WebSocket()
+        ws.connect(endpoint: .test)
         
     }
 
