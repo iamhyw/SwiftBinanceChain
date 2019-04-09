@@ -1,6 +1,6 @@
 import Foundation
 import secp256k1
-import mnemonic
+//import mnemonic
 
 class Wallet {
 

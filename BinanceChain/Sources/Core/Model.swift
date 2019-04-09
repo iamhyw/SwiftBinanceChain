@@ -1,210 +1,234 @@
 import Foundation
 
-class Error {
-    var code: Int = 0
-    var message: String = ""
+public class Error {
+    public var code: Int = 0
+    public var message: String = ""
 }
 
-class Times {
-    var apTime: String = ""
-    var blockTime: String = ""
+public class Times {
+    public var apTime: String = ""
+    public var blockTime: String = ""
 }
 
-class Validator {
-    var blockHeight: Int = 0
-    var validators: [Any] = []
+public class Validators {
+    public var blockHeight: Int = 0
+    public var validators: [Validator] = []
 }
 
-class Peer {
-    var id: String = ""
-    var originalListenAddr: String = ""
-    var listenAddr: String = ""
-    var accessAddr: String = ""
-    var streamAddr: String = ""
-    var network: String = ""
-    var version: String = ""
-    var moniker: String = ""
-    var capabilities: [String] = []
-    var accelerated: Bool = false
+public class Validator {
+    public var address: String = ""
+    public var publicKey: Data = Data()
+    public var votingPower: Int = 0
 }
 
-class Transaction {
-    var hash: String = ""
-    var log: String = ""
-    var data: String = ""
-    var tx: Data = Data()
+public class Peer {
+    public var id: String = ""
+    public var originalListenAddr: String = ""
+    public var listenAddr: String = ""
+    public var accessAddr: String = ""
+    public var streamAddr: String = ""
+    public var network: String = ""
+    public var version: String = ""
+    public var moniker: String = ""
+    public var capabilities: [String] = []
+    public var accelerated: Bool = false
 }
 
-class Account {
-    var accountNumber: Int = 0
-    var address: String = ""
-    var balances: [Balance] = []
-    var publicKey: Data = Data()
-    var sequence: Int = 0
+public class NodeInfo {
+    public var id: String = ""
+    public var listenAddr: String = ""
+    public var network: String = ""
+    public var version: String = ""
+    public var moniker: String = ""
+    public var address: String = ""
+    public var channels: String = ""
+    public var other: [String:String] = [:]
+    public var syncInfo: [String:String] = [:]
+    public var validatorInfo: Validator = Validator()
 }
 
-class AccountSequence {
-    var sequence: Int = 0
+public class Transactions {
+    public var total: Int = 0
+    public var tx: [Tx] = []
 }
 
-class Balance {
-    var symbol: String = ""
-    var free: String = ""
-    var locked: String = ""
-    var frozen: String = ""
+public class Transaction {
+    public var hash: String = ""
+    public var log: String = ""
+    public var data: String = ""
+    public var tx: Data = Data()
 }
 
-class Token {
-    var name: String = ""
-    var symbol: String = ""
-    var originalSymbol: String = ""
-    var totalSupply: String = ""
-    var owner: String = ""
+public class Account {
+    public var accountNumber: Int = 0
+    public var address: String = ""
+    public var balances: [Balance] = []
+    public var publicKey: Data = Data()
+    public var sequence: Int = 0
 }
 
-class Market {
-    var baseAssetSymbol: String = ""
-    var quoteAssetSymbol: String = ""
-    var price: String = ""
-    var tickSize: String = ""
-    var lotSize: String = ""
+public class AccountSequence {
+    public var sequence: Int = 0
 }
 
-class Fee {
-    var msgType: String = ""
-    var fee: Int = 0
-    var feeFor: Int = 0
-    var multiTransferFee: String = ""
-    var lowerLimitAsMulti: String = ""
-    var fixedFeeParams: FixedFeeParams?
+public class Balance {
+    public var symbol: String = ""
+    public var free: String = ""
+    public var locked: String = ""
+    public var frozen: String = ""
 }
 
-class FixedFeeParams {
-    var msgType: String = ""
-    var fee: Int = 0
-    var feeFor: Int = 0
+public class Token {
+    public var name: String = ""
+    public var symbol: String = ""
+    public var originalSymbol: String = ""
+    public var totalSupply: String = ""
+    public var owner: String = ""
 }
 
-class MarketDepth {
-    var asks: [String] = []
-    var bids: [String] = []
+public class Market {
+    public var baseAssetSymbol: String = ""
+    public var quoteAssetSymbol: String = ""
+    public var price: String = ""
+    public var tickSize: String = ""
+    public var lotSize: String = ""
 }
 
-class BlockTradePage {
-    var total: Int = 0
-    var blockTrade: [BlockTrade] = []
+public class Fee {
+    public var msgType: String = ""
+    public var fee: Int = 0
+    public var feeFor: Int = 0
+    public var multiTransferFee: String = ""
+    public var lowerLimitAsMulti: String = ""
+    public var fixedFeeParams: FixedFeeParams?
 }
 
-class BlockTrade {
-    var blockTime: TimeInterval = 0
-    var fee: String = ""
-    var height: Int = 0
-    var trade: [Trade] = []
+public class FixedFeeParams {
+    public var msgType: String = ""
+    public var fee: Int = 0
+    public var feeFor: Int = 0
 }
 
-class Candlestick {
-    var close: Double = 0
-    var closeTime: Int = 0
-    var high: Double = 0
-    var low: Double = 0
-    var numberOfTrades: Int = 0
-    var open: Double = 0
-    var openTime: TimeInterval = 0
-    var quoteAssetVolume: Double = 0
-    var volume: Double = 0
+public class MarketDepth {
+    public var asks: [String] = []
+    public var bids: [String] = []
 }
 
-class OrderList {
-    var total: Int = 0
-    var order: [Order] = []
+public class BlockTradePage {
+    public var total: Int = 0
+    public var blockTrade: [BlockTrade] = []
 }
 
-class Order {
-    var cumulateQuantity: String = ""
-    var fee: String = ""
-    var lastExecutedPrice: String = ""
-    var lastExecuteQuantity: String = ""
-    var orderCreateTime: Date = Date()
-    var orderId: String = ""
-    var owner: String = ""
-    var price: String = ""
-    var status: String = ""
-    var symbol: String = ""
-    var timeInForce: Int = 0
-    var tradeId: String = ""
-    var transactionHash: String = ""
-    var transactionTime: Date = Date()
-    var type: Int = 0
+public class BlockTrade {
+    public var blockTime: TimeInterval = 0
+    public var fee: String = ""
+    public var height: Int = 0
+    public var trade: [Trade] = []
 }
 
-class TickerStatistics {
-    var askPrice: String = ""
-    var askQuantity: String = ""
-    var bidPrice: String = ""
-    var bidQuantity: String = ""
-    var closeTime: TimeInterval = 0
-    var count: Int = 0
-    var firstId: String = ""
-    var highPrice: String = ""
-    var lastId: String = ""
-    var lastPrice: String = ""
-    var lastQuantity: String = ""
-    var lowPrice: String = ""
-    var openPrice: String = ""
-    var openTime: TimeInterval = 0
-    var prevClosePrice: String = ""
-    var priceChange: String = ""
-    var priceChangePercent: String = ""
-    var quoteVolume: String = ""
-    var symbol: String = ""
-    var volume: String = ""
-    var weightedAvgPrice: String = ""
+public class Candlestick {
+    public var close: Double = 0
+    public var closeTime: Int = 0
+    public var high: Double = 0
+    public var low: Double = 0
+    public var numberOfTrades: Int = 0
+    public var open: Double = 0
+    public var openTime: TimeInterval = 0
+    public var quoteAssetVolume: Double = 0
+    public var volume: Double = 0
 }
 
-class TradePage {
-    var total: Int = 0
-    var trade: [Trade] = []
+public class OrderList {
+    public var total: Int = 0
+    public var order: [Order] = []
 }
 
-class Trade {
-    var baseAsset: String = ""
-    var blockHeight: Int = 0
-    var buyFee: String = ""
-    var buyerId: String = ""
-    var buyerOrderId: String = ""
-    var price: String = ""
-    var quantity: String = ""
-    var quoteAsset: String = ""
-    var sellFee: String = ""
-    var sellerId: String = ""
-    var symbol: String = ""
-    var time: TimeInterval = 0
-    var tradeId: String = ""
+public class Order {
+    public var cumulateQuantity: String = ""
+    public var fee: String = ""
+    public var lastExecutedPrice: String = ""
+    public var lastExecuteQuantity: String = ""
+    public var orderCreateTime: Date = Date()
+    public var orderId: String = ""
+    public var owner: String = ""
+    public var price: String = ""
+    public var status: String = ""
+    public var symbol: String = ""
+    public var timeInForce: Int = 0
+    public var tradeId: String = ""
+    public var transactionHash: String = ""
+    public var transactionTime: Date = Date()
+    public var type: Int = 0
 }
 
-class TxPage {
-    var total: Int = 0
-    var tx: [Tx] = []
+public class TickerStatistics {
+    public var askPrice: String = ""
+    public var askQuantity: String = ""
+    public var bidPrice: String = ""
+    public var bidQuantity: String = ""
+    public var closeTime: TimeInterval = 0
+    public var count: Int = 0
+    public var firstId: String = ""
+    public var highPrice: String = ""
+    public var lastId: String = ""
+    public var lastPrice: String = ""
+    public var lastQuantity: String = ""
+    public var lowPrice: String = ""
+    public var openPrice: String = ""
+    public var openTime: TimeInterval = 0
+    public var prevClosePrice: String = ""
+    public var priceChange: String = ""
+    public var priceChangePercent: String = ""
+    public var quoteVolume: String = ""
+    public var symbol: String = ""
+    public var volume: String = ""
+    public var weightedAvgPrice: String = ""
 }
 
-class Tx {
-    var blockHeight: Double = 0
-    var code: Int = 0
-    var confirmBlocks: Double = 0
-    var data: String = ""
-    var fromAddr: String = ""
-    var orderId: String = ""
-    var timeStamp: Date = Date()
-    var toAddr: String = ""
-    var txAge: Double = 0
-    var txAsset: String = ""
-    var txFee: String = ""
-    var txHash: String = ""
-    var txType: String = ""
-    var value: String = ""
+public class TradePage {
+    public var total: Int = 0
+    public var trade: [Trade] = []
 }
 
-class ExchangeRate {
+public class Trade {
+    public var baseAsset: String = ""
+    public var blockHeight: Int = 0
+    public var buyFee: String = ""
+    public var buyerId: String = ""
+    public var buyerOrderId: String = ""
+    public var price: String = ""
+    public var quantity: String = ""
+    public var quoteAsset: String = ""
+    public var sellFee: String = ""
+    public var sellerId: String = ""
+    public var symbol: String = ""
+    public var time: TimeInterval = 0
+    public var tradeId: String = ""
+}
+
+public class TxPage {
+    public var total: Int = 0
+    public var tx: [Tx] = []
+}
+
+public class Tx {
+    public var blockHeight: Double = 0
+    public var code: Int = 0
+    public var confirmBlocks: Double = 0
+    public var data: String = ""
+    public var fromAddr: String = ""
+    public var orderId: String = ""
+    public var timeStamp: Date = Date()
+    public var toAddr: String = ""
+    public var txAge: Double = 0
+    public var txAsset: String = ""
+    public var txFee: String = ""
+    public var txHash: String = ""
+    public var txType: String = ""
+    public var value: String = ""
+}
+
+public class ExchangeRate {
     
 }
 
