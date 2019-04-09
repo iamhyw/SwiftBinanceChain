@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   }
   s.default_subspecs = 'Core'
   s.subspec 'Core' do |sub|
-    sub.source_files = 'Sources/Core/*.swift'
+    sub.source_files = 'BinanceChain/Sources/Core/*.swift'
     sub.dependency 'Alamofire'
     sub.dependency 'SwiftyJSON'
     sub.dependency 'SwiftProtobuf'
