@@ -29,6 +29,11 @@ public class BinanceChain {
         public var transactions: Transactions = Transactions()
     }
 
+    public enum Endpoint: String {
+        case production = "https://dex.binance.org/api/v1"
+        case test = "https://testnet-dex.binance.org/api/v1"
+    }
+    
     internal enum Path: String {
         case time = "time"
         case nodeInfo = "node-info"
@@ -132,7 +137,14 @@ public class BinanceChain {
 
     public typealias Completion = (BinanceChain.Response)->()
 
+    private var endpoint: Endpoint = .test
+
     public init() {
+    }
+
+    public convenience init(endpoint: Endpoint) {
+        self.init()
+        self.endpoint = endpoint
     }
  
     // MARK: - HTTP API
@@ -154,9 +166,8 @@ public class BinanceChain {
     }
 
     public func account(address: String, completion: Completion? = nil) {
-        var parameters: Parameters = [:]
-        parameters["address"] = address
-        self.api(path: .account, method: .get, parameters: parameters, parser: AccountParser(), completion: completion)
+        let path = String(format: "%@/%@", Path.account.rawValue, address)
+        self.api(path: path, method: .get, parser: AccountParser(), completion: completion)
     }
 
     public func sequence(address: String, completion: Completion? = nil) {
@@ -286,7 +297,8 @@ public class BinanceChain {
     @discardableResult
     internal func api(path: String, method: HTTPMethod = .get, parameters: Parameters = [:], encoding: ParameterEncoding = URLEncoding.default, parser: Parser = Parser(), completion: Completion? = nil) -> Request? {
 
-        let url = String(format: "https://testnet-dex.binance.org/api/v1/%@", path)
+        let url = String(format: "%@/%@", self.endpoint.rawValue, path)
+        print(url)
         
         let request = Alamofire.request(url, method: method, parameters: parameters, encoding: encoding)
         request.responseData() { (responseData) -> Void in
@@ -298,10 +310,11 @@ public class BinanceChain {
 
                     do {
 
-                        if let utf8Text = String(data: data, encoding: .utf8) {
+/*                        if let utf8Text = String(data: data, encoding: .utf8) {
                             print("\(path)")
                             print(utf8Text)
                         }
+*/
 
                         try parser.parse(response: response, data: data)
 

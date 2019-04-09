@@ -155,7 +155,7 @@ class Parser {
         let account = Account()
         account.accountNumber = json["account_number"].intValue
         account.address = json["address"].stringValue
-        account.balances = json["balance"].map({ self.parseBalance($0.1) })
+        account.balances = json["balances"].map({ self.parseBalance($0.1) })
         // TODO
         // account.publicKey = json["public_key"]
         account.sequence = json["sequence"].intValue

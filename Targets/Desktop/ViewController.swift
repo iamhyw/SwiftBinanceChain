@@ -17,7 +17,7 @@ class ViewController: NSViewController {
         let symbol = "BNB_BTC.B-918"
         let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
 
-        let binance = BinanceChain()
+        let binance = BinanceChain(endpoint: .test)
 
         binance.time() { (response) in
             print("Found times:")
@@ -40,7 +40,8 @@ class ViewController: NSViewController {
         }
 
         binance.account(address: address) { (response) in
-            print("Found account: \(response.account.address) \(response.account.balances)")
+            print("Found account: \(response.account.address) with \(response.account.balances.count) balances")
+            response.account.balances.forEach({ print("\($0.symbol) \($0.free)") })
         }
 
         binance.sequence(address: address) { (response) in
