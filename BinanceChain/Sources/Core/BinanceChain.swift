@@ -10,11 +10,18 @@ public class BinanceChain {
     public class Response {
         public var isError: Bool = false
         public var error: Error?
+        public var sequence: Int = 0
         public var peers: [Peer] = []
         public var tokens: [Token] = []
         public var trades: [Trade] = []
         public var markets: [Market] = []
+        public var candlesticks: [Candlestick] = []
+        public var tickerStatistics: [TickerStatistics] = []
+        public var tx: Tx = Tx()
+        public var order: Order = Order()
+        public var orderList: OrderList = OrderList()
         public var times: Times = Times()
+        public var account: Account = Account()
         public var validators: Validators = Validators()
         public var marketDepth: MarketDepth = MarketDepth()
         public var nodeInfo: NodeInfo = NodeInfo()
@@ -148,19 +155,19 @@ public class BinanceChain {
     public func account(address: String, completion: Completion? = nil) {
         var parameters: Parameters = [:]
         parameters["address"] = address
-        self.api(path: .account, method: .get, parameters: parameters, completion: completion)
+        self.api(path: .account, method: .get, parameters: parameters, parser: AccountParser(), completion: completion)
     }
 
     public func sequence(address: String, completion: Completion? = nil) {
         var parameters: Parameters = [:]
         parameters["format"] = "json"
         let path = String(format: "%@/%@/%@", Path.account.rawValue, address, Path.sequence.rawValue)
-        self.api(path: path, method: .get, parameters: parameters, completion: completion)
+        self.api(path: path, method: .get, parameters: parameters, parser: SequenceParser(), completion: completion)
     }
-    
+
     public func tx(hash: String, completion: Completion? = nil) {
-        let path = String(format: "%@/%@", Path.tx.rawValue, hash)
-        self.api(path: path, method: .get, completion: completion)
+        let path = String(format: "%@/%@?format=json", Path.tx.rawValue, hash)
+        self.api(path: path, method: .get, parser: TxParser(), completion: completion)
     }
 
     public func tokens(limit: Limit? = nil, offset: Int? = nil, completion: Completion? = nil) {
@@ -181,19 +188,20 @@ public class BinanceChain {
         self.api(path: .fees, method: .get, completion: completion)
     }
 
-    public func depth(symbol: String, limit: Limit? = nil, completion: Completion? = nil) {
+    public func marketDepth(symbol: String, limit: Limit? = nil, completion: Completion? = nil) {
         var parameters: Parameters = [:]
         parameters["symbol"] = symbol
         if let limit = limit { parameters["limit"] = limit.rawValue }
         self.api(path: .depth, method: .get, parameters: parameters, parser: MarketDepthParser(), completion: completion)
     }
 
-    public func broadcast(sync: Bool? = nil, body: Data, completion: Completion? = nil) {
-        var parameters: Parameters = [:]
-        if let sync = sync { parameters["sync"] = (sync) ? "true" : "false" }
-        self.api(path: .broadcast, method: .post, parameters: parameters, completion: completion)
+    public func broadcast(sync: Bool = true, body: Data, completion: Completion? = nil) {
+        var path = Path.broadcast.rawValue
+        if (sync) { path += "/?sync=1" }
+        // TODO post body
+        self.api(path: path, method: .post, parser: TransactionsParser(), completion: completion)
     }
-    
+
     public func klines(symbol: String, interval: Interval? = nil, limit: Limit? = nil, startTime: TimeInterval? = nil, endTime: TimeInterval? = nil, completion: Completion? = nil) {
         var parameters: Parameters = [:]
         parameters["symbol"] = symbol
@@ -201,7 +209,7 @@ public class BinanceChain {
         if let limit = limit { parameters["limit"] = limit }
         if let startTime = startTime { parameters["startTime"] = startTime }
         if let endTime = endTime { parameters["endTime"] = endTime }
-        self.api(path: .klines, method: .get, parameters: parameters, completion: completion)
+        self.api(path: .klines, method: .get, parameters: parameters, parser: CandlestickParser(), completion: completion)
     }
 
     public func closedOrders(address: String, endTime: TimeInterval? = nil, limit: Limit? = nil, offset: Int? = nil, side: Side? = nil, startTime: TimeInterval? = nil, status: Status? = nil, symbol: String? = nil, total: Total? = nil, completion: Completion? = nil) {
@@ -215,7 +223,7 @@ public class BinanceChain {
         if let status = status { parameters["status"] = status.rawValue }
         if let symbol = symbol { parameters["symbol"] = symbol }
         if let total = total { parameters["total"] = total.rawValue }
-        self.api(path: .closedOrders, method: .get, parameters: parameters, completion: completion)
+        self.api(path: .closedOrders, method: .get, parameters: parameters, parser: OrderListParser(), completion: completion)
     }
  
     public func openOrders(address: String, limit: Limit? = nil, offset: Int? = nil, symbol: String? = nil, total: Total? = nil, completion: Completion? = nil) {
@@ -225,17 +233,17 @@ public class BinanceChain {
         if let offset = offset { parameters["offset"] = offset }
         if let symbol = symbol { parameters["symbol"] = symbol }
         if let total = total { parameters["total"] = total.rawValue }
-        self.api(path: .openOrders, method: .get, parameters: parameters, completion: completion)
+        self.api(path: .openOrders, method: .get, parameters: parameters, parser: OrderListParser(), completion: completion)
     }
 
     public func orders(id: String, completion: Completion? = nil) {
         let path = String(format: "%@/%@", Path.orders.rawValue, id)
-        self.api(path: path, method: .get, completion: completion)
+        self.api(path: path, method: .get, parser: OrderParser(), completion: completion)
     }
 
     public func ticker(symbol: String, completion: Completion? = nil) {
         let path = String(format: "%@/%@", Path.ticker.rawValue, symbol)
-        self.api(path: path, method: .get, completion: completion)
+        self.api(path: path, method: .get, parser: TickerStatisticsParser(), completion: completion)
     }
     
     public func trades(address: String? = nil, buyerOrderId: String? = nil, end: TimeInterval? = nil, height: Double? = nil, offset: Int? = nil, quoteAsset: String? = nil, sellerOrderId: String? = nil, side: Side? = nil, start: TimeInterval? = nil, symbol: String? = nil, total: Total? = nil, completion: Completion? = nil) {

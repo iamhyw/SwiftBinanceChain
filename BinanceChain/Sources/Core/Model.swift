@@ -109,9 +109,14 @@ public class FixedFeeParams {
     public var feeFor: Int = 0
 }
 
+public class PriceQuantity {
+    public var price: String = ""
+    public var quantity: String = ""
+}
+
 public class MarketDepth {
-    public var asks: [String] = []
-    public var bids: [String] = []
+    public var asks: [PriceQuantity] = []
+    public var bids: [PriceQuantity] = []
 }
 
 public class BlockTradePage {
@@ -127,20 +132,20 @@ public class BlockTrade {
 }
 
 public class Candlestick {
-    public var close: Double = 0
-    public var closeTime: Int = 0
-    public var high: Double = 0
-    public var low: Double = 0
-    public var numberOfTrades: Int = 0
-    public var open: Double = 0
+    public var close: Int = 0
+    public var closeTime: String = ""
+    public var high: String = ""
+    public var low: String = ""
+    public var numberOfTrades: String = ""
+    public var open: String = ""
     public var openTime: TimeInterval = 0
-    public var quoteAssetVolume: Double = 0
-    public var volume: Double = 0
+    public var quoteAssetVolume: String = ""
+    public var volume: Int = 0
 }
 
 public class OrderList {
     public var total: Int = 0
-    public var order: [Order] = []
+    public var orders: [Order] = []
 }
 
 public class Order {

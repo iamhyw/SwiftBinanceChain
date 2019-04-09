@@ -11,17 +11,16 @@ class Parser {
             // TODO error
             return
         }
-            
         self.parse(json, response: response)
     }
 
     func parse(_ json: JSON, response: BinanceChain.Response) {
-        // No-op
+        // Subclasses to override
     }
 
     func parseTimes(_ json: JSON) -> Times {
         let times = Times()
-        times.apTime = json["ap_times"].stringValue
+        times.apTime = json["ap_time"].stringValue
         times.blockTime = json["block_time"].stringValue
         return times
     }
@@ -70,9 +69,16 @@ class Parser {
     
     func parseMarketDepth(_ json: JSON) -> MarketDepth {
         let marketDepth = MarketDepth()
-        marketDepth.asks = json["asks"].map({ $0.1.stringValue })
-        marketDepth.bids = json["bids"].map({ $0.1.stringValue })
+        marketDepth.asks = json["asks"].map({ self.parsePriceQuantity($0.1) })
+        marketDepth.bids = json["bids"].map({ self.parsePriceQuantity($0.1) })
         return marketDepth
+    }
+    
+    func parsePriceQuantity(_ json: JSON) -> PriceQuantity {
+        let priceQuantity = PriceQuantity()
+        priceQuantity.price = json.arrayValue[0].stringValue
+        priceQuantity.quantity = json.arrayValue[1].stringValue
+        return priceQuantity
     }
     
     func parseValidators(_ json: JSON) -> Validators {
@@ -90,17 +96,32 @@ class Parser {
         validator.votingPower = json["voting_power"].intValue
         return validator
     }
-    
+
     func parseTransactions(_ json: JSON) -> Transactions {
         let transactions = Transactions()
         transactions.total = json["total"].intValue
         transactions.tx = json["tx"].map({ self.parseTx($0.1) })
         return transactions
     }
-    
+
     func parseTx(_ json: JSON) -> Tx {
         let tx = Tx()
+        tx.blockHeight = json["blockHeight"].doubleValue
+        tx.code = json["code"].intValue
+        tx.confirmBlocks = json["confirm_blocks"].doubleValue
+        tx.data = json["data"].stringValue
+        tx.fromAddr = json["from_addr"].stringValue
+        tx.orderId = json["orderId"].stringValue
         // TODO
+        //tx.timeStamp = json["timeStamp"].stringValue
+        tx.toAddr = json["toAddr"].stringValue
+        // TODO
+        //tx.txAge = json["tx_age"].doubleValue
+        tx.txAsset = json["txAsset"].stringValue
+        tx.txFee = json["txFee"].stringValue
+        tx.txHash = json["txHash"].stringValue
+        tx.txType = json["txType"].stringValue
+        tx.value = json["value"].stringValue
         return tx
     }
 
@@ -128,6 +149,99 @@ class Parser {
         market.lotSize = json["lot_size"].stringValue
         // TODO
         return market
+    }
+
+    func parseAccount(_ json: JSON) -> Account {
+        let account = Account()
+        account.accountNumber = json["account_number"].intValue
+        account.address = json["address"].stringValue
+        account.balances = json["balance"].map({ self.parseBalance($0.1) })
+        // TODO
+        // account.publicKey = json["public_key"]
+        account.sequence = json["sequence"].intValue
+        return account
+    }
+    
+    func parseBalance(_ json: JSON) -> Balance {
+        let balance = Balance()
+        balance.symbol = json["symbol"].stringValue
+        balance.free = json["free"].stringValue
+        balance.locked = json["locked"].stringValue
+        balance.frozen = json["frozen"].stringValue
+        return balance
+    }
+
+    func parseCandlestick(_ json: JSON) -> Candlestick {
+        let candlestick = Candlestick()
+        // TODO
+        //candlestick.closeTime = json.arrayValue[0].stringValue
+        candlestick.close = json.arrayValue[0].intValue
+        candlestick.high = json.arrayValue[2].stringValue
+        candlestick.low = json.arrayValue[3].stringValue
+        candlestick.numberOfTrades = json.arrayValue[4].stringValue
+        candlestick.open = json.arrayValue[5].stringValue
+        // TODO
+        //candlestick.openTime = json.arrayValue[6].intValue
+        candlestick.quoteAssetVolume = json.arrayValue[7].stringValue
+        candlestick.volume = json.arrayValue[8].intValue
+        return candlestick
+    }
+
+    func parseTickerStatistics(_ json: JSON) -> TickerStatistics {
+        let ticker = TickerStatistics()
+        ticker.askPrice = json["ask_price"].stringValue
+        ticker.askQuantity = json["ask_quantity"].stringValue
+        ticker.bidPrice = json["bid_price"].stringValue
+        ticker.bidQuantity = json["bid_quantity"].stringValue
+        // TODO
+        //ticker.closeTime = TimeInterval = 0
+        ticker.count = json["count"].intValue
+        ticker.firstId = json["first_id"].stringValue
+        ticker.highPrice = json["high_price"].stringValue
+        ticker.lastId = json["last_id"].stringValue
+        ticker.lastPrice = json["last_price"].stringValue
+        ticker.lastQuantity = json["last_quantity"].stringValue
+        ticker.lowPrice = json["low_price"].stringValue
+        ticker.openPrice = json["open_price"].stringValue
+        //TODO
+        //ticker.openTime = TimeInterval = 0
+        ticker.prevClosePrice = json["prev_close_price"].stringValue
+        ticker.priceChange = json["price_change"].stringValue
+        ticker.priceChangePercent = json["price_change_percent"].stringValue
+        ticker.quoteVolume = json["quote_volume"].stringValue
+        ticker.symbol = json["symbol"].stringValue
+        ticker.volume = json["volume"].stringValue
+        ticker.weightedAvgPrice = json["weighted_avg_price"].stringValue
+        return ticker
+    }
+    
+    func parseOrder(_ json: JSON) -> Order {
+        let order = Order()
+        order.cumulateQuantity = json[""].stringValue
+        order.fee = json[""].stringValue
+        order.lastExecutedPrice = json[""].stringValue
+        order.lastExecuteQuantity = json[""].stringValue
+        // TODO
+        //order.orderCreateTime: Date = Date()
+        order.orderId = json[""].stringValue
+        order.owner = json[""].stringValue
+        order.price = json[""].stringValue
+        order.status = json[""].stringValue
+        order.symbol = json[""].stringValue
+        order.timeInForce = json[""].intValue
+        order.tradeId = json[""].stringValue
+        order.transactionHash = json[""].stringValue
+        // TODO
+        //order.transactionTime: Date = Date()
+        order.type = json[""].intValue
+        return order
+    }
+    
+    func parseOrderList(_ json: JSON) -> OrderList {
+        let orderList = OrderList()
+        orderList.total = json["total"].intValue
+        orderList.orders = json["orders"].map({ self.parseOrder($0.1) })
+        return orderList
     }
     
 }
@@ -183,5 +297,47 @@ class NodeInfoParser: Parser {
 class MarketsParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) {
         response.markets = json.map({ self.parseMarket($0.1) })
+    }
+}
+
+class AccountParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) {
+        response.account = self.parseAccount(json)
+    }
+}
+
+class SequenceParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) {
+        response.sequence = json["sequence"].intValue
+    }
+}
+
+class TxParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) {
+        response.tx = self.parseTx(json)
+    }
+}
+
+class CandlestickParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) {
+        response.candlesticks = json.map({ self.parseCandlestick($0.1) })
+    }
+}
+
+class TickerStatisticsParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) {
+        response.tickerStatistics = json.map({ self.parseTickerStatistics($0.1) })
+    }
+}
+
+class OrderParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) {
+        response.order = self.parseOrder(json)
+    }
+}
+
+class OrderListParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) {
+        response.orderList = self.parseOrderList(json)
     }
 }

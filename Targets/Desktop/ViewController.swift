@@ -13,8 +13,9 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let address = "tbnb185tqzq3j6y7yep85lncaz9qeectjxqe5054cgn"
-        let symbol = "NNB-338_BNB"
+        let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
+        let symbol = "BNB_BTC.B-918"
+        let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
 
         let binance = BinanceChain()
 
@@ -38,11 +39,17 @@ class ViewController: NSViewController {
             response.peers.forEach({ print("\($0.id) \($0.listenAddr)") })
         }
 
-        binance.account(address: address)
+        binance.account(address: address) { (response) in
+            print("Found account: \(response.account.address) \(response.account.balances)")
+        }
 
-        binance.sequence(address: address)
+        binance.sequence(address: address) { (response) in
+            print("Found sequence number: \(response.sequence)")
+        }
 
-        binance.tx(hash: "a-hash-id")
+        binance.tx(hash: hashId) { (response) in
+            print("Found Tx: \(response.tx.txHash) \(response.tx.txType)")
+        }
 
         binance.tokens(limit: .fiveHundred, offset: 0) { (response) in
             print("Found: \(response.tokens.count) tokens")
@@ -54,26 +61,47 @@ class ViewController: NSViewController {
             response.markets.forEach({ print("\($0.baseAssetSymbol) \($0.price)") })
         }
 
-        binance.fees()
+        binance.fees() { (response) in
+            
+        }
 
-        binance.depth(symbol: symbol) { (response) in
+        binance.marketDepth(symbol: symbol) { (response) in
             print("Found market depths:")
             print("  asks: \(response.marketDepth.asks)")
             print("  bids: \(response.marketDepth.bids)")
         }
         
-        binance.broadcast(body: Data())
-        binance.klines(symbol: symbol, interval: .fiveMinutes)
-        binance.closedOrders(address: address)
-        binance.openOrders(address: address)
-        binance.orders(id: "a-hash-id")
-        binance.ticker(symbol: symbol)
+        binance.broadcast(body: Data()) { (response) in
+            
+        }
+
+        binance.klines(symbol: symbol, interval: .fiveMinutes) { (response) in
+            print("Found: \(response.candlesticks.count) candlesticks")
+            response.candlesticks.forEach({ print("\($0.close) \($0.closeTime) \($0.numberOfTrades)") })
+        }
+
+        binance.closedOrders(address: address) { (response) in
+        }
+
+        binance.openOrders(address: address) { (response) in
+        }
+
+        binance.orders(id: "a-hash-id") { (response) in
+            
+        }
+
+        binance.ticker(symbol: symbol) { (response) in
+        }
 
         binance.trades() { (response) in
             print("Found: \(response.trades.count) trades")
             response.trades.forEach({ print("\($0.symbol) \($0.price)") })
         }
-        binance.transactions(address: address)
+
+        binance.transactions(address: address) { (response) in
+            print("Found \(response.transactions.total) transactions:")
+            response.transactions.tx.forEach({ print("\($0.txHash) \($0.txType)") })
+        }
      
         // Test WebSocket
         let ws = WebSocket()
