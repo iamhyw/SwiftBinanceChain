@@ -95,6 +95,21 @@ public class BinanceChain {
         case mint = "MINT"
         case deposit = "DEPOSIT"
     }
+
+    public enum TimeInForce: String {
+        case goodTillExpire = "GTE"
+        case immediateOrCancel = "IOC"
+    }
+    
+    public enum TransactionSide: String {
+        case receive = "RECEIVE"
+        case send = "SEND"
+    }
+
+    public enum OrderType: String {
+        case limit = "LIMIT"
+        case market = "MARKET"
+    }
     
     typealias Completion = ()->()
     typealias Success = (BinanceChain.Result)->()

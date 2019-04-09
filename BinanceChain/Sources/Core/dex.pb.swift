@@ -20,7 +20,7 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
 }
 
 /// please note the field name is the JSON name.
-public struct Transaction_StdTx {
+public struct StdTx {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -46,7 +46,7 @@ public struct Transaction_StdTx {
   public init() {}
 }
 
-public struct Transaction_StdSignature {
+public struct StdSignature {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -80,7 +80,7 @@ public struct Transaction_StdSignature {
 }
 
 /// please note the field name is the JSON name.
-public struct Transaction_NewOrder {
+public struct NewOrder {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -115,7 +115,7 @@ public struct Transaction_NewOrder {
 }
 
 /// please note the field name is the JSON name.
-public struct Transaction_CancelOrder {
+public struct CancelOrder {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -135,7 +135,7 @@ public struct Transaction_CancelOrder {
 }
 
 /// please note the field name is the JSON name.
-public struct Transaction_TokenFreeze {
+public struct TokenFreeze {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -155,7 +155,7 @@ public struct Transaction_TokenFreeze {
 }
 
 /// please note the field name is the JSON name.
-public struct Transaction_TokenUnfreeze {
+public struct TokenUnfreeze {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -175,14 +175,14 @@ public struct Transaction_TokenUnfreeze {
 }
 
 /// please note the field name is the JSON name.
-public struct Transaction_Send {
+public struct Send {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var inputs: [Transaction_Send.Input] = []
+  public var inputs: [Send.Input] = []
 
-  public var outputs: [Transaction_Send.Output] = []
+  public var outputs: [Send.Output] = []
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -208,7 +208,7 @@ public struct Transaction_Send {
 
     public var address: Data = SwiftProtobuf.Internal.emptyData
 
-    public var coins: [Transaction_Send.Token] = []
+    public var coins: [Send.Token] = []
 
     public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -222,7 +222,7 @@ public struct Transaction_Send {
 
     public var address: Data = SwiftProtobuf.Internal.emptyData
 
-    public var coins: [Transaction_Send.Token] = []
+    public var coins: [Send.Token] = []
 
     public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -233,7 +233,7 @@ public struct Transaction_Send {
 }
 
 /// please note the field name is the JSON name.
-public struct Transaction_Vote {
+public struct Vote {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -254,10 +254,8 @@ public struct Transaction_Vote {
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
-fileprivate let _protobuf_package = "transaction"
-
-extension Transaction_StdTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".StdTx"
+extension StdTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "StdTx"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "msgs"),
     2: .same(proto: "signatures"),
@@ -298,7 +296,7 @@ extension Transaction_StdTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_StdTx, rhs: Transaction_StdTx) -> Bool {
+  public static func ==(lhs: StdTx, rhs: StdTx) -> Bool {
     if lhs.msgs != rhs.msgs {return false}
     if lhs.signatures != rhs.signatures {return false}
     if lhs.memo != rhs.memo {return false}
@@ -309,8 +307,8 @@ extension Transaction_StdTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
   }
 }
 
-extension Transaction_StdSignature: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".StdSignature"
+extension StdSignature: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "StdSignature"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "pub_key"),
     2: .same(proto: "signature"),
@@ -346,7 +344,7 @@ extension Transaction_StdSignature: SwiftProtobuf.Message, SwiftProtobuf._Messag
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_StdSignature, rhs: Transaction_StdSignature) -> Bool {
+  public static func ==(lhs: StdSignature, rhs: StdSignature) -> Bool {
     if lhs.pubKey != rhs.pubKey {return false}
     if lhs.signature != rhs.signature {return false}
     if lhs.accountNumber != rhs.accountNumber {return false}
@@ -356,8 +354,8 @@ extension Transaction_StdSignature: SwiftProtobuf.Message, SwiftProtobuf._Messag
   }
 }
 
-extension Transaction_StdSignature.PubKey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = Transaction_StdSignature.protoMessageName + ".PubKey"
+extension StdSignature.PubKey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = StdSignature.protoMessageName + ".PubKey"
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap()
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -369,14 +367,14 @@ extension Transaction_StdSignature.PubKey: SwiftProtobuf.Message, SwiftProtobuf.
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_StdSignature.PubKey, rhs: Transaction_StdSignature.PubKey) -> Bool {
+  public static func ==(lhs: StdSignature.PubKey, rhs: StdSignature.PubKey) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Transaction_NewOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".NewOrder"
+extension NewOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "NewOrder"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "sender"),
     2: .same(proto: "id"),
@@ -432,7 +430,7 @@ extension Transaction_NewOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_NewOrder, rhs: Transaction_NewOrder) -> Bool {
+  public static func ==(lhs: NewOrder, rhs: NewOrder) -> Bool {
     if lhs.sender != rhs.sender {return false}
     if lhs.id != rhs.id {return false}
     if lhs.symbol != rhs.symbol {return false}
@@ -446,8 +444,8 @@ extension Transaction_NewOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
   }
 }
 
-extension Transaction_CancelOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".CancelOrder"
+extension CancelOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "CancelOrder"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "sender"),
     2: .same(proto: "symbol"),
@@ -478,7 +476,7 @@ extension Transaction_CancelOrder: SwiftProtobuf.Message, SwiftProtobuf._Message
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_CancelOrder, rhs: Transaction_CancelOrder) -> Bool {
+  public static func ==(lhs: CancelOrder, rhs: CancelOrder) -> Bool {
     if lhs.sender != rhs.sender {return false}
     if lhs.symbol != rhs.symbol {return false}
     if lhs.refid != rhs.refid {return false}
@@ -487,8 +485,8 @@ extension Transaction_CancelOrder: SwiftProtobuf.Message, SwiftProtobuf._Message
   }
 }
 
-extension Transaction_TokenFreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".TokenFreeze"
+extension TokenFreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "TokenFreeze"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "from"),
     2: .same(proto: "symbol"),
@@ -519,7 +517,7 @@ extension Transaction_TokenFreeze: SwiftProtobuf.Message, SwiftProtobuf._Message
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_TokenFreeze, rhs: Transaction_TokenFreeze) -> Bool {
+  public static func ==(lhs: TokenFreeze, rhs: TokenFreeze) -> Bool {
     if lhs.from != rhs.from {return false}
     if lhs.symbol != rhs.symbol {return false}
     if lhs.amount != rhs.amount {return false}
@@ -528,8 +526,8 @@ extension Transaction_TokenFreeze: SwiftProtobuf.Message, SwiftProtobuf._Message
   }
 }
 
-extension Transaction_TokenUnfreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".TokenUnfreeze"
+extension TokenUnfreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "TokenUnfreeze"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "from"),
     2: .same(proto: "symbol"),
@@ -560,7 +558,7 @@ extension Transaction_TokenUnfreeze: SwiftProtobuf.Message, SwiftProtobuf._Messa
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_TokenUnfreeze, rhs: Transaction_TokenUnfreeze) -> Bool {
+  public static func ==(lhs: TokenUnfreeze, rhs: TokenUnfreeze) -> Bool {
     if lhs.from != rhs.from {return false}
     if lhs.symbol != rhs.symbol {return false}
     if lhs.amount != rhs.amount {return false}
@@ -569,8 +567,8 @@ extension Transaction_TokenUnfreeze: SwiftProtobuf.Message, SwiftProtobuf._Messa
   }
 }
 
-extension Transaction_Send: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".Send"
+extension Send: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "Send"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "inputs"),
     2: .same(proto: "outputs"),
@@ -596,7 +594,7 @@ extension Transaction_Send: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_Send, rhs: Transaction_Send) -> Bool {
+  public static func ==(lhs: Send, rhs: Send) -> Bool {
     if lhs.inputs != rhs.inputs {return false}
     if lhs.outputs != rhs.outputs {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -604,8 +602,8 @@ extension Transaction_Send: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
   }
 }
 
-extension Transaction_Send.Token: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = Transaction_Send.protoMessageName + ".Token"
+extension Send.Token: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = Send.protoMessageName + ".Token"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "denom"),
     2: .same(proto: "amount"),
@@ -631,7 +629,7 @@ extension Transaction_Send.Token: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_Send.Token, rhs: Transaction_Send.Token) -> Bool {
+  public static func ==(lhs: Send.Token, rhs: Send.Token) -> Bool {
     if lhs.denom != rhs.denom {return false}
     if lhs.amount != rhs.amount {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -639,8 +637,8 @@ extension Transaction_Send.Token: SwiftProtobuf.Message, SwiftProtobuf._MessageI
   }
 }
 
-extension Transaction_Send.Input: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = Transaction_Send.protoMessageName + ".Input"
+extension Send.Input: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = Send.protoMessageName + ".Input"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "address"),
     2: .same(proto: "coins"),
@@ -666,7 +664,7 @@ extension Transaction_Send.Input: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_Send.Input, rhs: Transaction_Send.Input) -> Bool {
+  public static func ==(lhs: Send.Input, rhs: Send.Input) -> Bool {
     if lhs.address != rhs.address {return false}
     if lhs.coins != rhs.coins {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -674,8 +672,8 @@ extension Transaction_Send.Input: SwiftProtobuf.Message, SwiftProtobuf._MessageI
   }
 }
 
-extension Transaction_Send.Output: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = Transaction_Send.protoMessageName + ".Output"
+extension Send.Output: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = Send.protoMessageName + ".Output"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "address"),
     2: .same(proto: "coins"),
@@ -701,7 +699,7 @@ extension Transaction_Send.Output: SwiftProtobuf.Message, SwiftProtobuf._Message
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_Send.Output, rhs: Transaction_Send.Output) -> Bool {
+  public static func ==(lhs: Send.Output, rhs: Send.Output) -> Bool {
     if lhs.address != rhs.address {return false}
     if lhs.coins != rhs.coins {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -709,8 +707,8 @@ extension Transaction_Send.Output: SwiftProtobuf.Message, SwiftProtobuf._Message
   }
 }
 
-extension Transaction_Vote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".Vote"
+extension Vote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "Vote"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "proposal_id"),
     2: .same(proto: "voter"),
@@ -741,7 +739,7 @@ extension Transaction_Vote: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Transaction_Vote, rhs: Transaction_Vote) -> Bool {
+  public static func ==(lhs: Vote, rhs: Vote) -> Bool {
     if lhs.proposalID != rhs.proposalID {return false}
     if lhs.voter != rhs.voter {return false}
     if lhs.option != rhs.option {return false}

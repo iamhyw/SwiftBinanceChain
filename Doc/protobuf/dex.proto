@@ -4,8 +4,6 @@ option java_multiple_files = true;
 option java_package = "com.binance.dex.api.proto";
 option java_outer_classname = "Transaction";
 
-package transaction;
-
 // please note the field name is the JSON name.
 message StdTx {
     //    uint64 SIZE-OF-ENCODED // varint encoded length of the structure after encoding
