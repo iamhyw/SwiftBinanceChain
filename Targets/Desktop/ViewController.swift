@@ -62,7 +62,8 @@ class ViewController: NSViewController {
         }
 
         binance.fees() { (response) in
-            
+            print("Found: \(response.fees.count) fees")
+            response.fees.forEach({ print("\($0.msgType) \($0.fee)") })
         }
 
         binance.marketDepth(symbol: symbol) { (response) in
@@ -86,11 +87,13 @@ class ViewController: NSViewController {
         binance.openOrders(address: address) { (response) in
         }
 
-        binance.orders(id: "a-hash-id") { (response) in
+        binance.orders(id: hashId) { (response) in
             
         }
 
         binance.ticker(symbol: symbol) { (response) in
+            print("Found: \(response.tickerStatistics.count) ticker statistics")
+            response.tickerStatistics.forEach({ print("\($0.symbol) \($0.volume) \($0.bidPrice)") })
         }
 
         binance.trades() { (response) in

@@ -11,6 +11,7 @@ public class BinanceChain {
         public var isError: Bool = false
         public var error: Error?
         public var sequence: Int = 0
+        public var fees: [Fee] = []
         public var peers: [Peer] = []
         public var tokens: [Token] = []
         public var trades: [Trade] = []
@@ -185,7 +186,7 @@ public class BinanceChain {
     }
 
     public func fees(completion: Completion? = nil) {
-        self.api(path: .fees, method: .get, completion: completion)
+        self.api(path: .fees, method: .get, parser: FeesParser(), completion: completion)
     }
 
     public func marketDepth(symbol: String, limit: Limit? = nil, completion: Completion? = nil) {
@@ -242,7 +243,7 @@ public class BinanceChain {
     }
 
     public func ticker(symbol: String, completion: Completion? = nil) {
-        let path = String(format: "%@/%@", Path.ticker.rawValue, symbol)
+        let path = String(format: "%@/?symbol=%@", Path.ticker.rawValue, symbol)
         self.api(path: path, method: .get, parser: TickerStatisticsParser(), completion: completion)
     }
     

@@ -244,6 +244,27 @@ class Parser {
         return orderList
     }
     
+    func parseFee(_ json: JSON) -> Fee {
+        let fee = Fee()
+        fee.msgType = json["msg_type"].stringValue
+        fee.fee = json["fee"].intValue
+        fee.feeFor = json["fee_for"].intValue
+        fee.multiTransferFee = json["multi_transfer_fee"].stringValue
+        fee.lowerLimitAsMulti = json["lower_limit_as_multi"].stringValue
+        if json["fixed_fee_params"].exists() {
+            fee.fixedFeeParams = self.parseFixedFeeParams(json["fixed_fee_params"])
+        }
+        return fee
+    }
+    
+    func parseFixedFeeParams(_ json: JSON) -> FixedFeeParams {
+        let fixedFeeParams = FixedFeeParams()
+        fixedFeeParams.msgType = json["msg_type"].stringValue
+        fixedFeeParams.fee = json["fee"].intValue
+        fixedFeeParams.feeFor = json["fee_for"].intValue
+        return fixedFeeParams
+    }
+    
 }
 
 class TokenParser: Parser {
@@ -339,5 +360,11 @@ class OrderParser: Parser {
 class OrderListParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) {
         response.orderList = self.parseOrderList(json)
+    }
+}
+
+class FeesParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) {
+        response.fees = json.map({ self.parseFee($0.1) })
     }
 }
