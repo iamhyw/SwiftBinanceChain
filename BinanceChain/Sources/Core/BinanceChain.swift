@@ -133,13 +133,13 @@ public class BinanceChain {
     }
 
     public func peers() {
-        self.api(path: .validators, method: .get, completion: nil, success: nil, failure: nil)
+        self.api(path: .peers, method: .get, completion: nil, success: nil, failure: nil)
     }
     
     public func account(address: String) {
         var parameters: Parameters = [:]
         parameters["address"] = address
-        self.api(path: .validators, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
+        self.api(path: .account, method: .get, parameters: parameters, completion: nil, success: nil, failure: nil)
     }
 
     public func sequence(address: String) {
@@ -284,7 +284,13 @@ public class BinanceChain {
 
                     let result = BinanceChain.Result()
                     do {
+                        
+                        if let utf8Text = String(data: data, encoding: .utf8) {
+                            print(utf8Text)
+                        }
+                        
                         try parser.parse(result: result, data: data)
+
                     } catch {
                         print("  \(path) exception: \(error)")
                         // TODO failure

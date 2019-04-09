@@ -23,5 +23,6 @@ Pod::Spec.new do |s|
     sub.dependency 'Starscream'
     sub.dependency 'Bech32'
     sub.dependency 'XCGLogger'
+    sub.dependency 'secp256k1.swift'
   end
 end
