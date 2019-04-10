@@ -1,8 +1,8 @@
-all: gen cp
+all: generate copy
 
-gen:
+generate:
 	protoc --swift_out=. --swift_opt=Visibility=Public dex.proto
 
-cp:
-	cp dex.pb.swift ../../BinanceChain/Sources/Core
+copy:
+	cp dex.pb.swift ../../BinanceChain/Sources/Protobuf
 

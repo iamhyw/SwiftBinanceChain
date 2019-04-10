@@ -10,7 +10,7 @@ Generate the swift class files:
 % protoc --swift_out=. --swift_opt=Visibility=Public dex.proto
 ```
 
-Copy into the project:
+Copy generated swift into the project:
 ```console
-% cp dex.pb.swift ../../BinanceChain/Sources/Core
+% cp dex.pb.swift ../../BinanceChain/Sources/Protobuf
 ```
