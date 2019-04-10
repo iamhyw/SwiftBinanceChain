@@ -1,24 +1,5 @@
 import Foundation
 
-public extension CustomStringConvertible {
-
-    var description: String {
-        let name = String(describing: type(of: self))
-        let mirror = Mirror(reflecting: self)
-        let properties: [String] = mirror.children.compactMap ({
-            guard let name = $0.label else { return nil }
-            return String(format: "%@: %@", name, String(describing: $0.value))
-        })
-        return String(format: "%@ [%@]", name, properties.joined(separator: ", "))
-    }
-
-}
-
-public class Error: CustomStringConvertible {
-    public var code: Int = 0
-    public var message: String = ""
-}
-
 public class Times: CustomStringConvertible {
     public var apTime: String = ""
     public var blockTime: String = ""
