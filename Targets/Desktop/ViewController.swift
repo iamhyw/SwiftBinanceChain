@@ -22,57 +22,47 @@ class ViewController: NSViewController {
         let binance = BinanceChain(endpoint: .test)
 
         binance.time() { (response) in
-            print("Found times:")
-            print("  apTime: \(response.times.apTime)")
-            print("  blockTime: \(response.times.blockTime)")
+            print("times: \(response.times)\n")
         }
 
         binance.nodeInfo() { (response) in
-            print("Found node info: \(response.nodeInfo.address) \(response.nodeInfo.version) \(response.nodeInfo.moniker)")
+            print("node info: \(response.nodeInfo)\n")
         }
 
         binance.validators() { (response) in
-            print("Found \(response.validators.validators.count) validators:")
-            response.validators.validators.forEach({ print("\($0.address) \($0.votingPower)") })
+            print("validators: \(response.validators)\n")
         }
 
         binance.peers() { (response) in
-            print("Found: \(response.peers.count) peers")
-            response.peers.forEach({ print("\($0.id) \($0.listenAddr)") })
+            print("peers: \(response.peers)\n")
         }
 
         binance.account(address: address) { (response) in
-            print("Found account: \(response.account.address) with \(response.account.balances.count) balances")
-            response.account.balances.forEach({ print("\($0.symbol) \($0.free)") })
+            print("account: \(response.account)\n")
         }
 
         binance.sequence(address: address) { (response) in
-            print("Found sequence number: \(response.sequence)")
+            print("addresssequence: \(response.sequence)\n")
         }
 
         binance.tx(hash: hashId) { (response) in
-            print("Found Tx: \(response.tx.txHash) \(response.tx.txType)")
+            print("tx: \(response.tx)\n")
         }
 
         binance.tokens(limit: .fiveHundred, offset: 0) { (response) in
-            print("Found: \(response.tokens.count) tokens")
-            response.tokens.forEach({ print("\($0.name) \($0.symbol) \($0.owner)") })
+            print("tokens: \(response.tokens)\n")
         }
 
         binance.markets(limit: .oneHundred, offset: 0) { (response) in
-            print("Found: \(response.markets.count) markets")
-            response.markets.forEach({ print("\($0.baseAssetSymbol) \($0.price)") })
+            print("markets: \(response.markets)\n")
         }
 
         binance.fees() { (response) in
-            print("Found: \(response.fees.count) fees")
-            response.fees.forEach({ print("\($0.msgType) \($0.fee)") })
+            print("Found: \(response.fees)\n")
         }
 
         binance.marketDepth(symbol: symbol) { (response) in
-            print("Found market depths:")
-            print("  asks: \(response.marketDepth.asks)")
-            print("  bids: \(response.marketDepth.bids)")
+            print("marketdepths: \(response.marketDepth)\n")
         }
         
         binance.broadcast(body: Data()) { (response) in
@@ -80,37 +70,31 @@ class ViewController: NSViewController {
         }
 
         binance.klines(symbol: symbol, interval: .fiveMinutes) { (response) in
-            print("Found: \(response.candlesticks.count) candlesticks")
-            response.candlesticks.forEach({ print("\($0.close) \($0.closeTime) \($0.numberOfTrades)") })
+            print("klines: \(response.candlesticks)\n")
         }
 
         binance.closedOrders(address: address) { (response) in
-            print("Found \(response.orderList.orders.count) closed orders")
-            response.orderList.orders.forEach({ print("\($0.symbol) \($0.orderId)") })
+            print("closedorders: \(response.orderList)\n")
         }
 
         binance.openOrders(address: address) { (response) in
-            print("Found \(response.orderList.orders.count) open orders")
-            response.orderList.orders.forEach({ print("\($0.symbol) \($0.orderId)") })
+            print("openorders: \(response.orderList)\n")
         }
 
         binance.order(id: hashId) { (response) in
-            print("Found order: \(response.order.symbol) \(response.order.orderId)")
+            print("order: \(response.order)\n")
         }
 
         binance.ticker(symbol: symbol) { (response) in
-            print("Found: \(response.tickerStatistics.count) ticker statistics")
-            response.tickerStatistics.forEach({ print("\($0.symbol) \($0.volume) \($0.bidPrice)") })
+            print("Found: \(response.tickerStatistics)\n")
         }
 
         binance.trades() { (response) in
-            print("Found: \(response.trades.count) trades")
-            response.trades.forEach({ print("\($0.symbol) \($0.price)") })
+            print("trades: \(response.trades)\n")
         }
 
         binance.transactions(address: address) { (response) in
-            print("Found \(response.transactions.total) transactions:")
-            response.transactions.tx.forEach({ print("\($0.txHash) \($0.txType)") })
+            print("transactions: \(response.transactions)\n")
         }
      
         // Test WebSocket

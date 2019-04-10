@@ -1,27 +1,41 @@
 import Foundation
 
-public class Error {
+public extension CustomStringConvertible {
+
+    var description: String {
+        let name = String(describing: type(of: self))
+        let mirror = Mirror(reflecting: self)
+        let properties: [String] = mirror.children.compactMap ({
+            guard let name = $0.label else { return nil }
+            return String(format: "%@: %@", name, String(describing: $0.value))
+        })
+        return String(format: "%@ [%@]", name, properties.joined(separator: ", "))
+    }
+
+}
+
+public class Error: CustomStringConvertible {
     public var code: Int = 0
     public var message: String = ""
 }
 
-public class Times {
+public class Times: CustomStringConvertible {
     public var apTime: String = ""
     public var blockTime: String = ""
 }
 
-public class Validators {
+public class Validators: CustomStringConvertible {
     public var blockHeight: Int = 0
     public var validators: [Validator] = []
 }
 
-public class Validator {
+public class Validator: CustomStringConvertible {
     public var address: String = ""
     public var publicKey: Data = Data()
     public var votingPower: Int = 0
 }
 
-public class Peer {
+public class Peer: CustomStringConvertible {
     public var id: String = ""
     public var originalListenAddr: String = ""
     public var listenAddr: String = ""
@@ -34,7 +48,7 @@ public class Peer {
     public var accelerated: Bool = false
 }
 
-public class NodeInfo {
+public class NodeInfo: CustomStringConvertible {
     public var id: String = ""
     public var listenAddr: String = ""
     public var network: String = ""
@@ -47,19 +61,19 @@ public class NodeInfo {
     public var validatorInfo: Validator = Validator()
 }
 
-public class Transactions {
+public class Transactions: CustomStringConvertible {
     public var total: Int = 0
     public var tx: [Tx] = []
 }
 
-public class Transaction {
+public class Transaction: CustomStringConvertible {
     public var hash: String = ""
     public var log: String = ""
     public var data: String = ""
     public var tx: Data = Data()
 }
 
-public class Account {
+public class Account: CustomStringConvertible {
     public var accountNumber: Int = 0
     public var address: String = ""
     public var balances: [Balance] = []
@@ -67,18 +81,18 @@ public class Account {
     public var sequence: Int = 0
 }
 
-public class AccountSequence {
+public class AccountSequence: CustomStringConvertible {
     public var sequence: Int = 0
 }
 
-public class Balance {
+public class Balance: CustomStringConvertible {
     public var symbol: String = ""
     public var free: String = ""
     public var locked: String = ""
     public var frozen: String = ""
 }
 
-public class Token {
+public class Token: CustomStringConvertible {
     public var name: String = ""
     public var symbol: String = ""
     public var originalSymbol: String = ""
@@ -86,7 +100,7 @@ public class Token {
     public var owner: String = ""
 }
 
-public class Market {
+public class Market: CustomStringConvertible {
     public var baseAssetSymbol: String = ""
     public var quoteAssetSymbol: String = ""
     public var price: String = ""
@@ -94,7 +108,7 @@ public class Market {
     public var lotSize: String = ""
 }
 
-public class Fee {
+public class Fee: CustomStringConvertible {
     public var msgType: String = ""
     public var fee: Int = 0
     public var feeFor: Int = 0
@@ -103,35 +117,35 @@ public class Fee {
     public var fixedFeeParams: FixedFeeParams?
 }
 
-public class FixedFeeParams {
+public class FixedFeeParams: CustomStringConvertible {
     public var msgType: String = ""
     public var fee: Int = 0
     public var feeFor: Int = 0
 }
 
-public class PriceQuantity {
+public class PriceQuantity: CustomStringConvertible {
     public var price: String = ""
     public var quantity: String = ""
 }
 
-public class MarketDepth {
+public class MarketDepth: CustomStringConvertible {
     public var asks: [PriceQuantity] = []
     public var bids: [PriceQuantity] = []
 }
 
-public class BlockTradePage {
+public class BlockTradePage: CustomStringConvertible {
     public var total: Int = 0
     public var blockTrade: [BlockTrade] = []
 }
 
-public class BlockTrade {
+public class BlockTrade: CustomStringConvertible {
     public var blockTime: TimeInterval = 0
     public var fee: String = ""
     public var height: Int = 0
     public var trade: [Trade] = []
 }
 
-public class Candlestick {
+public class Candlestick: CustomStringConvertible {
     public var close: Int = 0
     public var closeTime: String = ""
     public var high: String = ""
@@ -143,12 +157,12 @@ public class Candlestick {
     public var volume: Int = 0
 }
 
-public class OrderList {
+public class OrderList: CustomStringConvertible {
     public var total: Int = 0
     public var orders: [Order] = []
 }
 
-public class Order {
+public class Order: CustomStringConvertible {
     public var cumulateQuantity: String = ""
     public var fee: String = ""
     public var lastExecutedPrice: String = ""
@@ -166,7 +180,7 @@ public class Order {
     public var type: Int = 0
 }
 
-public class TickerStatistics {
+public class TickerStatistics: CustomStringConvertible {
     public var askPrice: String = ""
     public var askQuantity: String = ""
     public var bidPrice: String = ""
@@ -190,12 +204,12 @@ public class TickerStatistics {
     public var weightedAvgPrice: String = ""
 }
 
-public class TradePage {
+public class TradePage: CustomStringConvertible {
     public var total: Int = 0
     public var trade: [Trade] = []
 }
 
-public class Trade {
+public class Trade: CustomStringConvertible {
     public var baseAsset: String = ""
     public var blockHeight: Int = 0
     public var buyFee: String = ""
@@ -211,12 +225,12 @@ public class Trade {
     public var tradeId: String = ""
 }
 
-public class TxPage {
+public class TxPage: CustomStringConvertible {
     public var total: Int = 0
     public var tx: [Tx] = []
 }
 
-public class Tx {
+public class Tx: CustomStringConvertible {
     public var blockHeight: Double = 0
     public var code: Int = 0
     public var confirmBlocks: Double = 0
@@ -233,7 +247,7 @@ public class Tx {
     public var value: String = ""
 }
 
-public class ExchangeRate {
+public class ExchangeRate: CustomStringConvertible {
     
 }
 
