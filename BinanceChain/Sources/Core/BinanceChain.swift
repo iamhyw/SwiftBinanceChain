@@ -44,7 +44,7 @@ public class BinanceChain {
         public var trades: [Trade] = []
         public var markets: [Market] = []
         public var candlesticks: [Candlestick] = []
-        public var tickerStatistics: [TickerStatistics] = []
+        public var ticker: [TickerStatistics] = []
         public var tx: Tx = Tx()
         public var order: Order = Order()
         public var orderList: OrderList = OrderList()

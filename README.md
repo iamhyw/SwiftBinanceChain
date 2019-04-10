@@ -1,3 +1,10 @@
+# Swift BinanceChain
+
+[![CocoaPod Version](https://img.shields.io/badge/version-1.0.0-blue.svg)]
+[![Pod Platform](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blueviolet.svg)]
+[![Swift Version](https://img.shields.io/badge/swift-5.0-brightgreen.svg)]
+
+
 ## Installation
 
 ## Features
@@ -23,7 +30,6 @@ To integrate BinanceChain into your Xcode project using CocoaPods, specify it in
 pod 'BinanceChain', :git => 'https://github.com/mh7821/BinanceChain/'
 ```
 
-
 ## Usage
 
 ### HTTP API
@@ -31,7 +37,7 @@ pod 'BinanceChain', :git => 'https://github.com/mh7821/BinanceChain/'
 ```swift
 import BinanceChain
 
-let binance = BinanceChain(endpoint: .test)
+let binance = BinanceChain()
 
 binance.time() { (response) in
 
@@ -47,7 +53,9 @@ binance.nodeInfo() { (response) in
     print(response.nodeInfo)
 }
 
-binance.validators() { (response) in print(response.validators) }
+binance.validators() { (response) in
+    print(response.validators)
+}
 
 binance.peers() { (response) in
     print(response.peers)
@@ -120,6 +128,25 @@ binance.transactions(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (
 let webSocket = WebSocket()
 webSocket.connect(endpoint: .test)
 ```
+
+### Testnet
+
+Switch between production and testnet easily by passing `endpoint`:
+
+```
+let binance = BinanceChain(endpoint: .production)
+let websocket = WebSocket(endpoint: .test)
+```
+
+## Example apps
+
+Example iOS and macOS apps are provided. First, use CocoaPods to install the dependencies:
+
+```
+% pod install
+```
+
+Then open `BinanceChain.xcworkspace`.
 
 ## License
 

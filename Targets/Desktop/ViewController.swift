@@ -86,7 +86,7 @@ class ViewController: NSViewController {
         }
 
         binance.ticker(symbol: symbol) { (response) in
-            print("Found: \(response.tickerStatistics)\n")
+            print("Found: \(response.ticker)\n")
         }
 
         binance.trades() { (response) in
