@@ -2,7 +2,7 @@ import Foundation
 import secp256k1
 //import mnemonic
 
-class Wallet {
+public class Wallet {
 
     var privateKey: Data = Data()
     var publicKey: Data = Data()
