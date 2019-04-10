@@ -1,4 +1,4 @@
-# Swift BinanceChain 
+# Swift Binance Chain SDK
 
 ![Swift: 5.0](https://img.shields.io/badge/swift-5.0-brightgreen.svg)
 ![Platforms: ios | macos | watchos | tvos](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blue.svg)
@@ -17,8 +17,8 @@
 ## Requirements
 
 - iOS 10.0+ / macOS 10.10+ / tvOS 10.0+ / watchOS 2.0+
-- Swift 5.0
-- Xcode 10.2
+- Swift 5.0+
+- Xcode 10.2+
 
 ## Installation
 
@@ -31,8 +31,6 @@ pod 'BinanceChain', :git => 'https://github.com/mh7821/BinanceChain/'
 ```
 
 ## Usage
-
-### HTTP API
 
 ```swift
 import BinanceChain
@@ -157,9 +155,9 @@ let binance = BinanceChain(endpoint: .production)
 let websocket = WebSocket(endpoint: .test)
 ```
 
-## Example apps
+## Sample apps
 
-Example iOS and macOS apps are provided. First, use CocoaPods to install the dependencies:
+Sample iOS and macOS apps are provided. First, use CocoaPods to install the dependencies:
 
 ```console
 % pod install
@@ -173,4 +171,4 @@ Then open `BinanceChain.xcworkspace`.
 
 ## License
 
-BinanceChain is released under the MIT license. [See LICENSE](https://github.com/mh7821/Alamofire/blob/master/LICENSE) for details.
+BinanceChain is released under the MIT license. [See LICENSE](https://github.com/mh7821/mh7821/blob/master/LICENSE) for details.
