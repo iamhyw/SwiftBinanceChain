@@ -3,12 +3,10 @@ import SwiftyJSON
 
 class Parser {
 
-    init() {
-    }
-
     func parse(response: BinanceChain.Response, data: Data) throws {
         guard let json = try? JSON(data: data) else {
-            // TODO error
+            let body = String(data: data, encoding: .utf8) ?? "Invalid Response"
+            response.error = BinanceError(message: body)
             return
         }
         self.parse(json, response: response)
@@ -16,6 +14,12 @@ class Parser {
 
     func parse(_ json: JSON, response: BinanceChain.Response) {
         // Subclasses to override
+    }
+
+    func parseError(_ json: JSON) -> Error {
+        let code = json["code"].intValue
+        let message = json["message"].stringValue
+        return BinanceError(code: code, message: message)
     }
 
     func parseTimes(_ json: JSON) -> Times {
@@ -264,7 +268,14 @@ class Parser {
         fixedFeeParams.feeFor = json["fee_for"].intValue
         return fixedFeeParams
     }
-    
+
+}
+
+class ErrorParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) {
+        print("parse(): \(json.stringValue)")
+        response.error = self.parseError(json)
+    }
 }
 
 class TokenParser: Parser {
