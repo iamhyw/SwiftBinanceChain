@@ -48,7 +48,7 @@ public class BinanceChain {
         public var tx: Tx = Tx()
         public var order: Order = Order()
         public var orderList: OrderList = OrderList()
-        public var times: Times = Times()
+        public var time: Times = Times()
         public var account: Account = Account()
         public var validators: Validators = Validators()
         public var marketDepth: MarketDepth = MarketDepth()

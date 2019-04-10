@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  Desktop
-//
-//  Created by Michael on 8/4/19.
-//
-
 import Cocoa
 import BinanceChain
 
@@ -22,7 +15,7 @@ class ViewController: NSViewController {
         let binance = BinanceChain(endpoint: .test)
 
         binance.time() { (response) in
-            print("times: \(response.times)\n")
+            print("time: \(response.time)\n")
         }
 
         binance.nodeInfo() { (response) in
@@ -96,19 +89,12 @@ class ViewController: NSViewController {
         binance.transactions(address: address) { (response) in
             print("transactions: \(response.transactions)\n")
         }
-     
+
         // Test WebSocket
         self.webSocket = WebSocket()
         self.webSocket?.connect(endpoint: .test)
         
     }
-
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
-
 
 }
 

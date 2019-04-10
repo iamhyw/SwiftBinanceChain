@@ -293,7 +293,7 @@ class MarketDepthParser: Parser {
 
 class TimesParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) {
-        response.times = self.parseTimes(json)
+        response.time = self.parseTimes(json)
     }
 }
 
@@ -347,7 +347,7 @@ class CandlestickParser: Parser {
 
 class TickerStatisticsParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) {
-        response.tickerStatistics = json.map({ self.parseTickerStatistics($0.1) })
+        response.ticker = json.map({ self.parseTickerStatistics($0.1) })
     }
 }
 
