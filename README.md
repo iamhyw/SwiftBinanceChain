@@ -1,8 +1,9 @@
-# BinanceChain: Swift client Library
+# Swift BinanceChain 
 
 ![Version: alpha](https://img.shields.io/badge/version-alpha-critical.svg)
-![Platforms: ios | macos | watchos | tvos](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blueviolet.svg)
+![Platforms: ios | macos | watchos | tvos](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blue.svg)
 ![Swift: 5.0](https://img.shields.io/badge/swift-5.0-brightgreen.svg)
+![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)
 
 ## Installation
 
@@ -104,17 +105,17 @@ binance.broadcast(body: Data()) { (response) in
     
 }
 
-// Gets candlestick/kline bars for a symbol
+// Get candlestick/kline bars for a symbol
 binance.klines(symbol: "BNB_BTC.B-918", interval: .fiveMinutes) { (response) in
     print(response.candlesticks)
 }
 
-// Gets closed (filled and cancelled) orders for an address
+// Get closed (filled and cancelled) orders for an address
 binance.closedOrders(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (response) in
     print(response.orderList)
 }
 
-// Gets open orders for an address
+// Get open orders for an address
 binance.openOrders(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (response) in
     print(response.orderList)
 }
@@ -124,17 +125,17 @@ binance.order(id: hashId) { (response) in
     print(response.order)
 }
 
-// Gets 24 hour price change statistics for a market pair symbol
+// Get 24 hour price change statistics for a market pair symbol
 binance.ticker(symbol: "BNB_BTC.B-918") { (response) in
     print(response.ticker)
 }
 
-// Gets a list of historical trades
+// Get a list of historical trades
 binance.trades() { (response) in
     print(response.trades)
 }
 
-// Gets transactions for an address
+// Get transactions for an address
 binance.transactions(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (response) in
     print(response.transactions)
 }
@@ -149,7 +150,7 @@ webSocket.connect(endpoint: .test)
 
 ### Testnet
 
-Switch between production and testnet easily by passing `endpoint`:
+Switch between production and testnet easily:
 
 ```swift
 let binance = BinanceChain(endpoint: .production)
