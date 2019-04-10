@@ -1,11 +1,9 @@
-# Swift Binance Chain SDK
+# Binance Chain Swift SDK
 
 ![Swift: 5.0](https://img.shields.io/badge/swift-5.0-brightgreen.svg)
 ![Platforms: ios | macos | watchos | tvos](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blue.svg)
 ![License: MIT](https://img.shields.io/badge/license-MIT-ff69b4.svg)
 ![Version: alpha](https://img.shields.io/badge/version-alpha-orange.svg)
-
-## Installation
 
 ## Features
 
