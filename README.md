@@ -1,9 +1,9 @@
 # Swift BinanceChain 
 
-![Version: alpha](https://img.shields.io/badge/version-alpha-critical.svg)
-![Platforms: ios | macos | watchos | tvos](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blue.svg)
-![Swift: 5.0](https://img.shields.io/badge/swift-5.0-brightgreen.svg)
-![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)
+![Version: alpha](https://img.shields.io/badge/version-alpha-blue.svg)
+![Platforms: ios | macos | watchos | tvos](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-brightgreen.svg)
+![Swift: 5.0](https://img.shields.io/badge/swift-5.0-orange.svg)
+![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 
 ## Installation
 
@@ -166,6 +166,10 @@ Example iOS and macOS apps are provided. First, use CocoaPods to install the dep
 ```
 
 Then open `BinanceChain.xcworkspace`.
+
+## In Progress
+
+
 
 ## License
 
