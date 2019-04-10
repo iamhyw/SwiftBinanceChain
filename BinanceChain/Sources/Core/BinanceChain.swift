@@ -156,7 +156,7 @@ public class BinanceChain {
         if let startTime = startTime { parameters["startTime"] = startTime }
         if let status = status { parameters["status"] = status.rawValue }
         if let symbol = symbol { parameters["symbol"] = symbol }
-        let path = String(format: "%@/?%@", Path.closedOrders.rawValue, parameters.urlEncoded)
+        let path = String(format: "%@/?%@", Path.closedOrders.rawValue, parameters.query)
         self.api(path: path, method: .get, parser: OrderListParser(), completion: completion)
     }
  
@@ -167,7 +167,7 @@ public class BinanceChain {
         if let limit = limit { parameters["limit"] = limit.rawValue }
         if let offset = offset { parameters["offset"] = offset }
         if let symbol = symbol { parameters["symbol"] = symbol }
-        let path = String(format: "%@/?%@", Path.openOrders.rawValue, parameters.urlEncoded)
+        let path = String(format: "%@/?%@", Path.openOrders.rawValue, parameters.query)
         self.api(path: path, method: .get, parser: OrderListParser(), completion: completion)
     }
 
@@ -254,15 +254,6 @@ public class BinanceChain {
         }
         return request
 
-    }
-
-}
-
-extension Dictionary {
-
-    var urlEncoded: String {
-        // TODO: use URLQueryItem and URLComponents to generate this, properly escaped
-        return (self.compactMap({ (key, value) -> String in return "\(key)=\(value)" }) as Array).joined(separator: "&")
     }
 
 }
