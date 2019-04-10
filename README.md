@@ -1,8 +1,8 @@
 # Swift BinanceChain
 
-[![CocoaPod Version](https://img.shields.io/badge/version-1.0.0-blue.svg)]
-[![Pod Platform](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blueviolet.svg)]
-[![Swift Version](https://img.shields.io/badge/swift-5.0-brightgreen.svg)]
+![Version: 1.0.0](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Platforms: ios | macos | watchos | tvos](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blueviolet.svg)
+![Swift: 5.0](https://img.shields.io/badge/swift-5.0-brightgreen.svg)
 
 
 ## Installation
@@ -124,7 +124,7 @@ binance.transactions(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (
 
 ### WebSockets
 
-```
+```swift
 let webSocket = WebSocket()
 webSocket.connect(endpoint: .test)
 ```
@@ -133,7 +133,7 @@ webSocket.connect(endpoint: .test)
 
 Switch between production and testnet easily by passing `endpoint`:
 
-```
+```swift
 let binance = BinanceChain(endpoint: .production)
 let websocket = WebSocket(endpoint: .test)
 ```
@@ -142,7 +142,7 @@ let websocket = WebSocket(endpoint: .test)
 
 Example iOS and macOS apps are provided. First, use CocoaPods to install the dependencies:
 
-```
+```console
 % pod install
 ```
 
