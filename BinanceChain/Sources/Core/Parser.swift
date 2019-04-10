@@ -1,5 +1,6 @@
 import Foundation
 import SwiftyJSON
+import SwiftDate
 
 class Parser {
 
@@ -24,11 +25,11 @@ class Parser {
 
     func parseTimes(_ json: JSON) -> Times {
         let times = Times()
-        times.apTime = json["ap_time"].stringValue
-        times.blockTime = json["block_time"].stringValue
+        times.apTime = json["ap_time"].stringValue.toDate()?.date ?? Date()
+        times.blockTime = json["block_time"].stringValue.toDate()?.date ?? Date()
         return times
     }
-    
+
     func parsePeer(_ json: JSON) -> Peer {
         let peer = Peer()
         peer.id = json["id"].stringValue
@@ -65,7 +66,6 @@ class Parser {
         trade.sellFee = json["sellFee"].stringValue
         trade.sellerId = json["sellerId"].stringValue
         trade.symbol = json["symbol"].stringValue
-        // TODO
         //trade.time = Date(json["time"].doubleValue)
         trade.tradeId = json["tradeId"].stringValue
         return trade
@@ -225,8 +225,7 @@ class Parser {
         order.fee = json["fee"].stringValue
         order.lastExecutedPrice = json["lastExecutedPrice"].stringValue
         order.lastExecuteQuantity = json["lastExecutedQuantity"].stringValue
-        // TODO
-        //order.orderCreateTime: Date = Date()
+        //order.orderCreateTime: Date = Date(json["orderCreateTime"].doubleValue)
         order.orderId = json["orderId"].stringValue
         order.owner = json["owner"].stringValue
         order.price = json["price"].stringValue
@@ -235,8 +234,7 @@ class Parser {
         order.timeInForce = json["timeInForce"].intValue
         order.tradeId = json["tradeId"].stringValue
         order.transactionHash = json["transactionHash"].stringValue
-        // TODO
-        //order.transactionTime: Date = Date()
+        //order.transactionTime: Date = Date(json["transactionTime"].doubleValue)
         order.type = json["type"].intValue
         return order
     }
@@ -273,7 +271,6 @@ class Parser {
 
 class ErrorParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) {
-        print("parse(): \(json.stringValue)")
         response.error = self.parseError(json)
     }
 }

@@ -1,8 +1,8 @@
 import Foundation
 
 public class Times: CustomStringConvertible {
-    public var apTime: String = ""
-    public var blockTime: String = ""
+    public var apTime: Date = Date()
+    public var blockTime: Date = Date()
 }
 
 public class Validators: CustomStringConvertible {

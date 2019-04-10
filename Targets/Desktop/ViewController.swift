@@ -15,11 +15,11 @@ class ViewController: NSViewController {
         let binance = BinanceChain(endpoint: .test)
 
         binance.time() { (response) in
-            print("time: \(response.time)\n")
+            print("times: \(response.time)\n")
         }
 
         binance.nodeInfo() { (response) in
-            print("node info: \(response.nodeInfo)\n")
+            print("node-info: \(response.nodeInfo)\n")
         }
 
         binance.validators() { (response) in
@@ -51,7 +51,7 @@ class ViewController: NSViewController {
         }
 
         binance.fees() { (response) in
-            print("Found: \(response.fees)\n")
+            print("fees: \(response.fees)\n")
         }
 
         binance.marketDepth(symbol: symbol) { (response) in
@@ -79,7 +79,7 @@ class ViewController: NSViewController {
         }
 
         binance.ticker(symbol: symbol) { (response) in
-            print("Found: \(response.ticker)\n")
+            print("ticker: \(response.ticker)\n")
         }
 
         binance.trades() { (response) in

@@ -28,6 +28,7 @@ Pod::Spec.new do |s|
     sub.dependency 'Bech32'
     sub.dependency 'XCGLogger'
     sub.dependency 'secp256k1.swift'
+    sub.dependency 'SwiftDate'
   end
 
   s.subspec 'Util' do |sub|

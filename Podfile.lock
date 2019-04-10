@@ -10,6 +10,7 @@ PODS:
     - BinanceChain/Util
     - secp256k1.swift
     - Starscream
+    - SwiftDate
     - SwiftProtobuf
     - SwiftyJSON
     - XCGLogger
@@ -20,6 +21,7 @@ PODS:
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
   - secp256k1.swift (0.1.4)
   - Starscream (3.1.0)
+  - SwiftDate (6.0.1)
   - SwiftProtobuf (1.4.0)
   - SwiftyJSON (4.3.0)
   - XCGLogger (7.0.0):
@@ -39,6 +41,7 @@ SPEC REPOS:
     - ObjcExceptionBridging
     - secp256k1.swift
     - Starscream
+    - SwiftDate
     - SwiftProtobuf
     - SwiftyJSON
     - XCGLogger
@@ -57,10 +60,11 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Bech32: 8c50fe0aaf170cbb94deb5953647a104332f8917
-  BinanceChain: 2905e5a653d35f34030cd8de59161d97307c5eb4
+  BinanceChain: b2114d8210c7d556cd4600d9c2666478ff0289b0
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
+  SwiftDate: 2b3ef6b8fc30c22391033d1acad5622a51660016
   SwiftProtobuf: b06646ed6cdcfc3fecd074c6000fe0c413140e4f
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
