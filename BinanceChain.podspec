@@ -14,9 +14,13 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     'OTHER_SWIFT_FLAGS[config=Debug]' => '-D DEBUG'
   }
+
   s.default_subspecs = 'Core'
+
   s.subspec 'Core' do |sub|
     sub.source_files = 'BinanceChain/Sources/Core/*.swift'
+    sub.dependency 'BinanceChain/Protobuf'
+    sub.dependency 'BinanceChain/Util'
     sub.dependency 'Alamofire'
     sub.dependency 'SwiftyJSON'
     sub.dependency 'SwiftProtobuf'
@@ -25,4 +29,13 @@ Pod::Spec.new do |s|
     sub.dependency 'XCGLogger'
     sub.dependency 'secp256k1.swift'
   end
+
+  s.subspec 'Util' do |sub|
+    sub.source_files = 'BinanceChain/Sources/Util/*.swift'
+  end
+
+  s.subspec 'Protobuf' do |sub|
+    sub.source_files = 'BinanceChain/Sources/Protobuf/*.swift'
+  end
+
 end

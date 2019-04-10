@@ -14,9 +14,9 @@
 
 ## Requirements
 
-- iOS 10.0+ / macOS 10.10+ / tvOS 10.0+ / watchOS 2.0+
-- Swift 5.0+
-- Xcode 10.2+
+- iOS 10+ / macOS 10.10+ / tvOS 10+ / watchOS 2+
+- Swift 5
+- Xcode 10.2
 
 ## Installation
 
@@ -30,6 +30,8 @@ pod 'BinanceChain', :git => 'https://github.com/mh7821/BinanceChain/'
 
 ## Usage
 
+Asynchronous API calls can be made using an instance of [BinanceChain](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/BinanceChain.swift). See [Model.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for response properties.
+
 ```swift
 import BinanceChain
 
@@ -38,11 +40,14 @@ let binance = BinanceChain()
 // Get the latest block time and current time
 binance.time() { (response) in
 
+    // Check for errors
     if let error = response.error {
         print(error)
-    } else {
-        print(response.time)
+        return
     }
+
+    // Get the result
+    print(response.time)
 
 }
 

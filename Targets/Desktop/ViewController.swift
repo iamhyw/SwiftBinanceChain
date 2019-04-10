@@ -57,7 +57,7 @@ class ViewController: NSViewController {
         binance.marketDepth(symbol: symbol) { (response) in
             print("marketdepths: \(response.marketDepth)\n")
         }
-        
+
         binance.broadcast(body: Data()) { (response) in
             
         }

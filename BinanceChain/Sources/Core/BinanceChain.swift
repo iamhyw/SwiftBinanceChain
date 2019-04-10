@@ -58,16 +58,21 @@ public class BinanceChain {
     
     public typealias Completion = (BinanceChain.Response)->()
 
-    private var endpoint: Endpoint = .test
+    private var endpoint: URL!
 
     public init() {
     }
 
-    public convenience init(endpoint: Endpoint) {
+    public required convenience init(endpoint: URL) {
         self.init()
         self.endpoint = endpoint
     }
- 
+
+    public convenience init(endpoint: Endpoint) {
+        let url = URL(string: Endpoint.test.rawValue)!
+        self.init(endpoint: url)
+    }
+    
     // MARK: - HTTP API
 
     public func time(completion: Completion? = nil) {
@@ -220,27 +225,37 @@ public class BinanceChain {
     @discardableResult
     internal func api(path: String, method: HTTPMethod = .get, parameters: Parameters = [:], encoding: ParameterEncoding = URLEncoding.default, parser: Parser = Parser(), completion: Completion? = nil) -> Request? {
 
-        let url = String(format: "%@/%@", self.endpoint.rawValue, path)
+        let url = self.endpoint.appendingPathComponent(path)
         print(url)
-        
+
         let request = Alamofire.request(url, method: method, parameters: parameters, encoding: encoding)
-        request.responseData() { (responseData) -> Void in
+        request.validate(statusCode: [200, 400, 404])
+        request.responseData() { (http) -> Void in
+
             DispatchQueue.global(qos: .background).async {
                 let response = BinanceChain.Response()
 
-                switch responseData.result {
+                switch http.result {
                 case .success(let data):
-
+                    
                     do {
-                        try parser.parse(response: response, data: data)
+                        switch (http.response?.statusCode) {
+                        case 400, 404:
+                            response.isError = true
+                            try ErrorParser().parse(response: response, data: data)
+
+                        default:
+                            try parser.parse(response: response, data: data)
+                        }
+
                     } catch {
                         response.isError = true
-                        response.error = error as? Error
+                        response.error = error
                     }
 
                 case .failure(let error):
                     response.isError = true
-                    response.error = error as? Error
+                    response.error = error
                 }
 
                 DispatchQueue.main.async {

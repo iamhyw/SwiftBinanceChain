@@ -6,11 +6,15 @@ PODS:
   - BinanceChain/Core (1.0.0):
     - Alamofire
     - Bech32
+    - BinanceChain/Protobuf
+    - BinanceChain/Util
     - secp256k1.swift
     - Starscream
     - SwiftProtobuf
     - SwiftyJSON
     - XCGLogger
+  - BinanceChain/Protobuf (1.0.0)
+  - BinanceChain/Util (1.0.0)
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
@@ -53,7 +57,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Bech32: 8c50fe0aaf170cbb94deb5953647a104332f8917
-  BinanceChain: 02a030476d45d739a508f232f131e8ab7b6992a2
+  BinanceChain: 2905e5a653d35f34030cd8de59161d97307c5eb4
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
