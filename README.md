@@ -171,4 +171,4 @@ Then open `BinanceChain.xcworkspace`.
 
 ## License
 
-BinanceChain is released under the MIT license. See [LICENSE](https://github.com/mh7821/mh7821/blob/master/LICENSE) for details.
+BinanceChain is released under the MIT license. See [LICENSE](https://raw.githubusercontent.com/mh7821/SwiftBinanceChain/master/LICENSE) for details.
