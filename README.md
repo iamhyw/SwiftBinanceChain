@@ -27,7 +27,8 @@ To add BinanceChain to your project, add a dependency:
 ```swift
 dependencies: [
     .package(url: "https://github.com/mh7821/BinanceChain.git", from: "1.0.0")
-]```
+]
+```
 
 ### Cocoapods
 
