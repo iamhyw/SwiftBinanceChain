@@ -179,9 +179,8 @@ Sample iOS and macOS apps run the same tests. First, use CocoaPods to install th
 
 ```console
 % pod install
+% open BinanceChain.xcworkspace
 ```
-
-Then open `BinanceChain.xcworkspace`, select a target, and run.
 
 ## In Progress
 
