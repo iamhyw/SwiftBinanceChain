@@ -22,13 +22,6 @@ class Parser {
             response.error = BinanceError(message: body)
             return
         }
-
-        if let body = String(data: data, encoding: .utf8) {
-            print("\n")
-            print(body)
-            print("\n")
-        }
-        
         try self.parse(json, response: response)
     }
 
