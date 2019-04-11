@@ -58,19 +58,19 @@ public class BinanceChain {
     
     public typealias Completion = (BinanceChain.Response)->()
 
-    private var endpoint: URL = URL(string: Endpoint.testnet.rawValue)!
+    private var endpoint: String = Endpoint.testnet.rawValue
 
     public init() {
     }
 
     public required convenience init(endpoint: URL) {
         self.init()
-        self.endpoint = endpoint
+        self.endpoint = endpoint.absoluteString
     }
 
     public convenience init(endpoint: Endpoint) {
-        let url = URL(string: endpoint.rawValue)!
-        self.init(endpoint: url)
+        self.init()
+        self.endpoint = endpoint.rawValue
     }
     
     // MARK: - HTTP API
@@ -225,8 +225,7 @@ public class BinanceChain {
     @discardableResult
     internal func api(path: String, method: HTTPMethod = .get, parameters: Parameters = [:], encoding: ParameterEncoding = URLEncoding.default, parser: Parser = Parser(), completion: Completion? = nil) -> Request? {
 
-        let url = self.endpoint.appendingPathComponent(path)
-        print(url)
+        let url = String(format: "%@/%@", self.endpoint, path)
 
         let request = Alamofire.request(url, method: method, parameters: parameters, encoding: encoding)
         request.validate(statusCode: [200, 400, 404])

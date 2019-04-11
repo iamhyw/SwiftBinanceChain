@@ -1,7 +1,7 @@
 import Foundation
 
 public class BinanceError: Error, LocalizedError {
-
+    
     public enum Reason: Int {
         case unknown = 0
         init(_ code: Int) {

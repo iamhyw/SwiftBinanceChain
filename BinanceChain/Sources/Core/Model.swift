@@ -84,9 +84,9 @@ public class Token: CustomStringConvertible {
 public class Market: CustomStringConvertible {
     public var baseAssetSymbol: String = ""
     public var quoteAssetSymbol: String = ""
-    public var price: String = ""
-    public var tickSize: String = ""
-    public var lotSize: String = ""
+    public var price: Double = 0
+    public var tickSize: Double = 0
+    public var lotSize: Double = 0
 }
 
 public class Fee: CustomStringConvertible {
@@ -127,15 +127,15 @@ public class BlockTrade: CustomStringConvertible {
 }
 
 public class Candlestick: CustomStringConvertible {
-    public var close: Int = 0
-    public var closeTime: String = ""
-    public var high: String = ""
-    public var low: String = ""
-    public var numberOfTrades: String = ""
-    public var open: String = ""
-    public var openTime: TimeInterval = 0
-    public var quoteAssetVolume: String = ""
-    public var volume: Int = 0
+    public var close: Double = 0
+    public var closeTime: Date = Date()
+    public var high: Double = 0
+    public var low: Double = 0
+    public var numberOfTrades: Int = 0
+    public var open: Double = 0
+    public var openTime: Date = Date()
+    public var quoteAssetVolume: Double = 0
+    public var volume: Double = 0
 }
 
 public class OrderList: CustomStringConvertible {
@@ -166,7 +166,7 @@ public class TickerStatistics: CustomStringConvertible {
     public var askQuantity: String = ""
     public var bidPrice: String = ""
     public var bidQuantity: String = ""
-    public var closeTime: TimeInterval = 0
+    public var closeTime: Date = Date()
     public var count: Int = 0
     public var firstId: String = ""
     public var highPrice: String = ""
@@ -175,7 +175,7 @@ public class TickerStatistics: CustomStringConvertible {
     public var lastQuantity: String = ""
     public var lowPrice: String = ""
     public var openPrice: String = ""
-    public var openTime: TimeInterval = 0
+    public var openTime: Date = Date()
     public var prevClosePrice: String = ""
     public var priceChange: String = ""
     public var priceChangePercent: String = ""
@@ -202,7 +202,7 @@ public class Trade: CustomStringConvertible {
     public var sellFee: String = ""
     public var sellerId: String = ""
     public var symbol: String = ""
-    public var time: TimeInterval = 0
+    public var time: Date = Date()
     public var tradeId: String = ""
 }
 
@@ -218,7 +218,7 @@ public class Tx: CustomStringConvertible {
     public var data: String = ""
     public var fromAddr: String = ""
     public var orderId: String = ""
-    public var timeStamp: Date = Date()
+    public var timestamp: Date = Date()
     public var toAddr: String = ""
     public var txAge: Double = 0
     public var txAsset: String = ""
