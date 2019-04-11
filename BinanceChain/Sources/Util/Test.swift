@@ -13,7 +13,7 @@ public class Test {
         let symbol = "BNB_BTC.B-918"
         let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
 
-        let binance = BinanceChain(endpoint: .test)
+        let binance = BinanceChain(endpoint: .testnet)
 
         let group = DispatchGroup()
 
@@ -141,7 +141,7 @@ public class Test {
     public func testWebSocket() {
 
         self.webSocket = WebSocket()
-        self.webSocket?.connect(endpoint: .test)
+        self.webSocket?.connect(endpoint: .testnet)
 
     }
 

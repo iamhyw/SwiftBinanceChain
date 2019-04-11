@@ -9,9 +9,9 @@ public class BinanceChain {
 
     public enum Endpoint: String {
         case production = "https://dex.binance.org/api/v1"
-        case test = "https://testnet-dex.binance.org/api/v1"
+        case testnet = "https://testnet-dex.binance.org/api/v1"
     }
-    
+
     internal enum Path: String {
         case time = "time"
         case nodeInfo = "node-info"
@@ -58,7 +58,7 @@ public class BinanceChain {
     
     public typealias Completion = (BinanceChain.Response)->()
 
-    private var endpoint: URL!
+    private var endpoint: URL = URL(string: Endpoint.testnet.rawValue)!
 
     public init() {
     }
@@ -69,7 +69,7 @@ public class BinanceChain {
     }
 
     public convenience init(endpoint: Endpoint) {
-        let url = URL(string: Endpoint.test.rawValue)!
+        let url = URL(string: endpoint.rawValue)!
         self.init(endpoint: url)
     }
     

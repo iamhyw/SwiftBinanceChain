@@ -5,7 +5,7 @@ public class WebSocket {
 
     public enum Endpoint: String {
         case production = "wss://dex.binance.org/api/ws"
-        case test = "wss://testnet-dex.binance.org/api/ws"
+        case testnet = "wss://testnet-dex.binance.org/api/ws"
     }
 
     private var socket: Starscream.WebSocket?
@@ -38,7 +38,7 @@ public class WebSocket {
         }
 
         socket.onPong = { (data: Data?) in
-            print("got pong: \(data?.count)")
+            //print("got pong: \(data?.count)")
         }
 
         self.socket = socket
