@@ -39,4 +39,8 @@ Pod::Spec.new do |s|
     sub.source_files = 'BinanceChain/Sources/Protobuf/*.swift'
   end
 
+  s.subspec 'Test' do |sub|
+    sub.source_files = 'BinanceChain/Sources/Test/*.swift'
+  end
+
 end

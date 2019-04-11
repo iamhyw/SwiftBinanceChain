@@ -1,17 +1,17 @@
-//
-//  ViewController.swift
-//  BinanceChain
-//
-//  Created by Michael on 8/4/19.
-//
-
 import UIKit
+import BinanceChain
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        // Run tests
+        self.test = BinanceChain.Test()
+        self.test?.testAPI() {
+            print("tests complete")
+        }
+
     }
 
 
