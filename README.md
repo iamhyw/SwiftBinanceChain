@@ -1,9 +1,9 @@
 # Binance Chain Swift SDK
 
-![Swift: 5.0](https://img.shields.io/badge/swift-5.0-brightgreen.svg)
+![Version: alpha](https://img.shields.io/badge/version-1.0.0--alpha-orange.svg)
 ![Platforms: ios | macos | watchos | tvos](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blue.svg)
+![Swift: 5.0](https://img.shields.io/badge/swift-5.0-brightgreen.svg)
 ![License: MIT](https://img.shields.io/badge/license-MIT-ff69b4.svg)
-![Version: alpha](https://img.shields.io/badge/version-alpha-orange.svg)
 
 ## Features
 
@@ -26,7 +26,7 @@ To add BinanceChain to your project, add a dependency:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/mh7821/BinanceChain.git", from: "1.0.0")
+    .package(url: "https://github.com/mh7821/BinanceChain.git", from: "1.0.0-alpha")
 ]
 ```
 
