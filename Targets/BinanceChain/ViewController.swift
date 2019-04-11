@@ -1,8 +1,10 @@
 import UIKit
-import BinanceChain
 
 class ViewController: UIViewController {
 
+    /*
+    var test: Test?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -13,7 +15,7 @@ class ViewController: UIViewController {
         }
 
     }
-
+*/
 
 }
 
