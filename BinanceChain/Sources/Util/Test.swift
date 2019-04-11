@@ -7,7 +7,7 @@ public class Test {
     public init() {
     }
     
-    public func testAPI(completion: ()->()) {
+    public func testAPI(completion: @escaping ()->()) {
 
         let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
         let symbol = "BNB_BTC.B-918"
@@ -133,7 +133,7 @@ public class Test {
         }
 
         group.notify(queue: .main) {
-
+            completion()
         }
 
     }

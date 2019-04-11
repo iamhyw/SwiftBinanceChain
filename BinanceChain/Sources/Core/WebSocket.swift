@@ -4,7 +4,7 @@ import Starscream
 public class WebSocket {
 
     public enum Endpoint: String {
-        case production = "wss://dex.binance.org/api/ws"
+        case mainnet = "wss://dex.binance.org/api/ws"
         case testnet = "wss://testnet-dex.binance.org/api/ws"
     }
 
@@ -12,7 +12,7 @@ public class WebSocket {
 
     public init() { }
 
-    public func connect(endpoint: Endpoint = .production) {
+    public func connect(endpoint: Endpoint = .testnet) {
 
         print("WebSocket CONNECT: \(endpoint.rawValue)")
         

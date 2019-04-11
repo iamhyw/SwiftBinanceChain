@@ -14,7 +14,8 @@ let package = Package(
         .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", from: "4.3.0"),
         .package(url: "https://github.com/DaveWoodCom/XCGLogger.git", from: "7.0.0"),
         .package(url: "https://github.com/Boilertalk/secp256k1.swift.git", from: "0.1.0"),
-        .package(url: "https://github.com/malcommac/SwiftDate", from: "6.0.1")
+        .package(url: "https://github.com/malcommac/SwiftDate", from: "6.0.1"),
+        .package(url: "git@github.com:kylef/Commander.git", from: "0.8.0")
     ],
     targets: [
         .target(name: "BinanceChainCore",

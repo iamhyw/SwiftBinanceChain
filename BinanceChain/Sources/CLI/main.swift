@@ -1,4 +1,9 @@
 import Foundation
+import Darwin
 
-Test().runTests()
+let test = Test()
+test.testAPI() {
+    exit(0)
+}
+
 RunLoop.main.run()

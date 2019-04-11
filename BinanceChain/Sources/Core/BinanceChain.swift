@@ -8,7 +8,7 @@ import XCGLogger
 public class BinanceChain {
 
     public enum Endpoint: String {
-        case production = "https://dex.binance.org/api/v1"
+        case mainnet = "https://dex.binance.org/api/v1"
         case testnet = "https://testnet-dex.binance.org/api/v1"
     }
 

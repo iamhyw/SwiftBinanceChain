@@ -155,16 +155,16 @@ binance.transactions(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (
 
 ```swift
 let webSocket = WebSocket()
-webSocket.connect(endpoint: .test)
+webSocket.connect(endpoint: .testnet)
 ```
 
 ### Testnet
 
-Switch between production and testnet easily:
+Switch between mainnet and testnet easily:
 
 ```swift
-let binance = BinanceChain(endpoint: .production)
-let websocket = WebSocket(endpoint: .test)
+let binance = BinanceChain(endpoint: .mainnet)
+let websocket = WebSocket(endpoint: .testnet)
 ```
 
 ## Sample apps
