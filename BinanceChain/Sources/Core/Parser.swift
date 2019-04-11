@@ -56,7 +56,7 @@ class Parser {
         token.name = json["name"].stringValue
         token.symbol = json["symbol"].stringValue
         token.originalSymbol = json["original_symbol"].stringValue
-        token.totalSupply = json["total_supply"].stringValue
+        token.totalSupply = json["total_supply"].doubleValue
         token.owner = json["owner"].stringValue
         return token
     }
@@ -185,9 +185,9 @@ class Parser {
     func parseBalance(_ json: JSON) -> Balance {
         let balance = Balance()
         balance.symbol = json["symbol"].stringValue
-        balance.free = json["free"].stringValue
-        balance.locked = json["locked"].stringValue
-        balance.frozen = json["frozen"].stringValue
+        balance.free = json["free"].doubleValue
+        balance.locked = json["locked"].doubleValue
+        balance.frozen = json["frozen"].doubleValue
         return balance
     }
 
@@ -272,24 +272,30 @@ class Parser {
         return orderList
     }
     
-    func parseFee(_ json: JSON) -> Fee {
+    func parseFee(_ json: JSON) throws -> Fee {
         let fee = Fee()
         fee.msgType = json["msg_type"].stringValue
         fee.fee = json["fee"].intValue
-        fee.feeFor = json["fee_for"].intValue
+        guard let value = json["fee_for"].int, let feeFor = FeeFor(rawValue: value) else {
+            throw ParseError.invalidResponse
+        }
+        fee.feeFor = feeFor
         fee.multiTransferFee = json["multi_transfer_fee"].stringValue
         fee.lowerLimitAsMulti = json["lower_limit_as_multi"].stringValue
         if json["fixed_fee_params"].exists() {
-            fee.fixedFeeParams = self.parseFixedFeeParams(json["fixed_fee_params"])
+            fee.fixedFeeParams = try self.parseFixedFeeParams(json["fixed_fee_params"])
         }
         return fee
     }
-    
-    func parseFixedFeeParams(_ json: JSON) -> FixedFeeParams {
+
+    func parseFixedFeeParams(_ json: JSON) throws -> FixedFeeParams {
         let fixedFeeParams = FixedFeeParams()
         fixedFeeParams.msgType = json["msg_type"].stringValue
         fixedFeeParams.fee = json["fee"].intValue
-        fixedFeeParams.feeFor = json["fee_for"].intValue
+        guard let value = json["fee_for"].int, let feeFor = FeeFor(rawValue: value) else {
+            throw ParseError.invalidResponse
+        }
+        fixedFeeParams.feeFor = feeFor
         return fixedFeeParams
     }
 
@@ -398,7 +404,7 @@ class OrderListParser: Parser {
 }
 
 class FeesParser: Parser {
-    override func parse(_ json: JSON, response: BinanceChain.Response) {
-        response.fees = json.map({ self.parseFee($0.1) })
+    override func parse(_ json: JSON, response: BinanceChain.Response) throws {
+        response.fees = try json.map({ try self.parseFee($0.1) })
     }
 }

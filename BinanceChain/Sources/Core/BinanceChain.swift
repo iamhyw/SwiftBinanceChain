@@ -226,6 +226,7 @@ public class BinanceChain {
     internal func api(path: String, method: HTTPMethod = .get, parameters: Parameters = [:], encoding: ParameterEncoding = URLEncoding.default, parser: Parser = Parser(), completion: Completion? = nil) -> Request? {
 
         let url = String(format: "%@/%@", self.endpoint, path)
+        print(url)
 
         let request = Alamofire.request(url, method: method, parameters: parameters, encoding: encoding)
         request.validate(statusCode: [200, 400, 404])

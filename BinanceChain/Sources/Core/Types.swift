@@ -78,3 +78,9 @@ public enum OrderType: String {
     case limit = "LIMIT"
     case market = "MARKET"
 }
+
+public enum FeeFor: Int {
+    case proposer = 1
+    case all = 2
+    case free = 3
+}

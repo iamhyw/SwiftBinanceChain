@@ -68,16 +68,16 @@ public class AccountSequence: CustomStringConvertible {
 
 public class Balance: CustomStringConvertible {
     public var symbol: String = ""
-    public var free: String = ""
-    public var locked: String = ""
-    public var frozen: String = ""
+    public var free: Double = 0
+    public var locked: Double = 0
+    public var frozen: Double = 0
 }
 
 public class Token: CustomStringConvertible {
     public var name: String = ""
     public var symbol: String = ""
     public var originalSymbol: String = ""
-    public var totalSupply: String = ""
+    public var totalSupply: Double = 0
     public var owner: String = ""
 }
 
@@ -92,7 +92,7 @@ public class Market: CustomStringConvertible {
 public class Fee: CustomStringConvertible {
     public var msgType: String = ""
     public var fee: Int = 0
-    public var feeFor: Int = 0
+    public var feeFor: FeeFor = .all
     public var multiTransferFee: String = ""
     public var lowerLimitAsMulti: String = ""
     public var fixedFeeParams: FixedFeeParams?
@@ -101,7 +101,7 @@ public class Fee: CustomStringConvertible {
 public class FixedFeeParams: CustomStringConvertible {
     public var msgType: String = ""
     public var fee: Int = 0
-    public var feeFor: Int = 0
+    public var feeFor: FeeFor = .all
 }
 
 public class PriceQuantity: CustomStringConvertible {
