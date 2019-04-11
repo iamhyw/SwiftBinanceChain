@@ -20,7 +20,7 @@ let package = Package(
     targets: [
         .target(name: "BinanceChainCore",
                 dependencies: ["SwiftProtobuf", "Alamofire", "SwiftyJSON", "Starscream",
-                               "Bech32", "XCGLogger", "secp256k1", "SwiftDate"],
+                               "Bech32", "XCGLogger", "secp256k1", "SwiftDate", "Commander"],
                 path: "BinanceChain/Sources")
     ]
 )

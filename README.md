@@ -169,13 +169,13 @@ let websocket = WebSocket(endpoint: .testnet)
 
 ## Sample apps
 
-A command line app demonstrates the library by running a series of tests. To run it:
+A command line app demonstrates all features of the library. Run with:
 
 ```console
 % swift run
 ```
 
-Sample iOS and macOS apps run the same tests. First, use CocoaPods to install the dependencies:
+Sample iOS and macOS apps run the same demonstration. To run:
 
 ```console
 % pod install
