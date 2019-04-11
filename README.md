@@ -169,17 +169,25 @@ let websocket = WebSocket(endpoint: .testnet)
 
 ## Sample apps
 
-Sample iOS and macOS apps are provided. First, use CocoaPods to install the dependencies:
+A command line app demonstrates the library by running a series of tests. To run it:
+
+```console
+% swift run
+```
+
+Sample iOS and macOS apps run the same tests. First, use CocoaPods to install the dependencies:
 
 ```console
 % pod install
 ```
 
-Then open `BinanceChain.xcworkspace`.
+Then open `BinanceChain.xcworkspace`, select a target, and run.
 
 ## In Progress
 
-
+* Model object types
+* Broadcast messages
+* WebSockets
 
 ## License
 
