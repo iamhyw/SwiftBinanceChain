@@ -4,17 +4,31 @@ import SwiftDate
 
 class Parser {
 
-    enum ParseError: Error {
-        case invalidResponse
-        case invalidDate
+    struct ParseError: Error, LocalizedError {
+
+        var model: String = ""
+        var property: String = ""
+        
+        public var errorDescription: String? {
+            guard (!self.property.isEmpty) else { return "Invalid response" }
+            return String(format: "Invalid response (%@:%@)", model, property)
+        }
+
     }
     
     func parse(response: BinanceChain.Response, data: Data) throws {
         guard let json = try? JSON(data: data) else {
-            guard let body = String(data: data, encoding: .utf8) else { throw ParseError.invalidResponse }
+            guard let body = String(data: data, encoding: .utf8) else { throw ParseError() }
             response.error = BinanceError(message: body)
             return
         }
+
+        if let body = String(data: data, encoding: .utf8) {
+            print("\n")
+            print(body)
+            print("\n")
+        }
+        
         try self.parse(json, response: response)
     }
 
@@ -29,8 +43,8 @@ class Parser {
     }
 
     func parseTimes(_ json: JSON) throws -> Times {
-        guard let apTime = json["ap_time"].string?.toDate()?.date else { throw ParseError.invalidDate }
-        guard let blockTime = json["block_time"].string?.toDate()?.date else { throw ParseError.invalidDate }
+        guard let apTime = json["ap_time"].string?.toDate()?.date else { throw ParseError(model: "Times", property: "ap_time") }
+        guard let blockTime = json["block_time"].string?.toDate()?.date else { throw ParseError(model: "Times", property: "block_time") }
         let times = Times()
         times.apTime = apTime
         times.blockTime = blockTime
@@ -75,7 +89,7 @@ class Parser {
         trade.symbol = json["symbol"].stringValue
         trade.tradeId = json["tradeId"].stringValue
         guard let time = json["time"].double else {
-            throw ParseError.invalidDate
+            throw ParseError(model: "Trade", property: "time")
         }
         trade.time = Date(millisecondsSince1970: time)
         return trade
@@ -87,14 +101,14 @@ class Parser {
         marketDepth.bids = json["bids"].map({ self.parsePriceQuantity($0.1) })
         return marketDepth
     }
-    
+
     func parsePriceQuantity(_ json: JSON) -> PriceQuantity {
         let priceQuantity = PriceQuantity()
-        priceQuantity.price = json.arrayValue[0].stringValue
-        priceQuantity.quantity = json.arrayValue[1].stringValue
+        priceQuantity.price = json.arrayValue[0].doubleValue
+        priceQuantity.quantity = json.arrayValue[1].doubleValue
         return priceQuantity
     }
-    
+
     func parseValidators(_ json: JSON) -> Validators {
         let validators = Validators()
         validators.blockHeight = json["block_height"].intValue
@@ -130,14 +144,16 @@ class Parser {
         tx.data = json["data"].stringValue
         tx.fromAddr = json["from_addr"].stringValue
         tx.orderId = json["orderId"].stringValue
-        guard let timestamp = json["timeStamp"].string?.toDate()?.date else { throw ParseError.invalidDate }
-        tx.timestamp = timestamp
+        tx.timestamp = json["timeStamp"].string?.toDate()?.date ?? Date()
         tx.toAddr = json["toAddr"].stringValue
         tx.txAge = json["tx_age"].doubleValue
         tx.txAsset = json["txAsset"].stringValue
         tx.txFee = json["txFee"].stringValue
         tx.txHash = json["txHash"].stringValue
-        tx.txType = json["txType"].stringValue
+        guard let txType = TxType(rawValue: json["txType"].stringValue) else {
+            throw ParseError(model: "Tx", property: "txType")
+        }
+        tx.txType = txType
         tx.value = json["value"].stringValue
         return tx
     }
@@ -150,14 +166,12 @@ class Parser {
         nodeInfo.version = json["version"].stringValue
         nodeInfo.channels = json["channels"].stringValue
         nodeInfo.moniker = json["moniker"].stringValue
-        guard let other = json["other"].dictionaryObject as? [String:String] else {
-            throw ParseError.invalidResponse
+        if let other = json["other"].dictionaryObject as? [String:String] {
+            nodeInfo.other = other
         }
-        nodeInfo.other = other
-        guard let syncInfo = json["syncInfo"].dictionaryObject as? [String:String] else {
-            throw ParseError.invalidResponse
+        if let syncInfo = json["syncInfo"].dictionaryObject as? [String:String] {
+            nodeInfo.syncInfo = syncInfo
         }
-        nodeInfo.syncInfo = syncInfo
         nodeInfo.validatorInfo = self.parseValidator(json["validator_info"])
         return nodeInfo
     }
@@ -193,14 +207,18 @@ class Parser {
 
     func parseCandlestick(_ json: JSON) throws -> Candlestick {
         let candlestick = Candlestick()
-        guard let closeTime = json.arrayValue[0].double else { throw ParseError.invalidDate }
+        guard let closeTime = json.arrayValue[0].double else {
+            throw ParseError(model: "Candlestick", property: "closeTime")
+        }
         candlestick.closeTime = Date(millisecondsSince1970: closeTime)
         candlestick.close = json.arrayValue[1].doubleValue
         candlestick.high = json.arrayValue[2].doubleValue
         candlestick.low = json.arrayValue[3].doubleValue
         candlestick.numberOfTrades = json.arrayValue[4].intValue
         candlestick.open = json.arrayValue[5].doubleValue
-        guard let openTime = json.arrayValue[6].double else { throw ParseError.invalidDate }
+        guard let openTime = json.arrayValue[6].double else {
+            throw ParseError(model: "Candlestick", property: "openTime")
+        }
         candlestick.openTime = Date(millisecondsSince1970: openTime)
         candlestick.quoteAssetVolume = json.arrayValue[7].doubleValue
         candlestick.volume = json.arrayValue[8].doubleValue
@@ -209,59 +227,72 @@ class Parser {
 
     func parseTickerStatistics(_ json: JSON) throws -> TickerStatistics {
         let ticker = TickerStatistics()
-        ticker.askPrice = json["askPrice"].stringValue
-        ticker.askQuantity = json["askQuantity"].stringValue
-        ticker.bidPrice = json["bidPrice"].stringValue
-        ticker.bidQuantity = json["bidQuantity"].stringValue
+        ticker.askPrice = json["askPrice"].doubleValue
+        ticker.askQuantity = json["askQuantity"].doubleValue
+        ticker.bidPrice = json["bidPrice"].doubleValue
+        ticker.bidQuantity = json["bidQuantity"].doubleValue
         guard let closeTime = json["closeTime"].double else {
-            throw ParseError.invalidDate
+            throw ParseError(model: "TickerStatistics", property: "closeTime")
         }
         ticker.closeTime = Date(millisecondsSince1970: closeTime)
         ticker.count = json["count"].intValue
         ticker.firstId = json["firstId"].stringValue
-        ticker.highPrice = json["high_price"].stringValue
+        ticker.highPrice = json["high_price"].doubleValue
         ticker.lastId = json["lastId"].stringValue
-        ticker.lastPrice = json["lastPrice"].stringValue
-        ticker.lastQuantity = json["lastQuantity"].stringValue
-        ticker.lowPrice = json["lowPrice"].stringValue
-        ticker.openPrice = json["openPrice"].stringValue
+        ticker.lastPrice = json["lastPrice"].doubleValue
+        ticker.lastQuantity = json["lastQuantity"].doubleValue
+        ticker.lowPrice = json["lowPrice"].doubleValue
+        ticker.openPrice = json["openPrice"].doubleValue
         guard let openTime = json["openTime"].double else {
-            throw ParseError.invalidDate
+            throw ParseError(model: "TickerStatistics", property: "openTime")
         }
         ticker.openTime = Date(millisecondsSince1970: openTime)
-        ticker.prevClosePrice = json["prevClosePrice"].stringValue
-        ticker.priceChange = json["priceChange"].stringValue
-        ticker.priceChangePercent = json["priceChangePercent"].stringValue
-        ticker.quoteVolume = json["quoteVolume"].stringValue
+        ticker.prevClosePrice = json["prevClosePrice"].doubleValue
+        ticker.priceChange = json["priceChange"].doubleValue
+        ticker.priceChangePercent = json["priceChangePercent"].doubleValue
+        ticker.quoteVolume = json["quoteVolume"].doubleValue
         ticker.symbol = json["symbol"].stringValue
-        ticker.volume = json["volume"].stringValue
-        ticker.weightedAvgPrice = json["weightedAvgPrice"].stringValue
+        ticker.volume = json["volume"].doubleValue
+        ticker.weightedAvgPrice = json["weightedAvgPrice"].doubleValue
         return ticker
     }
-    
+
     func parseOrder(_ json: JSON) throws -> Order {
         let order = Order()
         order.cumulateQuantity = json["cumulateQuantity"].stringValue
         order.fee = json["fee"].stringValue
         order.lastExecutedPrice = json["lastExecutedPrice"].stringValue
         order.lastExecuteQuantity = json["lastExecutedQuantity"].stringValue
-        guard let orderCreateTime = json["orderCreateTime"].double else {
-            throw ParseError.invalidDate
+        guard let orderCreateTime = json["orderCreateTime"].string?.toDate()?.date else {
+            throw ParseError(model: "Order", property: "orderCreateTime")
         }
-        order.orderCreateTime = Date(millisecondsSince1970: orderCreateTime)
+        order.orderCreateTime = orderCreateTime
         order.orderId = json["orderId"].stringValue
         order.owner = json["owner"].stringValue
-        order.price = json["price"].stringValue
-        order.status = json["status"].stringValue
+        order.price = json["price"].doubleValue
+        guard let side = Side(rawValue: json["side"].intValue) else {
+            throw ParseError(model: "Order", property: "side")
+        }
+        order.side = side
+        guard let status = Status(rawValue: json["status"].stringValue) else {
+            throw ParseError(model: "Order", property: "status")
+        }
+        order.status = status
         order.symbol = json["symbol"].stringValue
-        order.timeInForce = json["timeInForce"].intValue
+        guard let timeInForce = TimeInForce(rawValue: json["timeInForce"].intValue) else {
+            throw ParseError(model: "Order", property: "timeInForce")
+        }
+        order.timeInForce = timeInForce
         order.tradeId = json["tradeId"].stringValue
         order.transactionHash = json["transactionHash"].stringValue
-        guard let transactionTime = json["transactionTime"].double else {
-            throw ParseError.invalidDate
+        guard let transactionTime = json["transactionTime"].string?.toDate()?.date else {
+            throw ParseError(model: "Order", property: "transactionTime")
         }
-        order.transactionTime = Date(millisecondsSince1970: transactionTime)
-        order.type = json["type"].intValue
+        order.transactionTime = transactionTime
+        guard let type = OrderType(rawValue: json["type"].intValue) else {
+            throw ParseError(model: "Order", property: "type")
+        }
+        order.type = type
         return order
     }
 
@@ -275,13 +306,13 @@ class Parser {
     func parseFee(_ json: JSON) throws -> Fee {
         let fee = Fee()
         fee.msgType = json["msg_type"].stringValue
-        fee.fee = json["fee"].intValue
-        guard let value = json["fee_for"].int, let feeFor = FeeFor(rawValue: value) else {
-            throw ParseError.invalidResponse
+        fee.fee = json["fee"].stringValue
+        guard let feeFor = FeeFor(rawValue: json["fee_for"].intValue) else {
+            throw ParseError(model: "Fee", property: "fee_for")
         }
         fee.feeFor = feeFor
-        fee.multiTransferFee = json["multi_transfer_fee"].stringValue
-        fee.lowerLimitAsMulti = json["lower_limit_as_multi"].stringValue
+        fee.multiTransferFee = json["multi_transfer_fee"].intValue
+        fee.lowerLimitAsMulti = json["lower_limit_as_multi"].intValue
         if json["fixed_fee_params"].exists() {
             fee.fixedFeeParams = try self.parseFixedFeeParams(json["fixed_fee_params"])
         }
@@ -291,9 +322,9 @@ class Parser {
     func parseFixedFeeParams(_ json: JSON) throws -> FixedFeeParams {
         let fixedFeeParams = FixedFeeParams()
         fixedFeeParams.msgType = json["msg_type"].stringValue
-        fixedFeeParams.fee = json["fee"].intValue
-        guard let value = json["fee_for"].int, let feeFor = FeeFor(rawValue: value) else {
-            throw ParseError.invalidResponse
+        fixedFeeParams.fee = json["fee"].stringValue
+        guard let feeFor = FeeFor(rawValue: json["fee_for"].intValue) else {
+            throw ParseError(model: "FixedFeeParams", property: "fee_for")
         }
         fixedFeeParams.feeFor = feeFor
         return fixedFeeParams

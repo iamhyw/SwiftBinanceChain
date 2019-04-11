@@ -91,22 +91,22 @@ public class Market: CustomStringConvertible {
 
 public class Fee: CustomStringConvertible {
     public var msgType: String = ""
-    public var fee: Int = 0
+    public var fee: String = ""
     public var feeFor: FeeFor = .all
-    public var multiTransferFee: String = ""
-    public var lowerLimitAsMulti: String = ""
+    public var multiTransferFee: Int = 0
+    public var lowerLimitAsMulti: Int = 0
     public var fixedFeeParams: FixedFeeParams?
 }
 
 public class FixedFeeParams: CustomStringConvertible {
     public var msgType: String = ""
-    public var fee: Int = 0
+    public var fee: String = ""
     public var feeFor: FeeFor = .all
 }
 
 public class PriceQuantity: CustomStringConvertible {
-    public var price: String = ""
-    public var quantity: String = ""
+    public var price: Double = 0
+    public var quantity: Double = 0
 }
 
 public class MarketDepth: CustomStringConvertible {
@@ -121,7 +121,7 @@ public class BlockTradePage: CustomStringConvertible {
 
 public class BlockTrade: CustomStringConvertible {
     public var blockTime: TimeInterval = 0
-    public var fee: String = ""
+    public var fee: Int = 0
     public var height: Int = 0
     public var trade: [Trade] = []
 }
@@ -151,38 +151,39 @@ public class Order: CustomStringConvertible {
     public var orderCreateTime: Date = Date()
     public var orderId: String = ""
     public var owner: String = ""
-    public var price: String = ""
-    public var status: String = ""
+    public var price: Double = 0
+    public var side: Side = .buy
+    public var status: Status = .acknowledge
     public var symbol: String = ""
-    public var timeInForce: Int = 0
+    public var timeInForce: TimeInForce = .immediateOrCancel
     public var tradeId: String = ""
     public var transactionHash: String = ""
     public var transactionTime: Date = Date()
-    public var type: Int = 0
+    public var type: OrderType = .limit
 }
 
 public class TickerStatistics: CustomStringConvertible {
-    public var askPrice: String = ""
-    public var askQuantity: String = ""
-    public var bidPrice: String = ""
-    public var bidQuantity: String = ""
+    public var askPrice: Double = 0
+    public var askQuantity: Double = 0
+    public var bidPrice: Double = 0
+    public var bidQuantity: Double = 0
     public var closeTime: Date = Date()
     public var count: Int = 0
     public var firstId: String = ""
-    public var highPrice: String = ""
+    public var highPrice: Double = 0
     public var lastId: String = ""
-    public var lastPrice: String = ""
-    public var lastQuantity: String = ""
-    public var lowPrice: String = ""
-    public var openPrice: String = ""
+    public var lastPrice: Double = 0
+    public var lastQuantity: Double = 0
+    public var lowPrice: Double = 0
+    public var openPrice: Double = 0
     public var openTime: Date = Date()
-    public var prevClosePrice: String = ""
-    public var priceChange: String = ""
-    public var priceChangePercent: String = ""
-    public var quoteVolume: String = ""
+    public var prevClosePrice: Double = 0
+    public var priceChange: Double = 0
+    public var priceChangePercent: Double = 0
+    public var quoteVolume: Double = 0
     public var symbol: String = ""
-    public var volume: String = ""
-    public var weightedAvgPrice: String = ""
+    public var volume: Double = 0
+    public var weightedAvgPrice: Double = 0
 }
 
 public class TradePage: CustomStringConvertible {
@@ -224,7 +225,7 @@ public class Tx: CustomStringConvertible {
     public var txAsset: String = ""
     public var txFee: String = ""
     public var txHash: String = ""
-    public var txType: String = ""
+    public var txType: TxType = .newOrder
     public var value: String = ""
 }
 

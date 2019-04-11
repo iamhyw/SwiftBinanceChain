@@ -8,7 +8,7 @@ public class BinanceError: Error, LocalizedError {
             self = .unknown
         }
     }
-    
+
     public var code: Int = 0
     public var reason: Reason = .unknown
     private var message: String = ""

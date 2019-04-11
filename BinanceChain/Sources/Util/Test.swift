@@ -6,12 +6,13 @@ public class Test {
     
     public init() {
     }
-    
+
     public func testAPI(completion: @escaping ()->()) {
 
         let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
         let symbol = "BNB_BTC.B-918"
         let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
+        let orderId = "7F756B1BE93AA2E2FDC3D7CB713ABC206F877802-43"
 
         let binance = BinanceChain(endpoint: .testnet)
 
@@ -19,116 +20,114 @@ public class Test {
 
         group.enter()
         binance.time() { (response) in
-            print("times: \(response.time)\n")
+            self.output("times", response.time, response.error)
             group.leave()
         }
 
         group.enter()
         binance.nodeInfo() { (response) in
-            print("node-info: \(response.nodeInfo)\n")
+            self.output("node-info", response.nodeInfo, response.error)
             group.leave()
         }
 
         group.enter()
         binance.validators() { (response) in
-            print("validators: \(response.validators)\n")
+            self.output("validators", response.validators, response.error)
             group.leave()
         }
 
         group.enter()
         binance.peers() { (response) in
-            print("peers: \(response.peers)\n")
+            self.output("peers", response.peers, response.error)
             group.leave()
         }
 
         group.enter()
         binance.account(address: address) { (response) in
-            print("account: \(response.account)\n")
+            self.output("account", response.account, response.error)
             group.leave()
         }
 
         group.enter()
         binance.sequence(address: address) { (response) in
-            print("addresssequence: \(response.sequence)\n")
+            self.output("addresssequence", response.sequence, response.error)
             group.leave()
         }
 
         group.enter()
         binance.tx(hash: hashId) { (response) in
-            print("tx: \(response.tx)\n")
+            self.output("tx", response.tx, response.error)
             group.leave()
         }
 
         group.enter()
         binance.tokens(limit: .fiveHundred, offset: 0) { (response) in
-            print("tokens: \(response.tokens)\n")
+            self.output("tokens", response.tokens, response.error)
             group.leave()
         }
 
         group.enter()
         binance.markets(limit: .oneHundred, offset: 0) { (response) in
-            print("markets: \(response.markets)\n")
+            self.output("markets", response.markets, response.error)
             group.leave()
         }
 
         group.enter()
         binance.fees() { (response) in
-            print("fees: \(response.fees)\n")
+            self.output("fees", response.fees, response.error)
             group.leave()
         }
 
         group.enter()
         binance.marketDepth(symbol: symbol) { (response) in
-            print("marketdepths: \(response.marketDepth)\n")
+            self.output("marketdepths", response.marketDepth, response.error)
             group.leave()
         }
 
         group.enter()
         binance.broadcast(body: Data()) { (response) in
-
             group.leave()
-
         }
 
         group.enter()
         binance.klines(symbol: symbol, interval: .fiveMinutes) { (response) in
-            print("klines: \(response.candlesticks)\n")
+            self.output("klines", response.candlesticks, response.error)
             group.leave()
         }
 
         group.enter()
         binance.closedOrders(address: address) { (response) in
-            print("closedorders: \(response.orderList)\n")
+            self.output("closedorders", response.orderList, response.error)
             group.leave()
         }
 
         group.enter()
         binance.openOrders(address: address) { (response) in
-            print("openorders: \(response.orderList)\n")
+            self.output("openorders", response.orderList, response.error)
             group.leave()
         }
 
         group.enter()
-        binance.order(id: hashId) { (response) in
-            print("order: \(response.order)\n")
+        binance.order(id: orderId) { (response) in
+            self.output("order", response.order, response.error)
             group.leave()
         }
 
         group.enter()
         binance.ticker(symbol: symbol) { (response) in
-            print("ticker: \(response.ticker)\n")
+            self.output("ticker", response.ticker, response.error)
             group.leave()
         }
 
         group.enter()
         binance.trades() { (response) in
-            print("trades: \(response.trades)\n")
+            self.output("trades", response.trades, response.error)
             group.leave()
         }
 
         group.enter()
         binance.transactions(address: address) { (response) in
-            print("transactions: \(response.transactions)\n")
+            self.output("transactions", response.transactions, response.error)
             group.leave()
         }
 
@@ -145,5 +144,17 @@ public class Test {
 
     }
 
+    // MARK: - Utils
+
+    private func output(_ label: String, _ property: Any, _ error: Error?) {
+        print(String(format: "%@:", label))
+        if let error = error {
+            print("error: \(error.localizedDescription)\n")
+            return
+        }
+        print(property)
+        print("\n")
+    }
+    
 }
 

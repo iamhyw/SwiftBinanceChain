@@ -29,14 +29,16 @@ public enum Limit: Int {
 }
 
 public enum Side: Int {
+    case unknown = 0
     case buy = 1
     case sell = 2
 }
 
 public enum Status: String {
+    case unknown = ""
     case acknowledge = "Ack"
     case partialFill = "PartialFill"
-    case iocNoFill = "IocNoFill"
+    case immediateOrCancelNoFill = "IocNoFill"
     case fullyFill = "FullyFill"
     case canceled = "Canceled"
     case expired = "Expired"
@@ -50,6 +52,7 @@ public enum Total: Int {
 }
 
 public enum TxType: String {
+    case unknown = ""
     case newOrder = "NEW_ORDER"
     case issueToken = "ISSUE_TOKEN"
     case burnToken = "BURN_TOKEN"
@@ -64,22 +67,25 @@ public enum TxType: String {
     case deposit = "DEPOSIT"
 }
 
-public enum TimeInForce: String {
-    case goodTillExpire = "GTE"
-    case immediateOrCancel = "IOC"
+public enum TimeInForce: Int {
+    case unknown = 0
+    case goodTillExpire = 1
+    case immediateOrCancel = 3
 }
 
 public enum TransactionSide: String {
+    case unknown = ""
     case receive = "RECEIVE"
     case send = "SEND"
 }
 
-public enum OrderType: String {
-    case limit = "LIMIT"
-    case market = "MARKET"
+public enum OrderType: Int {
+    case unknown = 0
+    case limit = 2
 }
 
 public enum FeeFor: Int {
+    case unknown = 0
     case proposer = 1
     case all = 2
     case free = 3
