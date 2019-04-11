@@ -7,7 +7,7 @@
 
 ## Features
 
-- [x] Connect to Production and Testnet
+- [x] Connect to mainnet, testnet, or a custom address
 - [x] HTTP API
 - [x] WebSockets
 - [x] Wallet
@@ -40,7 +40,7 @@ pod 'BinanceChain', :git => 'https://github.com/mh7821/BinanceChain/'
 
 ## Usage
 
-Asynchronous API calls can be made using an instance of [BinanceChain](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/BinanceChain.swift). See [Model.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for response properties.
+Asynchronous API calls can be made using an instance of [BinanceChain](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/BinanceChain.swift). The response objects are strongly typed, see [Model.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
 
 ```swift
 import BinanceChain
@@ -50,13 +50,10 @@ let binance = BinanceChain()
 // Get the latest block time and current time
 binance.time() { (response) in
 
-    // Check for errors
     if let error = response.error {
-        print(error)
-        return
+        return print(error)
     }
 
-    // Get the result
     print(response.time)
 
 }
