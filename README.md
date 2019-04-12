@@ -151,68 +151,48 @@ binance.transactions(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (
 
 ### WebSockets
 
-Register a delegate with [WebSocket](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift) to get real-time updates. The callback objects are strongly typed, see [Model.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
+Create a [WebSocket](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift) and register a [WebSocketDelegate](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift) to get real-time updates. The callback objects are strongly typed, see [Model.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
 
 ```swift
 let webSocket = WebSocket()
 webSocket.delegate = self
 webSocket.connect(endpoint: .testnet)
 
-// MARK: - WebSocketDelegate
+// Individual order updates
+webSocket.subscribe(accounts: address)
 
-func webSocketDidConnect(webSocket: WebSocket) {
-}
+// Account updates
+webSocket.subscribe(orders: address)
 
-func webSocketDidDisconnect(webSocket: WebSocket) {
-}
+// Transfer updates when the address is sender or receiver
+webSocket.subscribe(transfer: address)
 
-func webSocketDidFail(webSocket: WebSocket, with error: Error) {
-    print(error)
-}
+// Individual trade updates
+WebSocket.subscribe(trades: [symbol])
 
-func webSocket(webSocket: WebSocket, orders: [Order]) {
-    print(orders)
-}
-    
-func webSocket(webSocket: WebSocket, account: Account) {
-    print(account)
-}
+// Order book price and quantity depth updates
+webSocket.subscribe(marketDiff: [symbol])
 
-func webSocket(webSocket: WebSocket, transfer: Transfer) {
-    print(transfer)
-}
+// Top 20 levels of bids and asks
+webSocket.subscribe(marketDepth: [symbol])
 
-func webSocket(webSocket: WebSocket, trades: [Trade]) {
-    print(trades)
-}
+// Updates to the current candlestick at requested interval
+webSocket.subscribe(candlestick: [symbol], interval: .oneMinute)
 
-func webSocket(webSocket: WebSocket, marketDiff: MarketDepthUpdate) {
-    print(marketDiff)
-}
+// Ticker statistics for a symbol, sent every second
+webSocket.subscribe(ticker: symbol)
 
-func webSocket(webSocket: WebSocket, marketDepth: MarketDepthUpdate) {
-    print(marketDepth)
-}
+// Ticker statistics for all symbols, sent every second
+webSocket.subscribe(ticker: .all)
 
-func webSocket(webSocket: WebSocket, candlestick: Candlestick) {
-    print(candlestick)
-}
+// Reduced ticker statistics for a symbol, sent every second
+webSocket.subscribe(miniTicker: symbol)
 
-func webSocket(webSocket: WebSocket, ticker: [TickerStatistics]) {
-    print(ticker)
-}
+// Reduced ticker statistics all symbols, sent every second
+webSocket.subscribe(miniTicker: .all)
 
-func webSocket(webSocket: WebSocket, miniTicker: TickerStatistics) {
-    print(miniTicker)
-}
-
-func webSocket(webSocket: WebSocket, miniTickers: [TickerStatistics]) {
-    print(miniTickers)
-}
-
-func webSocket(webSocket: WebSocket, blockHeight: Int) {
-    print(blockHeight)
-}
+// Latest block height
+webSocket.subscribe(blockheight: .all)
 ```
 
 ### Testnet

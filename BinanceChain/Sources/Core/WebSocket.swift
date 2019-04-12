@@ -160,6 +160,11 @@ public class WebSocket {
     }
 
     @discardableResult
+    public func subscribe(ticker symbol: String) -> Subscription {
+        return self.subscribe(ticker: [symbol])
+    }
+
+    @discardableResult
     public func subscribe(ticker symbols: [String]) -> Subscription {
         let message = Message(method: .subscribe, topic: .ticker, parameters: [.symbols: symbols])
         return self.send(message: message)
@@ -169,6 +174,11 @@ public class WebSocket {
     public func subscribe(ticker symbols: Symbols) -> Subscription {
         let message = Message(method: .subscribe, topic: .allTickers, parameters: [.symbols: [symbols.rawValue]])
         return self.send(message: message)
+    }
+
+    @discardableResult
+    public func subscribe(miniTicker symbol: String) -> Subscription {
+        return self.subscribe(ticker: [symbol])
     }
 
     @discardableResult

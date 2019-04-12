@@ -160,10 +160,10 @@ public class Test: WebSocketDelegate {
         webSocket.subscribe(trades: [symbol])
         webSocket.subscribe(marketDiff: [symbol])
         webSocket.subscribe(marketDepth: [symbol])
-        webSocket.subscribe(candlestick: [symbol], interval: .fiveMinutes)
-        webSocket.subscribe(ticker: [symbol])
+        webSocket.subscribe(candlestick: [symbol], interval: .oneMinute)
+        webSocket.subscribe(ticker: symbol)
         webSocket.subscribe(ticker: .all)
-        webSocket.subscribe(miniTicker: [symbol])
+        webSocket.subscribe(miniTicker: symbol)
         webSocket.subscribe(miniTicker: .all)
         webSocket.subscribe(blockheight: .all)
 

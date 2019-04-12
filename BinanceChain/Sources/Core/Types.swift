@@ -1,7 +1,7 @@
 import Foundation    
 
 public enum Interval: String {
-    case oneMinutes = "1m"
+    case oneMinute = "1m"
     case threeMinutes = "3m"
     case fiveMinutes = "5m"
     case fifteeninutes = "15m"
