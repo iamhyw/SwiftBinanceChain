@@ -224,9 +224,8 @@ public class WebSocket {
                 delegate.webSocket(webSocket: self, orders: response.orders)
 
             case .accounts:
-               // try AccountParser().parse(data, response: response)
-               // delegate.webSocket(webSocket: self, ticker: response.account)
-                break
+                try AccountParser().parse(data, response: response)
+                delegate.webSocket(webSocket: self, ticker: response.account)
 
             case .transfers:
                 try TransferParser().parse(data, response: response)
