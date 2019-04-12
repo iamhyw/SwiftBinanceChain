@@ -417,7 +417,7 @@ class TxParser: Parser {
 
 class CandlestickParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
-        response.candlesticks = [ try self.parseCandlestickDict(json) ]
+        response.candlesticks = [ self.parseCandlestickDict(json) ]
     }
 }
 

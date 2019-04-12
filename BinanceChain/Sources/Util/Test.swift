@@ -152,25 +152,36 @@ public class Test: WebSocketDelegate {
 
     public func webSocketDidConnect(webSocket: WebSocket) {
 
-//        var token = webSocket.subscribe(ticker: .all)
-//        print(token)
-        webSocket.subscribe(ticker: ["BNB_BTC.B-918"])
-//        webSocket.subscribe(miniTicker: .all)
+        self.output("websocket.didConnect", "")
+
+        webSocket.subscribe(accounts: address)
+        webSocket.subscribe(orders: address)
+        webSocket.subscribe(transfer: address)
+        webSocket.subscribe(trades: [symbol])
+        webSocket.subscribe(marketDiff: [symbol])
+        webSocket.subscribe(marketDepth: [symbol])
+        webSocket.subscribe(candlestick: [symbol], interval: .fiveMinutes)
+        webSocket.subscribe(ticker: [symbol])
+        webSocket.subscribe(ticker: .all)
+        webSocket.subscribe(miniTicker: [symbol])
+        webSocket.subscribe(miniTicker: .all)
 
     }
 
-    public func webSocketDidDisconnect(webSocket: WebSocket) {}
+    public func webSocketDidDisconnect(webSocket: WebSocket) {
+        self.output("websocket.didDisconnect", "")
+    }
 
     public func webSocketDidFail(webSocket: WebSocket, with error: Error) {
-        self.output("websocket.didfail", "", error)
+        self.output("websocket.didFail", "", error)
     }
 
     public func webSocket(webSocket: WebSocket, orders: [Order]) {
         self.output("websocket.orders", orders)
     }
     
-    public func webSocket(webSocket: WebSocket, accounts: [Account]) {
-        self.output("websocket.accounts", accounts)
+    public func webSocket(webSocket: WebSocket, account: Account) {
+        self.output("websocket.accounts", account)
     }
 
     public func webSocket(webSocket: WebSocket, transfer: Transfer) {

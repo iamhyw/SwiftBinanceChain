@@ -7,7 +7,7 @@ public protocol WebSocketDelegate {
     func webSocketDidDisconnect(webSocket: WebSocket)
     func webSocketDidFail(webSocket: WebSocket, with error: Error)
     func webSocket(webSocket: WebSocket, orders: [Order])
-    func webSocket(webSocket: WebSocket, accounts: [Account])
+    func webSocket(webSocket: WebSocket, account: Account)
     func webSocket(webSocket: WebSocket, transfer: Transfer)
     func webSocket(webSocket: WebSocket, trades: [Trade])
     func webSocket(webSocket: WebSocket, marketDiff: MarketDepthUpdate)
@@ -110,7 +110,6 @@ public class WebSocket {
     }
 
     private func send(message: Message) -> Subscription {
-        print(message.json)
         self.socket.write(string: message.json)
         return Subscription(message: message)
     }
@@ -119,19 +118,19 @@ public class WebSocket {
 
     @discardableResult
     public func subscribe(orders address: String) -> Subscription {
-        let message = Message(method: .subscribe, topic: .orders, parameters: [.userAddress: address])
+        let message = Message(method: .subscribe, topic: .orders, parameters: [.address: address, .userAddress: address])
         return self.send(message: message)
     }
 
     @discardableResult
     public func subscribe(accounts address: String) -> Subscription {
-        let message = Message(method: .subscribe, topic: .accounts, parameters: [.userAddress: address])
+        let message = Message(method: .subscribe, topic: .accounts, parameters: [.address: address, .userAddress: address])
         return self.send(message: message)
     }
 
     @discardableResult
     public func subscribe(transfer address: String) -> Subscription {
-        let message = Message(method: .subscribe, topic: .accounts, parameters: [.userAddress: address])
+        let message = Message(method: .subscribe, topic: .transfers, parameters: [.address: address, .userAddress: address])
         return self.send(message: message)
     }
 
@@ -210,57 +209,69 @@ public class WebSocket {
     
     private func onText(text: String) {
 
-        do {
+        DispatchQueue.global(qos: .background).async {
+            
+            do {
 
-            guard let textdata = text.data(using: .utf8, allowLossyConversion: false) else { return }
-            let json = try JSON(data: textdata)
-            guard let stream = Topic(rawValue: json["stream"].stringValue) else { return }
-            let data = json["data"]
+                guard let textdata = text.data(using: .utf8, allowLossyConversion: false) else { return }
+                let json = try JSON(data: textdata)
+                if let reason = json["error"]["error"].string {
+                    DispatchQueue.main.async { self.delegate.webSocketDidFail(webSocket: self, with: BinanceError(message: reason)) }
+                    return
+                }
+                guard let stream = Topic(rawValue: json["stream"].stringValue) else { return }
+                let data = json["data"]
 
-            let response = BinanceChain.Response()
-            switch (stream) {
-            case .orders:
-                try OrdersParser().parse(data, response: response)
-                delegate.webSocket(webSocket: self, orders: response.orders)
+                let response = BinanceChain.Response()
+                switch (stream) {
+                case .orders:
+                    try OrdersParser().parse(data, response: response)
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, orders: response.orders) }
+                    
+                case .accounts:
+                    AccountParser().parse(data, response: response)
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, account: response.account) }
 
-            case .accounts:
-                try AccountParser().parse(data, response: response)
-                delegate.webSocket(webSocket: self, ticker: response.account)
+                case .transfers:
+                    try TransferParser().parse(data, response: response)
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, transfer: response.transfer) }
+                    
+                case .trades:
+                    try TradeParser().parse(data, response: response)
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, trades: response.trades) }
+                    
+                case .marketDiff:
+                    try MarketDepthUpdateParser().parse(data, response: response)
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, marketDiff: response.marketDepthUpdate) }
+                    
+                case .marketDepth:
+                    try MarketDepthUpdateParser().parse(data, response: response)
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, marketDepth: response.marketDepthUpdate) }
+                    break
+                    
+                case .ticker, .miniTicker:
+                    try TickerStatisticParser().parse(data, response: response)
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, ticker: response.ticker) }
+                    
+                case .allTickers, .allMiniTickers:
+                    try TickerStatisticsParser().parse(data, response: response)
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, ticker: response.ticker) }
 
-            case .transfers:
-                try TransferParser().parse(data, response: response)
-                delegate.webSocket(webSocket: self, transfer: response.transfer)
-
-            case .trades:
-                try TradeParser().parse(data, response: response)
-                delegate.webSocket(webSocket: self, trades: response.trades)
-
-            case .marketDiff:
-                try MarketDepthUpdateParser().parse(data, response: response)
-                delegate.webSocket(webSocket: self, marketDiff: response.marketDepthUpdate)
-
-            case .marketDepth:
-                try MarketDepthUpdateParser().parse(data, response: response)
-                delegate.webSocket(webSocket: self, marketDepth: response.marketDepthUpdate)
-                break
+                default:
+                    try CandlestickParser().parse(data, response: response)
+                    guard let candlestick = response.candlesticks.first else { return }
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, candlestick: candlestick) }
+                    
+                }
                 
-            case .ticker, .miniTicker:
-                try TickerStatisticParser().parse(data, response: response)
-                delegate.webSocket(webSocket: self, ticker: response.ticker)
+            } catch let error {
 
-            case .allTickers, .allMiniTickers:
-                try TickerStatisticsParser().parse(data, response: response)
-                delegate.webSocket(webSocket: self, ticker: response.ticker)
-
-            default:
-                try CandlestickParser().parse(data, response: response)
-                guard let candlestick = response.candlesticks.first else { return }
-                delegate.webSocket(webSocket: self, candlestick: candlestick)
+                DispatchQueue.main.async {
+                    self.delegate.webSocketDidFail(webSocket: self, with: error)
+                }
 
             }
-
-        } catch let error {
-            delegate.webSocketDidFail(webSocket: self, with: error)
+            
         }
         
     }
