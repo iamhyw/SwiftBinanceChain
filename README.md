@@ -40,7 +40,7 @@ pod 'BinanceChain', :git => 'https://github.com/mh7821/BinanceChain/'
 
 ## Usage
 
-Asynchronous API calls can be made using an instance of [BinanceChain](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/BinanceChain.swift). The response objects are strongly typed, see [Model.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
+Asynchronous API calls can be made using an instance of [BinanceChain](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/BinanceChain.swift). The response objects are strongly typed, see [Model](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
 
 ```swift
 import BinanceChain
@@ -151,7 +151,7 @@ binance.transactions(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (
 
 ### WebSockets
 
-Create a [WebSocket](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift) and register a [WebSocketDelegate](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift) to get real-time updates. The callback objects are strongly typed, see [Model.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
+To get real-time updates, create a [WebSocket](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift), register a [WebSocketDelegate](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift) and subscribe. The delegated objects are strongly typed, see [Model](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
 
 ```swift
 let webSocket = WebSocket()
