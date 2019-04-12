@@ -16,7 +16,7 @@ public protocol WebSocketDelegate {
     func webSocket(webSocket: WebSocket, ticker: [TickerStatistics])
     func webSocket(webSocket: WebSocket, miniTicker: TickerStatistics)
     func webSocket(webSocket: WebSocket, miniTickers: [TickerStatistics])
-    func webSocket(webSocket: WebSocket, blockHeight: TickerStatistics)
+    func webSocket(webSocket: WebSocket, blockHeight: Int)
 }
 
 public class WebSocket {
@@ -256,6 +256,10 @@ public class WebSocket {
                 case .allTickers, .allMiniTickers:
                     try TickerStatisticsParser().parse(data, response: response)
                     DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, ticker: response.ticker) }
+
+                case .blockHeight:
+                    try BlockHeightParser().parse(data, response: response)
+                    DispatchQueue.main.async { self.delegate.webSocket(webSocket: self, blockHeight: response.blockHeight) }
 
                 default:
                     try CandlestickParser().parse(data, response: response)

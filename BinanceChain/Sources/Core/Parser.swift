@@ -335,6 +335,10 @@ class Parser {
         return amount
     }
     
+    func parseBlockHeight(_ json: JSON) -> Int {
+        return json["h"].intValue
+    }
+    
 }
 
 class ErrorParser: Parser {
@@ -472,5 +476,11 @@ class MarketDepthUpdateParser: Parser {
 class TransferParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
         response.transfer = try self.parseTransfer(json)
+    }
+}
+
+class BlockHeightParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) throws {
+        response.blockHeight = parseBlockHeight(json)
     }
 }

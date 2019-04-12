@@ -38,6 +38,7 @@ public class BinanceChain {
         public var isError: Bool = false
         public var error: Error?
         public var sequence: Int = 0
+        public var blockHeight: Int = 0
         public var fees: [Fee] = []
         public var peers: [Peer] = []
         public var tokens: [Token] = []

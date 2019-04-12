@@ -151,9 +151,68 @@ binance.transactions(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (
 
 ### WebSockets
 
+Register a delegate with [WebSocket](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift) to get real-time updates. The callback objects are strongly typed, see [Model.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
+
 ```swift
 let webSocket = WebSocket()
+webSocket.delegate = self
 webSocket.connect(endpoint: .testnet)
+
+// MARK: - WebSocketDelegate
+
+func webSocketDidConnect(webSocket: WebSocket) {
+}
+
+func webSocketDidDisconnect(webSocket: WebSocket) {
+}
+
+func webSocketDidFail(webSocket: WebSocket, with error: Error) {
+    print(error)
+}
+
+func webSocket(webSocket: WebSocket, orders: [Order]) {
+    print(orders)
+}
+    
+func webSocket(webSocket: WebSocket, account: Account) {
+    print(account)
+}
+
+func webSocket(webSocket: WebSocket, transfer: Transfer) {
+    print(transfer)
+}
+
+func webSocket(webSocket: WebSocket, trades: [Trade]) {
+    print(trades)
+}
+
+func webSocket(webSocket: WebSocket, marketDiff: MarketDepthUpdate) {
+    print(marketDiff)
+}
+
+func webSocket(webSocket: WebSocket, marketDepth: MarketDepthUpdate) {
+    print(marketDepth)
+}
+
+func webSocket(webSocket: WebSocket, candlestick: Candlestick) {
+    print(candlestick)
+}
+
+func webSocket(webSocket: WebSocket, ticker: [TickerStatistics]) {
+    print(ticker)
+}
+
+func webSocket(webSocket: WebSocket, miniTicker: TickerStatistics) {
+    print(miniTicker)
+}
+
+func webSocket(webSocket: WebSocket, miniTickers: [TickerStatistics]) {
+    print(miniTickers)
+}
+
+func webSocket(webSocket: WebSocket, blockHeight: Int) {
+    print(blockHeight)
+}
 ```
 
 ### Testnet

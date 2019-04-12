@@ -165,6 +165,7 @@ public class Test: WebSocketDelegate {
         webSocket.subscribe(ticker: .all)
         webSocket.subscribe(miniTicker: [symbol])
         webSocket.subscribe(miniTicker: .all)
+        webSocket.subscribe(blockheight: .all)
 
     }
 
@@ -216,7 +217,7 @@ public class Test: WebSocketDelegate {
         self.output("websocket.miniTickers", miniTickers)
     }
 
-    public func webSocket(webSocket: WebSocket, blockHeight: TickerStatistics) {
+    public func webSocket(webSocket: WebSocket, blockHeight: Int) {
         self.output("websocket.blockHeight", blockHeight)
     }
 
