@@ -49,10 +49,12 @@ public class BinanceChain {
         public var order: Order = Order()
         public var orderList: OrderList = OrderList()
         public var tx: Tx = Tx()
+        public var transfer: Transfer = Transfer()
         public var time: Times = Times()
         public var account: Account = Account()
         public var validators: Validators = Validators()
         public var marketDepth: MarketDepth = MarketDepth()
+        public var marketDepthUpdate: MarketDepthUpdate = MarketDepthUpdate()
         public var nodeInfo: NodeInfo = NodeInfo()
         public var transactions: Transactions = Transactions()
     }

@@ -8,10 +8,10 @@ public protocol WebSocketDelegate {
     func webSocketDidFail(webSocket: WebSocket, with error: Error)
     func webSocket(webSocket: WebSocket, orders: [Order])
     func webSocket(webSocket: WebSocket, accounts: [Account])
-//    func webSocket(webSocket: WebSocket, transfers: [Transfer])
+    func webSocket(webSocket: WebSocket, transfer: Transfer)
     func webSocket(webSocket: WebSocket, trades: [Trade])
-//    func webSocket(webSocket: WebSocket, marketDiff: MarketDiff)
-    func webSocket(webSocket: WebSocket, marketDepth: MarketDepth)
+    func webSocket(webSocket: WebSocket, marketDiff: MarketDepthUpdate)
+    func webSocket(webSocket: WebSocket, marketDepth: MarketDepthUpdate)
     func webSocket(webSocket: WebSocket, candlestick: Candlestick)
     func webSocket(webSocket: WebSocket, ticker: [TickerStatistics])
     func webSocket(webSocket: WebSocket, miniTicker: TickerStatistics)
@@ -97,8 +97,6 @@ public class WebSocket {
         self.socket = Starscream.WebSocket(url: URL(string: endpoint.rawValue)!)
         self.socket.onConnect = { self.onConnect() }
         self.socket.onText = { (text: String) in self.onText(text: text) }
-        self.socket.onData = { (data: Data) in self.onData(data: data) }
-        self.socket.onPong = { (data: Data?) in self.onPong(data: data) }
         self.socket.onDisconnect = { (error: Error?) in self.onDisconnect() }
 
     }
@@ -116,7 +114,7 @@ public class WebSocket {
         self.socket.write(string: message.json)
         return Subscription(message: message)
     }
-    
+
     // MARK: - Subscribe
 
     @discardableResult
@@ -161,7 +159,7 @@ public class WebSocket {
         let message = Message(method: .subscribe, topic: topic, parameters: [.symbols: symbols])
         return self.send(message: message)
     }
-    
+
     @discardableResult
     public func subscribe(ticker symbols: [String]) -> Subscription {
         let message = Message(method: .subscribe, topic: .ticker, parameters: [.symbols: symbols])
@@ -225,6 +223,28 @@ public class WebSocket {
                 try OrdersParser().parse(data, response: response)
                 delegate.webSocket(webSocket: self, orders: response.orders)
 
+            case .accounts:
+               // try AccountParser().parse(data, response: response)
+               // delegate.webSocket(webSocket: self, ticker: response.account)
+                break
+
+            case .transfers:
+                try TransferParser().parse(data, response: response)
+                delegate.webSocket(webSocket: self, transfer: response.transfer)
+
+            case .trades:
+                try TradeParser().parse(data, response: response)
+                delegate.webSocket(webSocket: self, trades: response.trades)
+
+            case .marketDiff:
+                try MarketDepthUpdateParser().parse(data, response: response)
+                delegate.webSocket(webSocket: self, marketDiff: response.marketDepthUpdate)
+
+            case .marketDepth:
+                try MarketDepthUpdateParser().parse(data, response: response)
+                delegate.webSocket(webSocket: self, marketDepth: response.marketDepthUpdate)
+                break
+                
             case .ticker, .miniTicker:
                 try TickerStatisticParser().parse(data, response: response)
                 delegate.webSocket(webSocket: self, ticker: response.ticker)
@@ -232,22 +252,18 @@ public class WebSocket {
             case .allTickers, .allMiniTickers:
                 try TickerStatisticsParser().parse(data, response: response)
                 delegate.webSocket(webSocket: self, ticker: response.ticker)
-                
+
             default:
-                break
+                try CandlestickParser().parse(data, response: response)
+                guard let candlestick = response.candlesticks.first else { return }
+                delegate.webSocket(webSocket: self, candlestick: candlestick)
+
             }
 
         } catch let error {
             delegate.webSocketDidFail(webSocket: self, with: error)
         }
         
-    }
-    
-    private func onData(data: Data) {
-    }
-    
-    private func onPong(data: Data?) {
-        print("PONG")
     }
     
 }

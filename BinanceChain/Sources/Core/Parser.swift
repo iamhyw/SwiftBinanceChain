@@ -72,31 +72,37 @@ class Parser {
 
     func parseTrade(_ json: JSON) throws -> Trade {
         let trade = Trade()
-        trade.baseAsset = json["baseAsset"].stringValue
+        trade.baseAsset = json["baseAsset"].string ?? json[""].stringValue
         trade.blockHeight = json["blockHeight"].intValue
         trade.buyFee = json["buyFee"].stringValue
-        trade.buyerId = json["buyerId"].stringValue
-        trade.price = json["price"].stringValue
-        trade.quantity = json["quantity"].stringValue
+        trade.buyerId = json["buyerId"].string ?? json["ba"].stringValue
+        trade.price = json["price"].string ?? json["p"].stringValue
+        trade.quantity = json["quantity"].string ?? json["q"].stringValue
         trade.quoteAsset = json["quoteAsset"].stringValue
         trade.sellFee = json["sellFee"].stringValue
-        trade.sellerId = json["sellerId"].stringValue
-        trade.symbol = json["symbol"].stringValue
-        trade.tradeId = json["tradeId"].stringValue
-        guard let time = json["time"].double else {
-            throw ParseError(model: "Trade", property: "time")
-        }
-        trade.time = Date(millisecondsSince1970: time)
+        trade.sellerId = json["sellerId"].string ?? json["sa"].stringValue
+        trade.symbol = json["symbol"].string ?? json["s"].stringValue
+        trade.tradeId = json["tradeId"].string ?? json["t"].stringValue
+        trade.time = Date(millisecondsSince1970: json["time"].double ?? json["T"].doubleValue)
         return trade
     }
 
     func parseMarketDepth(_ json: JSON) -> MarketDepth {
         let marketDepth = MarketDepth()
-        marketDepth.asks = json["asks"].map({ self.parsePriceQuantity($0.1) })
-        marketDepth.bids = json["bids"].map({ self.parsePriceQuantity($0.1) })
+        let asks = json["asks"].exists() ? json["asks"] : json["a"]
+        let bids = json["bids"].exists() ? json["bids"] : json["b"]
+        marketDepth.asks = asks.map({ self.parsePriceQuantity($0.1) })
+        marketDepth.bids = bids.map({ self.parsePriceQuantity($0.1) })
         return marketDepth
     }
 
+    func parseMarketDepthUpdate(_ json: JSON) -> MarketDepthUpdate {
+        let marketDepthUpdate = MarketDepthUpdate()
+        marketDepthUpdate.symbol = json["symbol"].string ?? json["s"].stringValue
+        marketDepthUpdate.depth = self.parseMarketDepth(json)
+        return marketDepthUpdate
+    }
+    
     func parsePriceQuantity(_ json: JSON) -> PriceQuantity {
         let priceQuantity = PriceQuantity()
         priceQuantity.price = json.arrayValue[0].doubleValue
@@ -145,9 +151,7 @@ class Parser {
         tx.txAsset = json["txAsset"].stringValue
         tx.txFee = json["txFee"].stringValue
         tx.txHash = json["txHash"].stringValue
-        guard let txType = TxType(rawValue: json["txType"].stringValue) else {
-            throw ParseError(model: "Tx", property: "txType")
-        }
+        guard let txType = TxType(rawValue: json["txType"].stringValue) else { throw ParseError(model: "Tx", property: "txType") }
         tx.txType = txType
         tx.value = json["value"].stringValue
         return tx
@@ -161,12 +165,8 @@ class Parser {
         nodeInfo.version = json["version"].stringValue
         nodeInfo.channels = json["channels"].stringValue
         nodeInfo.moniker = json["moniker"].stringValue
-        if let other = json["other"].dictionaryObject as? [String:String] {
-            nodeInfo.other = other
-        }
-        if let syncInfo = json["syncInfo"].dictionaryObject as? [String:String] {
-            nodeInfo.syncInfo = syncInfo
-        }
+        if let other = json["other"].dictionaryObject as? [String:String] { nodeInfo.other = other }
+        if let syncInfo = json["syncInfo"].dictionaryObject as? [String:String] { nodeInfo.syncInfo = syncInfo }
         nodeInfo.validatorInfo = self.parseValidator(json["validator_info"])
         return nodeInfo
     }
@@ -193,28 +193,22 @@ class Parser {
     
     func parseBalance(_ json: JSON) -> Balance {
         let balance = Balance()
-        balance.symbol = json["symbol"].stringValue
-        balance.free = json["free"].doubleValue
-        balance.locked = json["locked"].doubleValue
-        balance.frozen = json["frozen"].doubleValue
+        balance.symbol = json["symbol"].string ?? json["a"].stringValue
+        balance.free = json["free"].double ?? json["f"].doubleValue
+        balance.locked = json["locked"].double ?? json["l"].doubleValue
+        balance.frozen = json["frozen"].double ?? json["r"].doubleValue
         return balance
     }
 
     func parseCandlestick(_ json: JSON) throws -> Candlestick {
         let candlestick = Candlestick()
-        guard let closeTime = json.arrayValue[0].double else {
-            throw ParseError(model: "Candlestick", property: "closeTime")
-        }
-        candlestick.closeTime = Date(millisecondsSince1970: closeTime)
+        candlestick.closeTime = Date(millisecondsSince1970: json.arrayValue[0].doubleValue)
         candlestick.close = json.arrayValue[1].doubleValue
         candlestick.high = json.arrayValue[2].doubleValue
         candlestick.low = json.arrayValue[3].doubleValue
         candlestick.numberOfTrades = json.arrayValue[4].intValue
         candlestick.open = json.arrayValue[5].doubleValue
-        guard let openTime = json.arrayValue[6].double else {
-            throw ParseError(model: "Candlestick", property: "openTime")
-        }
-        candlestick.openTime = Date(millisecondsSince1970: openTime)
+        candlestick.openTime = Date(millisecondsSince1970: json.arrayValue[6].doubleValue)
         candlestick.quoteAssetVolume = json.arrayValue[7].doubleValue
         candlestick.volume = json.arrayValue[8].doubleValue
         return candlestick
@@ -241,10 +235,8 @@ class Parser {
         ticker.symbol = json["symbol"].string ?? json["s"].stringValue
         ticker.volume = json["volume"].double ?? json["v"].doubleValue
         ticker.weightedAvgPrice = json["weightedAvgPrice"].doubleValue
-        print("OPEN TIME: ")
-        print((json["openTime"].double ?? json["O"].doubleValue))
-        ticker.openTime = Date(millisecondsSince1970: (json["openTime"].double ?? json["O"].doubleValue))
-        ticker.closeTime = Date(millisecondsSince1970: (json["closeTime"].double ?? json["C"].doubleValue))
+        ticker.openTime = Date(millisecondsSince1970: json["openTime"].double ?? json["O"].doubleValue)
+        ticker.closeTime = Date(millisecondsSince1970: json["closeTime"].double ?? json["C"].doubleValue)
         return ticker
     }
 
@@ -288,15 +280,11 @@ class Parser {
         let fee = Fee()
         fee.msgType = json["msg_type"].stringValue
         fee.fee = json["fee"].stringValue
-        guard let feeFor = FeeFor(rawValue: json["fee_for"].intValue) else {
-            throw ParseError(model: "Fee", property: "fee_for")
-        }
-        fee.feeFor = feeFor
         fee.multiTransferFee = json["multi_transfer_fee"].intValue
         fee.lowerLimitAsMulti = json["lower_limit_as_multi"].intValue
-        if json["fixed_fee_params"].exists() {
-            fee.fixedFeeParams = try self.parseFixedFeeParams(json["fixed_fee_params"])
-        }
+        if json["fixed_fee_params"].exists() { fee.fixedFeeParams = try self.parseFixedFeeParams(json["fixed_fee_params"]) }
+        guard let feeFor = FeeFor(rawValue: json["fee_for"].intValue) else { throw ParseError(model: "Fee", property: "fee_for") }
+        fee.feeFor = feeFor
         return fee
     }
 
@@ -304,13 +292,34 @@ class Parser {
         let fixedFeeParams = FixedFeeParams()
         fixedFeeParams.msgType = json["msg_type"].stringValue
         fixedFeeParams.fee = json["fee"].stringValue
-        guard let feeFor = FeeFor(rawValue: json["fee_for"].intValue) else {
-            throw ParseError(model: "FixedFeeParams", property: "fee_for")
-        }
+        guard let feeFor = FeeFor(rawValue: json["fee_for"].intValue) else { throw ParseError(model: "FixedFeeParams", property: "fee_for") }
         fixedFeeParams.feeFor = feeFor
         return fixedFeeParams
     }
 
+    func parseTransfer(_ json: JSON) throws -> Transfer {
+        let transfer = Transfer()
+        transfer.fromAddr = json["f"].stringValue
+        transfer.height = json["E"].intValue
+        transfer.transactionHash = json["H"].stringValue
+        transfer.transferred = try json["t"].map({ try self.parseTransferred($0.1) })
+        return transfer
+    }
+
+    func parseTransferred(_ json: JSON) throws -> Transferred {
+        let transferred = Transferred()
+        transferred.toAddr = json["o"].stringValue
+        transferred.amounts = try json["c"].map({ try self.parseAmount($0.1) })
+        return transferred
+    }
+    
+    func parseAmount(_ json: JSON) throws -> Amount {
+        let amount = Amount()
+        amount.asset = json["a"].stringValue
+        amount.amount = json["A"].doubleValue
+        return amount
+    }
+    
 }
 
 class ErrorParser: Parser {
@@ -393,6 +402,12 @@ class TxParser: Parser {
 
 class CandlestickParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
+        response.candlesticks = [ try self.parseCandlestick(json) ]
+    }
+}
+
+class CandlesticksParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) throws {
         response.candlesticks = try json.map({ try self.parseCandlestick($0.1) })
     }
 }
@@ -430,5 +445,17 @@ class OrderListParser: Parser {
 class FeesParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
         response.fees = try json.map({ try self.parseFee($0.1) })
+    }
+}
+
+class MarketDepthUpdateParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) throws {
+        response.marketDepthUpdate = self.parseMarketDepthUpdate(json)
+    }
+}
+
+class TransferParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) throws {
+        response.transfer = try self.parseTransfer(json)
     }
 }

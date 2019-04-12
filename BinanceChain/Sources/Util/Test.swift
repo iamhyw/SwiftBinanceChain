@@ -154,8 +154,8 @@ public class Test: WebSocketDelegate {
 
 //        var token = webSocket.subscribe(ticker: .all)
 //        print(token)
-//        webSocket.subscribe(ticker: ["BNB_BTC.B-918"])
-        webSocket.subscribe(miniTicker: .all)
+        webSocket.subscribe(ticker: ["BNB_BTC.B-918"])
+//        webSocket.subscribe(miniTicker: .all)
 
     }
 
@@ -164,24 +164,50 @@ public class Test: WebSocketDelegate {
     public func webSocketDidFail(webSocket: WebSocket, with error: Error) {
         self.output("websocket.didfail", "", error)
     }
-    
-    public func webSocket(webSocket: WebSocket, orders: [Order]) {}
-    public func webSocket(webSocket: WebSocket, accounts: [Account]) {
-        
+
+    public func webSocket(webSocket: WebSocket, orders: [Order]) {
+        self.output("websocket.orders", orders)
     }
-    //    public func webSocket(webSocket: WebSocket, transfers: [Transfer]) {}
-    public func webSocket(webSocket: WebSocket, trades: [Trade]) {}
-    //    public func webSocket(webSocket: WebSocket, marketDiff: MarketDiff) {}
-    public func webSocket(webSocket: WebSocket, marketDepth: MarketDepth) {}
-    public func webSocket(webSocket: WebSocket, candlestick: Candlestick) {}
+    
+    public func webSocket(webSocket: WebSocket, accounts: [Account]) {
+        self.output("websocket.accounts", accounts)
+    }
+
+    public func webSocket(webSocket: WebSocket, transfer: Transfer) {
+        self.output("websocket.transfers", transfer)
+    }
+
+    public func webSocket(webSocket: WebSocket, trades: [Trade]) {
+        self.output("websocket.trades", trades)
+    }
+
+    public func webSocket(webSocket: WebSocket, marketDiff: MarketDepthUpdate) {
+        self.output("websocket.marketDiff", marketDiff)
+    }
+
+    public func webSocket(webSocket: WebSocket, marketDepth: MarketDepthUpdate) {
+        self.output("websocket.marketDepth", marketDepth)
+    }
+
+    public func webSocket(webSocket: WebSocket, candlestick: Candlestick) {
+        self.output("websocket.candlestick", candlestick)
+    }
 
     public func webSocket(webSocket: WebSocket, ticker: [TickerStatistics]) {
         self.output("websocket.ticker", ticker)
     }
 
-    public func webSocket(webSocket: WebSocket, miniTicker: TickerStatistics) {}
-    public func webSocket(webSocket: WebSocket, miniTickers: [TickerStatistics]) {}
-    public func webSocket(webSocket: WebSocket, blockHeight: TickerStatistics) {}
+    public func webSocket(webSocket: WebSocket, miniTicker: TickerStatistics) {
+        self.output("websocket.miniTicker", miniTicker)
+    }
+
+    public func webSocket(webSocket: WebSocket, miniTickers: [TickerStatistics]) {
+        self.output("websocket.miniTickers", miniTickers)
+    }
+
+    public func webSocket(webSocket: WebSocket, blockHeight: TickerStatistics) {
+        self.output("websocket.blockHeight", blockHeight)
+    }
 
     // MARK: - Wallet
     

@@ -114,6 +114,11 @@ public class MarketDepth: CustomStringConvertible {
     public var bids: [PriceQuantity] = []
 }
 
+public class MarketDepthUpdate: CustomStringConvertible {
+    public var symbol: String = ""
+    public var depth: MarketDepth = MarketDepth()
+}
+
 public class BlockTradePage: CustomStringConvertible {
     public var total: Int = 0
     public var blockTrade: [BlockTrade] = []
@@ -229,8 +234,21 @@ public class Tx: CustomStringConvertible {
     public var value: String = ""
 }
 
-public class ExchangeRate: CustomStringConvertible {
-    
+public class Transfer: CustomStringConvertible {
+    public var height: Int = 0
+    public var transactionHash: String = ""
+    public var fromAddr: String = ""
+    public var transferred: [Transferred] = []
+}
+
+public class Transferred: CustomStringConvertible {
+    public var toAddr: String = ""
+    public var amounts: [Amount] = []
+}
+
+public class Amount: CustomStringConvertible {
+    public var asset: String = ""
+    public var amount: Double = 0
 }
 
 // MARK: - Messages
