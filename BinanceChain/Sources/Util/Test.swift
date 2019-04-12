@@ -1,18 +1,18 @@
 import Foundation
 
-public class Test {
+public class Test: WebSocketDelegate {
 
-    private var webSocket: WebSocket?
-    
+    private let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
+    private let symbol = "BNB_BTC.B-918"
+    private let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
+    private let orderId = "7F756B1BE93AA2E2FDC3D7CB713ABC206F877802-43"
+
     public init() {
     }
 
+    // MARK: - API
+    
     public func testAPI(completion: @escaping ()->()) {
-
-        let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
-        let symbol = "BNB_BTC.B-918"
-        let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
-        let orderId = "7F756B1BE93AA2E2FDC3D7CB713ABC206F877802-43"
 
         let binance = BinanceChain(endpoint: .testnet)
 
@@ -137,13 +137,45 @@ public class Test {
 
     }
 
+    // MARK: - WebSocket
+
+    private var webSocket: WebSocket?
+
     public func testWebSocket() {
 
-        self.webSocket = WebSocket()
+        self.webSocket = WebSocket(delegate: self)
         self.webSocket?.connect(endpoint: .testnet)
 
     }
 
+    // MARK: - WebSocketDelegate
+
+    public func webSocketDidConnect(webSocket: WebSocket) {
+
+        var token = webSocket.subscribe(ticker: .all)
+        print(token)
+//        webSocket.subscribe(ticker: ["BNB_BTC.B-918"])
+//        webSocket.subscribe(miniTicker: .all)
+
+    }
+
+    public func webSocketDidDisconnect(webSocket: WebSocket) {}
+    public func webSocket(webSocket: WebSocket, orders: [Order]) {}
+    public func webSocket(webSocket: WebSocket, accounts: [Account]) {
+        
+    }
+    //    public func webSocket(webSocket: WebSocket, transfers: [Transfer]) {}
+    public func webSocket(webSocket: WebSocket, trades: [Trade]) {}
+    //    public func webSocket(webSocket: WebSocket, marketDiff: MarketDiff) {}
+    public func webSocket(webSocket: WebSocket, marketDepth: MarketDepth) {}
+    public func webSocket(webSocket: WebSocket, candlestick: Candlestick) {}
+    public func webSocket(webSocket: WebSocket, ticker: TickerStatistics) {}
+    public func webSocket(webSocket: WebSocket, miniTicker: TickerStatistics) {}
+    public func webSocket(webSocket: WebSocket, miniTickers: [TickerStatistics]) {}
+    public func webSocket(webSocket: WebSocket, blockHeight: TickerStatistics) {}
+
+    // MARK: - Wallet
+    
     public func testWallet() {
         let wallet = Wallet()
         print(wallet.description)

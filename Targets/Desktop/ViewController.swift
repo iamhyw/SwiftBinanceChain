@@ -13,6 +13,7 @@ class ViewController: NSViewController {
         self.test?.testAPI() {
             print("tests complete")
             self.test?.testWallet()
+            self.test?.testWebSocket()
         }
         
     }
