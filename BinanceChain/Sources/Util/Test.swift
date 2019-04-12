@@ -144,6 +144,11 @@ public class Test {
 
     }
 
+    public func testWallet() {
+        let wallet = Wallet()
+        print(wallet.description)
+    }
+    
     // MARK: - Utils
 
     private func output(_ label: String, _ property: Any, _ error: Error?) {

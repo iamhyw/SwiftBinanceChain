@@ -12,6 +12,7 @@ class ViewController: NSViewController {
         self.test = Test()
         self.test?.testAPI() {
             print("tests complete")
+            self.test?.testWallet()
         }
         
     }

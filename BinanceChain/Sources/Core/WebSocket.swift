@@ -10,8 +10,6 @@ public class WebSocket {
 
     private var socket: Starscream.WebSocket?
 
-    public init() { }
-
     public func connect(endpoint: Endpoint = .testnet) {
 
         print("WebSocket CONNECT: \(endpoint.rawValue)")

@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   }
 
   s.default_subspecs = 'Core'
+  s.static_framework = true
 
   s.subspec 'Core' do |sub|
     sub.source_files = 'BinanceChain/Sources/Core/*.swift'
@@ -27,8 +28,8 @@ Pod::Spec.new do |s|
     sub.dependency 'Starscream'
     sub.dependency 'Bech32'
     sub.dependency 'XCGLogger'
-    sub.dependency 'secp256k1.swift'
     sub.dependency 'SwiftDate'
+    sub.dependency 'HDWalletKit'
   end
 
   s.subspec 'Util' do |sub|

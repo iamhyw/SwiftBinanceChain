@@ -8,7 +8,7 @@ PODS:
     - Bech32
     - BinanceChain/Protobuf
     - BinanceChain/Util
-    - secp256k1.swift
+    - HDWalletKit
     - Starscream
     - SwiftDate
     - SwiftProtobuf
@@ -17,6 +17,10 @@ PODS:
   - BinanceChain/Protobuf (1.0.0-alpha)
   - BinanceChain/Test (1.0.0-alpha)
   - BinanceChain/Util (1.0.0-alpha)
+  - CryptoSwift (0.10.0)
+  - HDWalletKit (0.0.4):
+    - CryptoSwift (~> 0.10.0)
+    - secp256k1.swift (~> 0.1.4)
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
@@ -34,12 +38,16 @@ DEPENDENCIES:
   - Bech32 (from `.podspecs/Bech32.podspec`)
   - BinanceChain (from `.`)
   - BinanceChain/Test (from `.`)
+  - CryptoSwift
+  - HDWalletKit
   - Starscream
   - SwiftProtobuf
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - CryptoSwift
+    - HDWalletKit
     - ObjcExceptionBridging
     - secp256k1.swift
     - Starscream
@@ -62,7 +70,9 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Bech32: 8c50fe0aaf170cbb94deb5953647a104332f8917
-  BinanceChain: 72f8c6a5b78b62ff26798407e331d83ddf81823f
+  BinanceChain: 275b7082673d1f0e4e2db3fbe3e1c9fb78f19876
+  CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
+  HDWalletKit: 3f071dc2dd7de2d08b7f3c051d1ade0304e46bef
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
@@ -71,6 +81,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: 9b97336e94a30d6c7b845049fc6b7c09765b4b25
+PODFILE CHECKSUM: d40fc5fb8f3ae75299020ec2bd7a8742163e24d9
 
 COCOAPODS: 1.6.1
