@@ -5,6 +5,7 @@ import SwiftyJSON
 public protocol WebSocketDelegate {
     func webSocketDidConnect(webSocket: WebSocket)
     func webSocketDidDisconnect(webSocket: WebSocket)
+    func webSocketDidFail(webSocket: WebSocket, with error: Error)
     func webSocket(webSocket: WebSocket, orders: [Order])
     func webSocket(webSocket: WebSocket, accounts: [Account])
 //    func webSocket(webSocket: WebSocket, transfers: [Transfer])
@@ -12,7 +13,7 @@ public protocol WebSocketDelegate {
 //    func webSocket(webSocket: WebSocket, marketDiff: MarketDiff)
     func webSocket(webSocket: WebSocket, marketDepth: MarketDepth)
     func webSocket(webSocket: WebSocket, candlestick: Candlestick)
-    func webSocket(webSocket: WebSocket, ticker: TickerStatistics)
+    func webSocket(webSocket: WebSocket, ticker: [TickerStatistics])
     func webSocket(webSocket: WebSocket, miniTicker: TickerStatistics)
     func webSocket(webSocket: WebSocket, miniTickers: [TickerStatistics])
     func webSocket(webSocket: WebSocket, blockHeight: TickerStatistics)
@@ -210,9 +211,36 @@ public class WebSocket {
     }
     
     private func onText(text: String) {
-        print("RECEIVED:")
-        print(text)
-//        self.delegate.webSocketDidConnect(webSocket: self)
+
+        do {
+
+            guard let textdata = text.data(using: .utf8, allowLossyConversion: false) else { return }
+            let json = try JSON(data: textdata)
+            guard let stream = Topic(rawValue: json["stream"].stringValue) else { return }
+            let data = json["data"]
+
+            let response = BinanceChain.Response()
+            switch (stream) {
+            case .orders:
+                try OrdersParser().parse(data, response: response)
+                delegate.webSocket(webSocket: self, orders: response.orders)
+
+            case .ticker, .miniTicker:
+                try TickerStatisticParser().parse(data, response: response)
+                delegate.webSocket(webSocket: self, ticker: response.ticker)
+
+            case .allTickers, .allMiniTickers:
+                try TickerStatisticsParser().parse(data, response: response)
+                delegate.webSocket(webSocket: self, ticker: response.ticker)
+                
+            default:
+                break
+            }
+
+        } catch let error {
+            delegate.webSocketDidFail(webSocket: self, with: error)
+        }
+        
     }
     
     private func onData(data: Data) {

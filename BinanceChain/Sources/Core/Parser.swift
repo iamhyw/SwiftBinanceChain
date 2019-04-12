@@ -15,7 +15,7 @@ class Parser {
         }
 
     }
-    
+
     func parse(response: BinanceChain.Response, data: Data) throws {
         guard let json = try? JSON(data: data) else {
             guard let body = String(data: data, encoding: .utf8) else { throw ParseError() }
@@ -35,6 +35,8 @@ class Parser {
         return BinanceError(code: code, message: message)
     }
 
+    // MARK: - API Responses
+    
     func parseTimes(_ json: JSON) throws -> Times {
         guard let apTime = json["ap_time"].string?.toDate()?.date else { throw ParseError(model: "Times", property: "ap_time") }
         guard let blockTime = json["block_time"].string?.toDate()?.date else { throw ParseError(model: "Times", property: "block_time") }
@@ -220,71 +222,57 @@ class Parser {
 
     func parseTickerStatistics(_ json: JSON) throws -> TickerStatistics {
         let ticker = TickerStatistics()
-        ticker.askPrice = json["askPrice"].doubleValue
-        ticker.askQuantity = json["askQuantity"].doubleValue
-        ticker.bidPrice = json["bidPrice"].doubleValue
-        ticker.bidQuantity = json["bidQuantity"].doubleValue
-        guard let closeTime = json["closeTime"].double else {
-            throw ParseError(model: "TickerStatistics", property: "closeTime")
-        }
-        ticker.closeTime = Date(millisecondsSince1970: closeTime)
-        ticker.count = json["count"].intValue
-        ticker.firstId = json["firstId"].stringValue
-        ticker.highPrice = json["high_price"].doubleValue
-        ticker.lastId = json["lastId"].stringValue
-        ticker.lastPrice = json["lastPrice"].doubleValue
+        ticker.askPrice = json["askPrice"].double ?? json["a"].doubleValue
+        ticker.askQuantity = json["askQuantity"].double ?? json["A"].doubleValue
+        ticker.bidPrice = json["bidPrice"].double ?? json["b"].doubleValue
+        ticker.bidQuantity = json["bidQuantity"].double ?? json["B"].doubleValue
+        ticker.count = json["count"].int ?? json["n"].intValue
+        ticker.firstId = json["firstId"].string ?? json["F"].stringValue
+        ticker.highPrice = json["high_price"].double ?? json["h"].doubleValue
+        ticker.lastId = json["lastId"].string ?? json["L"].stringValue
+        ticker.lastPrice = json["lastPrice"].double ?? json["o"].doubleValue
         ticker.lastQuantity = json["lastQuantity"].doubleValue
-        ticker.lowPrice = json["lowPrice"].doubleValue
-        ticker.openPrice = json["openPrice"].doubleValue
-        guard let openTime = json["openTime"].double else {
-            throw ParseError(model: "TickerStatistics", property: "openTime")
-        }
-        ticker.openTime = Date(millisecondsSince1970: openTime)
-        ticker.prevClosePrice = json["prevClosePrice"].doubleValue
-        ticker.priceChange = json["priceChange"].doubleValue
-        ticker.priceChangePercent = json["priceChangePercent"].doubleValue
-        ticker.quoteVolume = json["quoteVolume"].doubleValue
-        ticker.symbol = json["symbol"].stringValue
-        ticker.volume = json["volume"].doubleValue
+        ticker.lowPrice = json["lowPrice"].double ?? json["l"].doubleValue
+        ticker.openPrice = json["openPrice"].double ?? json["o"].doubleValue
+        ticker.prevClosePrice = json["prevClosePrice"].double ?? json["x"].doubleValue
+        ticker.priceChange = json["priceChange"].double ?? json["p"].doubleValue
+        ticker.priceChangePercent = json["priceChangePercent"].double ?? json["P"].doubleValue
+        ticker.quoteVolume = json["quoteVolume"].double ?? json["q"].doubleValue
+        ticker.symbol = json["symbol"].string ?? json["s"].stringValue
+        ticker.volume = json["volume"].double ?? json["v"].doubleValue
         ticker.weightedAvgPrice = json["weightedAvgPrice"].doubleValue
+        print("OPEN TIME: ")
+        print((json["openTime"].double ?? json["O"].doubleValue))
+        ticker.openTime = Date(millisecondsSince1970: (json["openTime"].double ?? json["O"].doubleValue))
+        ticker.closeTime = Date(millisecondsSince1970: (json["closeTime"].double ?? json["C"].doubleValue))
         return ticker
     }
 
     func parseOrder(_ json: JSON) throws -> Order {
         let order = Order()
-        order.cumulateQuantity = json["cumulateQuantity"].stringValue
-        order.fee = json["fee"].stringValue
-        order.lastExecutedPrice = json["lastExecutedPrice"].stringValue
-        order.lastExecuteQuantity = json["lastExecutedQuantity"].stringValue
-        guard let orderCreateTime = json["orderCreateTime"].string?.toDate()?.date else {
-            throw ParseError(model: "Order", property: "orderCreateTime")
-        }
-        order.orderCreateTime = orderCreateTime
-        order.orderId = json["orderId"].stringValue
+        order.cumulateQuantity = json["cumulateQuantity"].string ?? json["z"].stringValue
+        order.fee = json["fee"].string ?? json["n"].stringValue
+        order.lastExecutedPrice = json["lastExecutedPrice"].string ?? json["L"].stringValue
+        order.lastExecuteQuantity = json["lastExecutedQuantity"].string ?? json["l"].stringValue
+        order.orderId = json["orderId"].string ?? json["i"].stringValue
         order.owner = json["owner"].stringValue
-        order.price = json["price"].doubleValue
-        guard let side = Side(rawValue: json["side"].intValue) else {
-            throw ParseError(model: "Order", property: "side")
-        }
-        order.side = side
-        guard let status = Status(rawValue: json["status"].stringValue) else {
-            throw ParseError(model: "Order", property: "status")
-        }
-        order.status = status
-        order.symbol = json["symbol"].stringValue
-        guard let timeInForce = TimeInForce(rawValue: json["timeInForce"].intValue) else {
-            throw ParseError(model: "Order", property: "timeInForce")
-        }
-        order.timeInForce = timeInForce
-        order.tradeId = json["tradeId"].stringValue
+        order.price = json["price"].double ?? json["p"].doubleValue
+        order.symbol = json["symbol"].string ?? json["s"].stringValue
+        order.tradeId = json["tradeId"].string ?? json["t"].stringValue
         order.transactionHash = json["transactionHash"].stringValue
-        guard let transactionTime = json["transactionTime"].string?.toDate()?.date else {
-            throw ParseError(model: "Order", property: "transactionTime")
-        }
+        let orderCreateTimeValue = json["orderCreateTime"].string ?? json["O"].stringValue
+        let transactionTimeValue = json["transactionTime"].string ?? json["T"].stringValue
+        guard let orderCreateTime = orderCreateTimeValue.toDate()?.date else { throw ParseError(model: "Order", property: "orderCreateTime") }
+        guard let transactionTime = transactionTimeValue.toDate()?.date else { throw ParseError(model: "Order", property: "transactionTime") }
+        guard let side = Side(rawValue: json["side"].int ?? json["S"].intValue) else { throw ParseError(model: "Order", property: "side") }
+        guard let status = Status(rawValue: json["status"].stringValue) else { throw ParseError(model: "Order", property: "status") }
+        guard let timeInForce = TimeInForce(rawValue: json["timeInForce"].intValue) else { throw ParseError(model: "Order", property: "timeInForce") }
+        guard let type = OrderType(rawValue: json["type"].intValue) else { throw ParseError(model: "Order", property: "type") }
+        order.orderCreateTime = orderCreateTime
         order.transactionTime = transactionTime
-        guard let type = OrderType(rawValue: json["type"].intValue) else {
-            throw ParseError(model: "Order", property: "type")
-        }
+        order.side = side
+        order.status = status
+        order.timeInForce = timeInForce
         order.type = type
         return order
     }
@@ -409,6 +397,12 @@ class CandlestickParser: Parser {
     }
 }
 
+class TickerStatisticParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) throws {
+        response.ticker = [ try self.parseTickerStatistics(json) ]
+    }
+}
+
 class TickerStatisticsParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
         response.ticker = try json.map({ try self.parseTickerStatistics($0.1) })
@@ -418,6 +412,12 @@ class TickerStatisticsParser: Parser {
 class OrderParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
         response.order = try self.parseOrder(json)
+    }
+}
+
+class OrdersParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) throws {
+        response.orders = try json.arrayValue.map({ try self.parseOrder($0) })
     }
 }
 

@@ -152,14 +152,19 @@ public class Test: WebSocketDelegate {
 
     public func webSocketDidConnect(webSocket: WebSocket) {
 
-        var token = webSocket.subscribe(ticker: .all)
-        print(token)
+//        var token = webSocket.subscribe(ticker: .all)
+//        print(token)
 //        webSocket.subscribe(ticker: ["BNB_BTC.B-918"])
-//        webSocket.subscribe(miniTicker: .all)
+        webSocket.subscribe(miniTicker: .all)
 
     }
 
     public func webSocketDidDisconnect(webSocket: WebSocket) {}
+
+    public func webSocketDidFail(webSocket: WebSocket, with error: Error) {
+        self.output("websocket.didfail", "", error)
+    }
+    
     public func webSocket(webSocket: WebSocket, orders: [Order]) {}
     public func webSocket(webSocket: WebSocket, accounts: [Account]) {
         
@@ -169,7 +174,11 @@ public class Test: WebSocketDelegate {
     //    public func webSocket(webSocket: WebSocket, marketDiff: MarketDiff) {}
     public func webSocket(webSocket: WebSocket, marketDepth: MarketDepth) {}
     public func webSocket(webSocket: WebSocket, candlestick: Candlestick) {}
-    public func webSocket(webSocket: WebSocket, ticker: TickerStatistics) {}
+
+    public func webSocket(webSocket: WebSocket, ticker: [TickerStatistics]) {
+        self.output("websocket.ticker", ticker)
+    }
+
     public func webSocket(webSocket: WebSocket, miniTicker: TickerStatistics) {}
     public func webSocket(webSocket: WebSocket, miniTickers: [TickerStatistics]) {}
     public func webSocket(webSocket: WebSocket, blockHeight: TickerStatistics) {}
@@ -183,7 +192,7 @@ public class Test: WebSocketDelegate {
     
     // MARK: - Utils
 
-    private func output(_ label: String, _ property: Any, _ error: Error?) {
+    private func output(_ label: String, _ property: Any, _ error: Error? = nil) {
         print(String(format: "%@:", label))
         if let error = error {
             print("error: \(error.localizedDescription)\n")
