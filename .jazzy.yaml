@@ -1,0 +1,11 @@
+module: BinanceChain
+author: SwiftBinanceChain
+author_url: http://github.com/mh7821/SwiftBinanceChain
+clean: true
+exclude:
+ - "**/Protobuf*"
+xcodebuild_arguments:
+ - -workspace
+ - BinanceChain.xcworkspace
+ - -scheme
+ - BinanceChain-iOS
