@@ -141,6 +141,7 @@ public class Candlestick: CustomStringConvertible {
     public var openTime: Date = Date()
     public var quoteAssetVolume: Double = 0
     public var volume: Double = 0
+    public var closed: Bool = false
 }
 
 public class OrderList: CustomStringConvertible {

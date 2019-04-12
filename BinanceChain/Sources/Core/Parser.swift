@@ -214,6 +214,21 @@ class Parser {
         return candlestick
     }
 
+    func parseCandlestickDict(_ json: JSON) -> Candlestick {
+        let candlestick = Candlestick()
+        candlestick.closeTime = Date(millisecondsSince1970: json["T"].doubleValue)
+        candlestick.close = json["c"].doubleValue
+        candlestick.high = json["h"].doubleValue
+        candlestick.low = json["l"].doubleValue
+        candlestick.numberOfTrades = json["n"].intValue
+        candlestick.open = json["o"].doubleValue
+        candlestick.openTime = Date(millisecondsSince1970: json["t"].doubleValue)
+        candlestick.quoteAssetVolume = json["q"].doubleValue
+        candlestick.volume = json["q"].doubleValue
+        candlestick.closed = json["x"].boolValue
+        return candlestick
+    }
+    
     func parseTickerStatistics(_ json: JSON) throws -> TickerStatistics {
         let ticker = TickerStatistics()
         ticker.askPrice = json["askPrice"].double ?? json["a"].doubleValue
@@ -402,7 +417,7 @@ class TxParser: Parser {
 
 class CandlestickParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
-        response.candlesticks = [ try self.parseCandlestick(json) ]
+        response.candlesticks = [ try self.parseCandlestickDict(json) ]
     }
 }
 
