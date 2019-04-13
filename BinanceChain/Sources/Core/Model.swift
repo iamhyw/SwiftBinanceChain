@@ -287,15 +287,10 @@ public class Message {
         var data = Data()
         if (includeLengthPrefix) {
             let length: Int = Varint.encodedSize(of: Int32(type.data.count + protobuf.count))
-            print("  VARINT of: \(type.data.count + protobuf.count)")
-            print("  VARINT length: \(length)")
             data.append(UInt8(length))
         }
         data += type.data
         data += protobuf
-        print("  TYPE length: \(type.data.count)")
-        print("  PROTOBUF length: \(protobuf.count)")
-        print("  DATA length: \(data.count)")
         return data
     }
 
