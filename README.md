@@ -149,6 +149,8 @@ binance.transactions(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (
 To get real-time updates, create a [WebSocket](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift), register a [WebSocketDelegate](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift), connect and subscribe. The delegate will be notified as updates become available.
 
 ```swift
+import BinanceChain
+
 let webSocket = WebSocket()
 webSocket.delegate = self
 webSocket.connect(endpoint: .testnet) {
@@ -196,19 +198,23 @@ webSocket.connect(endpoint: .testnet) {
 }
 ```
 
+### Wallet
+
+```swift
+import BinanceChain
+
+let wallet = Wallet()
+let wallet = Wallet(mnemonic: "fruit album mosquito bracket album lyrics arrest swift shell brain security desk")
+```
+
 ### Alternating networks
 
 Switch between mainnet, testnet, or a custom endpoint easily:
 
 ```swift
 let binance = BinanceChain(endpoint: .mainnet)
-let binance = BinanceChain(endpoint: "https://dex.binance.org/api/v1")
 let websocket = WebSocket(endpoint: .testnet)
-```
-
-### Wallet
-
-```swift
+let wallet = Wallet(endpoint: "https://dex.binance.org/api/v1")
 ```
 
 ## Sample apps
