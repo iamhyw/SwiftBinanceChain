@@ -1,5 +1,9 @@
 import Foundation
 
+public protocol TestDelegate {
+    func testComplete(label: String, property: Any, error: Error?)
+}
+
 public class Test: WebSocketDelegate {
 
     private let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
@@ -7,6 +11,8 @@ public class Test: WebSocketDelegate {
     private let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
     private let orderId = "7F756B1BE93AA2E2FDC3D7CB713ABC206F877802-43"
 
+    public var delegate: TestDelegate?
+    
     public init() {
     }
 
@@ -273,6 +279,9 @@ public class Test: WebSocketDelegate {
     // MARK: - Utils
 
     private func output(_ label: String, _ property: Any, _ error: Error? = nil) {
+        if let delegate = self.delegate { delegate.testComplete(label: label, property: property, error: error) }
+
+        // Console
         print(String(format: "%@:", label))
         if let error = error {
             print("error: \(error.localizedDescription)\n")
@@ -283,4 +292,3 @@ public class Test: WebSocketDelegate {
     }
     
 }
-
