@@ -26,7 +26,6 @@ Pod::Spec.new do |s|
     sub.dependency 'SwiftyJSON', '~> 4.3'
     sub.dependency 'SwiftProtobuf', '~> 1.4'
     sub.dependency 'Starscream', '~> 3.1'
-    sub.dependency 'Bech32'
     sub.dependency 'XCGLogger', '~> 7.0'
     sub.dependency 'SwiftDate', '~> 6.0.1'
     sub.dependency 'HDWalletKit', '~> 0.2.7'
@@ -42,6 +41,10 @@ Pod::Spec.new do |s|
 
   s.subspec 'Test' do |sub|
     sub.source_files = 'BinanceChain/Sources/Test/*.swift'
+  end
+
+  s.subspec 'Bech32' do |sub|
+    sub.source_files = 'BinanceChain/Sources/Bech32/*.swift'
   end
 
 end

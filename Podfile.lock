@@ -1,11 +1,9 @@
 PODS:
   - Alamofire (4.8.2)
-  - Bech32 (1.0.0)
   - BinanceChain (1.0.0-alpha):
     - BinanceChain/Core (= 1.0.0-alpha)
   - BinanceChain/Core (1.0.0-alpha):
     - Alamofire (~> 4.8)
-    - Bech32
     - BinanceChain/Protobuf
     - BinanceChain/Util
     - HDWalletKit (~> 0.2.7)
@@ -35,7 +33,6 @@ PODS:
     - ObjcExceptionBridging
 
 DEPENDENCIES:
-  - Bech32 (from `.podspecs/Bech32.podspec`)
   - BinanceChain (from `.`)
   - BinanceChain/Test (from `.`)
   - CryptoSwift
@@ -57,20 +54,12 @@ SPEC REPOS:
     - XCGLogger
 
 EXTERNAL SOURCES:
-  Bech32:
-    :podspec: ".podspecs/Bech32.podspec"
   BinanceChain:
     :path: "."
 
-CHECKOUT OPTIONS:
-  Bech32:
-    :commit: 791fcda8a2010d3c6a22f1654eaa6303185925c0
-    :git: "git@github.com:0xDEADP00L/Bech32.git"
-
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  Bech32: 8c50fe0aaf170cbb94deb5953647a104332f8917
-  BinanceChain: 42a26b1401e546bb904555c1a8f98bb7d1aad962
+  BinanceChain: 15989f65d3c2d8f9f65fd3aa172ed517123a03af
   CryptoSwift: 769f58a9e89f64e8796c2e59ce5f002dc81a2438
   HDWalletKit: 22c841481715ea6e111f71b03eabc9ed72cc1714
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
@@ -81,6 +70,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: 9d31e5683b373ee4b93cdb6ffc340716bf623623
+PODFILE CHECKSUM: 53e8abc98be4647014cf72eeeccea7fa2612aa22
 
 COCOAPODS: 1.6.1
