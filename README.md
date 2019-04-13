@@ -14,7 +14,7 @@
 
 ## Requirements
 
-- iOS 10+ / macOS 10.10+ / tvOS 10+ / watchOS 2+
+- iOS 11+ / macOS 10.10+ / tvOS 11+ / watchOS 2+
 - Swift 5
 - Xcode 10.2
 
@@ -157,37 +157,37 @@ webSocket.connect(endpoint: .testnet) {
 
     // Individual order updates
     webSocket.subscribe(accounts: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
-    
+
     // Account updates
     webSocket.subscribe(orders: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
-    
+
     // Transfer updates when the address is sender or receiver
     webSocket.subscribe(transfer: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
-    
+
     // Individual trade updates
     webSocket.subscribe(trades: ["BNB_BTC.B-918"])
-    
+
     // Order book price and quantity depth updates
     webSocket.subscribe(marketDiff: ["BNB_BTC.B-918"])
-    
+
     // Top 20 levels of bids and asks
     webSocket.subscribe(marketDepth: ["BNB_BTC.B-918"])
-    
+
     // The current candlestick at requested interval
     webSocket.subscribe(candlestick: ["BNB_BTC.B-918"], interval: .oneMinute)
-    
+
     // Ticker statistics for a symbol, sent every second
     webSocket.subscribe(ticker: ["BNB_BTC.B-918"])
-    
+
     // Ticker statistics for all symbols, sent every second
     webSocket.subscribe(ticker: .all)
-    
+
     // Reduced ticker statistics for a symbol, sent every second
     webSocket.subscribe(miniTicker: ["BNB_BTC.B-918"])
-    
+
     // Reduced ticker statistics all symbols, sent every second
     webSocket.subscribe(miniTicker: .all)
-    
+
     // Latest block height
     webSocket.subscribe(blockheight: .all)
 
@@ -222,13 +222,15 @@ let wallet = Wallet(endpoint: "https://dex.binance.org/api/v1")
 
 ## Sample apps
 
-A command line app demonstrates all features of the library. Run with:
+Sample apps are provided for iOS and macOS. They use [Test.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Util/Test.swift) and run through all features of the library.
+
+The command line app uses Swift Package Manager:
 
 ```console
 % swift run
 ```
 
-Sample iOS and macOS apps run the same demonstration. To run:
+While the iOS and macOS apps use Cocoapods and Xcode:
 
 ```console
 % pod install
