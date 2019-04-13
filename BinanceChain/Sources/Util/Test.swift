@@ -143,30 +143,29 @@ public class Test: WebSocketDelegate {
 
     public func testWebSocket() {
 
-        self.webSocket = WebSocket(delegate: self)
-        self.webSocket?.connect(endpoint: .testnet)
+        let webSocket = WebSocket(delegate: self)
+        self.webSocket = webSocket
+        webSocket.connect(endpoint: .testnet) {
+            webSocket.subscribe(accounts: self.address)
+            webSocket.subscribe(orders: self.address)
+            webSocket.subscribe(transfer: self.address)
+            webSocket.subscribe(trades: [self.symbol])
+            webSocket.subscribe(marketDiff: [self.symbol])
+            webSocket.subscribe(marketDepth: [self.symbol])
+            webSocket.subscribe(candlestick: [self.symbol], interval: .oneMinute)
+            webSocket.subscribe(ticker: [self.symbol])
+            webSocket.subscribe(ticker: .all)
+            webSocket.subscribe(miniTicker: [self.symbol])
+            webSocket.subscribe(miniTicker: .all)
+            webSocket.subscribe(blockheight: .all)
+        }
 
     }
 
     // MARK: - WebSocketDelegate
 
     public func webSocketDidConnect(webSocket: WebSocket) {
-
         self.output("websocket.didConnect", "")
-
-        webSocket.subscribe(accounts: address)
-        webSocket.subscribe(orders: address)
-        webSocket.subscribe(transfer: address)
-        webSocket.subscribe(trades: [symbol])
-        webSocket.subscribe(marketDiff: [symbol])
-        webSocket.subscribe(marketDepth: [symbol])
-        webSocket.subscribe(candlestick: [symbol], interval: .oneMinute)
-        webSocket.subscribe(ticker: [symbol])
-        webSocket.subscribe(ticker: .all)
-        webSocket.subscribe(miniTicker: [symbol])
-        webSocket.subscribe(miniTicker: .all)
-        webSocket.subscribe(blockheight: .all)
-
     }
 
     public func webSocketDidDisconnect(webSocket: WebSocket) {

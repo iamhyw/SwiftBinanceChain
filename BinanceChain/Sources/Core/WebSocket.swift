@@ -91,6 +91,10 @@ public class WebSocket {
 
     private var socket: Starscream.WebSocket!
 
+    private typealias Completed = (()->())
+
+    private var connectCompleted: Completed?
+    
     public init(delegate: WebSocketDelegate, endpoint: Endpoint = .testnet) {
         self.delegate = delegate
 
@@ -100,8 +104,9 @@ public class WebSocket {
         self.socket.onDisconnect = { (error: Error?) in self.onDisconnect() }
 
     }
-    
-    public func connect(endpoint: Endpoint = .testnet) {
+
+    public func connect(endpoint: Endpoint = .testnet, completion: @escaping ()->()) {
+        self.connectCompleted = completion
         self.socket.connect()
     }
     
@@ -200,6 +205,8 @@ public class WebSocket {
     // MARK: - Starscream
     
     private func onConnect() {
+        if let completion = self.connectCompleted { completion() }
+        self.connectCompleted = nil
         self.delegate.webSocketDidConnect(webSocket: self)
     }
 

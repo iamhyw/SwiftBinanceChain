@@ -156,10 +156,8 @@ To get real-time updates, create a [WebSocket](https://github.com/mh7821/SwiftBi
 ```swift
 let webSocket = WebSocket()
 webSocket.delegate = self
-webSocket.connect(endpoint: .testnet)
+webSocket.connect(endpoint: .testnet) {
 
-func webSocketDidConnect(webSocket: WebSocket) {
-    
     // Individual order updates
     webSocket.subscribe(accounts: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
     
@@ -195,8 +193,8 @@ func webSocketDidConnect(webSocket: WebSocket) {
     
     // Latest block height
     webSocket.subscribe(blockheight: .all)
-    
-    // Keep a reference to unsubscribe
+
+    // Keep a reference in order to unsubscribe
     let subscription = webSocket.subscribe(ticker: all)
     webSocket.unsubscribe(subscription)
 
