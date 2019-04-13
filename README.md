@@ -49,13 +49,8 @@ let binance = BinanceChain()
 
 // Get the latest block time and current time
 binance.time() { (response) in
-
-    if let error = response.error {
-        return print(error)
-    }
-
+    if let error = response.error { return print(error) }
     print(response.time)
-
 }
 
 // Get node information
