@@ -233,7 +233,6 @@ public class BinanceChain {
         let url = String(format: "%@/%@", self.endpoint, path)
         let request = Alamofire.request(url, method: method, parameters: parameters, encoding: encoding)
         request.validate(statusCode: 200..<300)
-        debugPrint(request)
         request.responseData() { (http) -> Void in
             DispatchQueue.global(qos: .background).async {
                 let response = BinanceChain.Response()

@@ -262,6 +262,7 @@ public class Message {
         case cancelOrder = "166E681B"
         case freeze = "E774B32D"
         case unfreeze = "6515FF0D"
+        case stdTx = "0xF0625DEE"
         case signature = ""
         case pubKey = "EB5AE987"
         var data: Data { return self.rawValue.unhexlify }
@@ -270,11 +271,17 @@ public class Message {
     fileprivate var type: MessageType = .newOrder
     fileprivate var includeLengthPrefix: Bool = false
 
-    var protobuf: Data {
+    var wallet: Wallet!
+
+    init(wallet: Wallet) {
+        self.wallet = wallet
+    }
+    
+    fileprivate var protobuf: Data {
         return Data()
     }
 
-    var bytes: Data {
+    var amino: Data {
         let protobuf = self.protobuf
         var data = Data()
         if (includeLengthPrefix) {
@@ -291,12 +298,35 @@ public class Message {
         return data
     }
 
-    func sign(with wallet: Wallet) -> Data {
+    var bytes: Data {
+        let standard = StandardTx(message: self)
+        return standard.amino
+    }
+    
+}
 
-        return self.bytes
-        
+class StandardTx: Message {
+
+    var message: Message!
+    var signature: SignatureMessage!
+
+    convenience init(message: Message) {
+        self.init(wallet: message.wallet)
+        self.type = .stdTx
+        self.includeLengthPrefix = true
+        self.message = message
+        self.signature = SignatureMessage(message: message, wallet: wallet)
     }
 
+    override var bytes: Data {
+        var stdTx = StdTx()
+        stdTx.msgs.append(self.message.amino)
+        stdTx.signatures.append(self.signature.amino)
+        stdTx.msgs = [self.message.bytes]
+        stdTx.source = 1
+        return try! stdTx.serializedData()
+    }
+    
 }
 
 class NewOrderMessage: Message {
@@ -308,8 +338,8 @@ class NewOrderMessage: Message {
     private var quantity: Double = 0
     private var timeInForce: TimeInForce = .goodTillExpire
 
-    required init(symbol: String, orderType: OrderType, side: Side, price: Double, quantity: Double, timeInForce: TimeInForce) {
-        super.init()
+    required init(symbol: String, orderType: OrderType, side: Side, price: Double, quantity: Double, timeInForce: TimeInForce, wallet: Wallet) {
+        super.init(wallet: wallet)
         self.symbol = symbol
         self.type = .newOrder
         self.orderType = orderType
@@ -320,7 +350,7 @@ class NewOrderMessage: Message {
         self.symbol = symbol
     }
 
-    override var protobuf: Data {
+    override fileprivate var protobuf: Data {
         var pb = NewOrder()
         pb.symbol = symbol
         pb.ordertype = Int64(self.orderType.rawValue)
@@ -338,14 +368,14 @@ class CancelMessage: Message {
     private var symbol: String = ""
     private var orderId: String = ""
 
-    required init(symbol: String, orderId: String) {
-        super.init()
+    required init(symbol: String, orderId: String, wallet: Wallet) {
+        super.init(wallet: wallet)
         self.type = .freeze
         self.symbol = symbol
         self.orderId = orderId
     }
 
-    override var protobuf: Data {
+    override fileprivate var protobuf: Data {
         var pb = CancelOrder()
         pb.symbol = symbol
         pb.refid = self.orderId
@@ -359,14 +389,14 @@ class FreezeMessage: Message {
     private var symbol: String = ""
     private var amount: Int = 0
 
-    required init(symbol: String, amount: Int) {
-        super.init()
+    required init(symbol: String, amount: Int, wallet: Wallet) {
+        super.init(wallet: wallet)
         self.type = .freeze
         self.symbol = symbol
         self.amount = amount
     }
 
-    override var protobuf: Data {
+    override fileprivate var protobuf: Data {
         var pb = TokenFreeze()
         pb.symbol = symbol
         pb.amount = Int64(self.amount)
@@ -380,14 +410,14 @@ class UnFreezeMessage: Message {
     private var symbol: String = ""
     private var amount: Int = 0
 
-    required init(symbol: String, amount: Int) {
-        super.init()
+    required init(symbol: String, amount: Int, wallet: Wallet) {
+        super.init(wallet: wallet)
         self.type = .unfreeze
         self.symbol = symbol
         self.amount = amount
     }
 
-    override var protobuf: Data {
+    override fileprivate var protobuf: Data {
         var pb = TokenUnfreeze()
         pb.symbol = symbol
         pb.amount = Int64(self.amount)
@@ -403,12 +433,12 @@ class TransferMessage: Message {
         var amount: Int = 0
     }
 
-    required init(fromAddress: String, fromDenom: String, fromAmount: Int, toAddress: String, toDenom: String, toAmount: Int) {
-        super.init()
+    required init(fromAddress: String, fromDenom: String, fromAmount: Int, toAddress: String, toDenom: String, toAmount: Int, wallet: Wallet) {
+        super.init(wallet: wallet)
         self.type = .transfer
     }
 
-    override var protobuf: Data {
+    override fileprivate var protobuf: Data {
         var pb = Send()
         pb.inputs = []
         pb.outputs = []
@@ -418,47 +448,66 @@ class TransferMessage: Message {
     
 }
 
-class SignatureMessage: Message {
+class Signature {
+    
+    private var message: Message!
+    private var chainId: String = ""
+    private var data: Data?
+    private var memo: String = ""
 
-    private var publicKey: PubKeyMessage!
-    private var signature: Data = Data()
-    private var accountNumber: Int = 0
-    private var sequence: Int = 0
-
-    required init(publicKey: PubKeyMessage, signature: Data, accountNumber: Int, sequence: Int) {
-        super.init()
-        self.type = .signature
-        self.signature = signature
-        self.publicKey = publicKey
-        self.accountNumber = accountNumber
-        self.sequence = sequence
+    required init(message: Message, data: Data? = nil, memo: String = "") {
+        self.message = message
+        self.data = data
+        self.memo = memo
     }
 
-    override var protobuf: Data {
+    var bytes: Data {
+        // JSON
+        // to bytes
+        return Data()
+    }
+
+    var signedBytes: Data {
+        let signed = self.message.wallet.sign(message: self.bytes)
+        return signed.suffix(64)
+    }
+    
+}
+
+class SignatureMessage: Message {
+
+    private var message: Message!
+
+    required init(message: Message, wallet: Wallet) {
+        super.init(wallet: wallet)
+        self.type = .signature
+        self.message = message
+    }
+
+    override fileprivate var protobuf: Data {
+        let signature = Signature(message: self.message)
         var pb = StdSignature()
-        pb.pubKey = self.publicKey.bytes
-        pb.accountNumber = Int64(accountNumber)
-        pb.sequence = Int64(sequence)
+        pb.sequence = Int64(self.wallet.sequence)
+        pb.accountNumber = Int64(self.wallet.accountNumber)
+        pb.pubKey = PubKeyMessage(wallet: self.wallet).amino
+        pb.signature = signature.signedBytes
         return try! pb.serializedData()
     }
 
 }
 
 class PubKeyMessage: Message {
-    
-    private var data: Data = Data()
 
-    required init(data: Data) {
-        super.init()
+    override init(wallet: Wallet) {
+        super.init(wallet: wallet)
         self.type = .pubKey
-        self.data = data
     }
 
-    override var protobuf: Data {
-        return self.data
+    override fileprivate var protobuf: Data {
+        return self.wallet.publicKey
     }
-    
-    override var bytes: Data {
+
+    override var amino: Data {
         let protobuf = self.protobuf
         let varint = Varint.encodedSize(of: UInt32(protobuf.count))
         var data = Data()

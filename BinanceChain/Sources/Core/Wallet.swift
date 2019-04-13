@@ -9,6 +9,10 @@ public class Wallet: CustomStringConvertible {
     var address: String { return self.key.publicKey.address }
     var mnemonic: String = ""
 
+    var sequence: Int = 0
+    var accountNumber: Int = 0
+    var chainId: String = ""
+    
     private var key: PrivateKey!
 
     convenience init(endpoint: BinanceChain.Endpoint = .testnet) {
@@ -42,6 +46,13 @@ public class Wallet: CustomStringConvertible {
         self.key = PrivateKey(pk: privateKey, coin: .bitcoin)
     }
 
+    // MARK: - Wallet
+
+    func sign(message: Data) -> Data {
+        // TODO
+        return Data()
+    }
+    
     // MARK: - CustomStringConvertible
 
     public var description: String {

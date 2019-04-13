@@ -19,11 +19,12 @@ public class Test: WebSocketDelegate {
     // MARK: - Test
     
     public func runAllTestsOnTestnet() {
-
+/*
         self.testAPI(endpoint: .testnet) {
             self.testWallet(endpoint: .testnet)
             self.testWebSocket(endpoint: .testnet)
         }
+ */
         self.testBroadcast(endpoint: .testnet)
 
     }
@@ -167,9 +168,8 @@ public class Test: WebSocketDelegate {
             self.output("broadcast", response, response.error)
         }
 
-        let newOrderMessage = NewOrderMessage(symbol: symbol, orderType: .limit, side: .buy, price: 100, quantity: 1, timeInForce: .goodTillExpire)
-        let newOrderBytes = newOrderMessage.sign(with: wallet)
-        binance.broadcast(message: newOrderBytes) { (response) in
+        let newOrderMsg = NewOrderMessage(symbol: symbol, orderType: .limit, side: .buy, price: 100, quantity: 1, timeInForce: .goodTillExpire, wallet: wallet)
+        binance.broadcast(message: newOrderMsg.bytes) { (response) in
             self.output("broadcast", response, response.error)
         }
         
