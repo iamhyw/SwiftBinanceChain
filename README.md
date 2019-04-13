@@ -207,7 +207,7 @@ let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward na
 
 ### Transactions (Broadcast messages)
 
-Broadcast messages are a work in progress, these interfaces may change.
+Broadcast messages are an active work in progress, signing is not complete and these interfaces may change.
 
 ```swift
 let binance = BinanceChain()
