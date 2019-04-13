@@ -14,15 +14,12 @@ public class Test: WebSocketDelegate {
     
     public func runAllTestsOnTestnet() {
 
-        self.testWallet(endpoint: .testnet)
-
-        /*
         self.testAPI(endpoint: .testnet) {
             self.testWallet(endpoint: .testnet)
             self.testWebSocket(endpoint: .testnet)
         }
         self.testBroadcast(endpoint: .testnet)
-*/
+
     }
 
     // MARK: - API
