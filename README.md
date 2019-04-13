@@ -159,34 +159,34 @@ webSocket.delegate = self
 webSocket.connect(endpoint: .testnet)
 
 // Individual order updates
-webSocket.subscribe(accounts: address)
+webSocket.subscribe(accounts: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
 
 // Account updates
-webSocket.subscribe(orders: address)
+webSocket.subscribe(orders: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
 
 // Transfer updates when the address is sender or receiver
-webSocket.subscribe(transfer: address)
+webSocket.subscribe(transfer: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
 
 // Individual trade updates
-webSocket.subscribe(trades: [symbol])
+webSocket.subscribe(trades: ["BNB_BTC.B-918"])
 
 // Order book price and quantity depth updates
-webSocket.subscribe(marketDiff: [symbol])
+webSocket.subscribe(marketDiff: ["BNB_BTC.B-918"])
 
 // Top 20 levels of bids and asks
-webSocket.subscribe(marketDepth: [symbol])
+webSocket.subscribe(marketDepth: ["BNB_BTC.B-918"])
 
 // The current candlestick at requested interval
-webSocket.subscribe(candlestick: [symbol], interval: .oneMinute)
+webSocket.subscribe(candlestick: ["BNB_BTC.B-918"], interval: .oneMinute)
 
 // Ticker statistics for a symbol, sent every second
-webSocket.subscribe(ticker: symbol)
+webSocket.subscribe(ticker: "BNB_BTC.B-918")
 
 // Ticker statistics for all symbols, sent every second
 webSocket.subscribe(ticker: .all)
 
 // Reduced ticker statistics for a symbol, sent every second
-webSocket.subscribe(miniTicker: symbol)
+webSocket.subscribe(miniTicker: "BNB_BTC.B-918")
 
 // Reduced ticker statistics all symbols, sent every second
 webSocket.subscribe(miniTicker: .all)
