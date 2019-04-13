@@ -203,6 +203,11 @@ let wallet = Wallet()
 
 // Restore with a mnemonic
 let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward nature drop keys phrase")
+
+// Access wallet
+print(wallet.address)
+print(wallet.privateKey)
+print(wallet.publicKey)
 ```
 
 ### Transactions (Broadcast messages)
