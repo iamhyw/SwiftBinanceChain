@@ -41,7 +41,7 @@ pod 'BinanceChain', :git => 'https://github.com/mh7821/BinanceChain.git'
 
 ## Usage
 
-Asynchronous API calls can be made using an instance of [BinanceChain](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/BinanceChain.swift). The response objects are strongly typed, see [Model](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
+Asynchronous API calls can be made using [BinanceChain](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/BinanceChain.swift). The response objects are strongly typed, see [Model](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/Model.swift) for available properties.
 
 ```swift
 import BinanceChain
