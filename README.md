@@ -209,7 +209,7 @@ let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward na
 
 Broadcast messages are a work in progress, these interfaces may change.
 
-```
+```swift
 let binance = BinanceChain()
 let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward nature drop keys phrase")
 
