@@ -12,11 +12,11 @@ def common
 end
 
 target "BinanceChain" do
-	platform :ios, '10.0'
+	platform :ios, '11.0'
 	common
 end
 
 target "Desktop" do
-	platform :macos, '10.10'
+	platform :macos, '10.11'
 	common
 end

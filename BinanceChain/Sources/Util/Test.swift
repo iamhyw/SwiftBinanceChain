@@ -14,12 +14,15 @@ public class Test: WebSocketDelegate {
     
     public func runAllTestsOnTestnet() {
 
+        self.testWallet(endpoint: .testnet)
+
+        /*
         self.testAPI(endpoint: .testnet) {
             self.testWallet(endpoint: .testnet)
             self.testWebSocket(endpoint: .testnet)
         }
         self.testBroadcast(endpoint: .testnet)
-
+*/
     }
 
     // MARK: - API
@@ -97,6 +100,7 @@ public class Test: WebSocketDelegate {
 
         group.enter()
         binance.broadcast(message: Data()) { (response) in
+            self.output("broadcast", "error is expected", response.error)
             group.leave()
         }
 
@@ -153,7 +157,7 @@ public class Test: WebSocketDelegate {
     public func testBroadcast(endpoint: BinanceChain.Endpoint = .testnet) {
 
         let binance = BinanceChain(endpoint: endpoint)
-        let wallet = Wallet()
+        let wallet = Wallet(endpoint: endpoint)
 
         // Test error
         binance.broadcast(message: Data()) { (response) in
@@ -254,8 +258,19 @@ public class Test: WebSocketDelegate {
     // MARK: - Wallet
     
     public func testWallet(endpoint: BinanceChain.Endpoint) {
-        let wallet = Wallet(endpoint: endpoint)
-        print(wallet.description)
+
+        let mnemonic = "quality mind spend rigid ladder toast settle toward nature drop witness phrase"
+        let key = "356f480166914051b55578f7fc7ae72f764a1f78b9e5e5a6dd2a1ae8dee2ad62"
+        
+        let walletAuto = Wallet(endpoint: endpoint)
+        output("wallet.auto", walletAuto)
+        
+        let walletMnemonic = Wallet(mnemonic: mnemonic, endpoint: endpoint)
+        output("wallet.mnemonic", walletMnemonic)
+        
+        let walletKey = Wallet(privateKey: key, endpoint: endpoint)
+        output("wallet.privatekey", walletKey)
+
     }
     
     // MARK: - Utils

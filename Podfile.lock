@@ -4,22 +4,22 @@ PODS:
   - BinanceChain (1.0.0-alpha):
     - BinanceChain/Core (= 1.0.0-alpha)
   - BinanceChain/Core (1.0.0-alpha):
-    - Alamofire
+    - Alamofire (~> 4.8)
     - Bech32
     - BinanceChain/Protobuf
     - BinanceChain/Util
-    - HDWalletKit
-    - Starscream
-    - SwiftDate
-    - SwiftProtobuf
-    - SwiftyJSON
-    - XCGLogger
+    - HDWalletKit (~> 0.2.7)
+    - Starscream (~> 3.1)
+    - SwiftDate (~> 6.0.1)
+    - SwiftProtobuf (~> 1.4)
+    - SwiftyJSON (~> 4.3)
+    - XCGLogger (~> 7.0)
   - BinanceChain/Protobuf (1.0.0-alpha)
   - BinanceChain/Test (1.0.0-alpha)
   - BinanceChain/Util (1.0.0-alpha)
-  - CryptoSwift (0.10.0)
-  - HDWalletKit (0.0.4):
-    - CryptoSwift (~> 0.10.0)
+  - CryptoSwift (0.15.0)
+  - HDWalletKit (0.2.7):
+    - CryptoSwift (~> 0.12)
     - secp256k1.swift (~> 0.1.4)
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
@@ -70,9 +70,9 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Bech32: 8c50fe0aaf170cbb94deb5953647a104332f8917
-  BinanceChain: 275b7082673d1f0e4e2db3fbe3e1c9fb78f19876
-  CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
-  HDWalletKit: 3f071dc2dd7de2d08b7f3c051d1ade0304e46bef
+  BinanceChain: 42a26b1401e546bb904555c1a8f98bb7d1aad962
+  CryptoSwift: 769f58a9e89f64e8796c2e59ce5f002dc81a2438
+  HDWalletKit: 22c841481715ea6e111f71b03eabc9ed72cc1714
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
@@ -81,6 +81,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: d40fc5fb8f3ae75299020ec2bd7a8742163e24d9
+PODFILE CHECKSUM: 9d31e5683b373ee4b93cdb6ffc340716bf623623
 
 COCOAPODS: 1.6.1

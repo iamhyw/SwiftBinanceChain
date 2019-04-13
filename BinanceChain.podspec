@@ -4,17 +4,17 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.summary      = 'BinanceChain'
   s.author       = { 'Michael Henderson' => 'roadkillrabbit@gmail.com' }
-  s.homepage     = 'http://binance.org/'
-  s.osx.deployment_target = '10.10'
-  s.ios.deployment_target = '10.0'
-  s.tvos.deployment_target = '10.0'
+  s.homepage     = 'http://github.com/mh7821/SwiftBinanceChain/'
+  s.osx.deployment_target = '10.11'
+  s.ios.deployment_target = '11.0'
+  s.tvos.deployment_target = '11.0'
   s.watchos.deployment_target = '2.0'
   s.requires_arc = true
   s.source       = { :path => 'BinanceChain' }
   s.pod_target_xcconfig = {
     'OTHER_SWIFT_FLAGS[config=Debug]' => '-D DEBUG'
   }
-
+  s.swift_version = '5'
   s.default_subspecs = 'Core'
   s.static_framework = true
 
@@ -22,14 +22,14 @@ Pod::Spec.new do |s|
     sub.source_files = 'BinanceChain/Sources/Core/*.swift'
     sub.dependency 'BinanceChain/Protobuf'
     sub.dependency 'BinanceChain/Util'
-    sub.dependency 'Alamofire'
-    sub.dependency 'SwiftyJSON'
-    sub.dependency 'SwiftProtobuf'
-    sub.dependency 'Starscream'
+    sub.dependency 'Alamofire', '~> 4.8'
+    sub.dependency 'SwiftyJSON', '~> 4.3'
+    sub.dependency 'SwiftProtobuf', '~> 1.4'
+    sub.dependency 'Starscream', '~> 3.1'
     sub.dependency 'Bech32'
-    sub.dependency 'XCGLogger'
-    sub.dependency 'SwiftDate'
-    sub.dependency 'HDWalletKit'
+    sub.dependency 'XCGLogger', '~> 7.0'
+    sub.dependency 'SwiftDate', '~> 6.0.1'
+    sub.dependency 'HDWalletKit', '~> 0.2.7'
   end
 
   s.subspec 'Util' do |sub|
