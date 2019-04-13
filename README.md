@@ -237,9 +237,7 @@ Sample iOS and macOS apps run the same demonstration. To run:
 
 ## In Progress
 
-* Model object types
 * Broadcast messages
-* WebSockets
 
 ## License
 
