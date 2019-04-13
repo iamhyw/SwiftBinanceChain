@@ -180,19 +180,23 @@ webSocket.subscribe(marketDepth: ["BNB_BTC.B-918"])
 webSocket.subscribe(candlestick: ["BNB_BTC.B-918"], interval: .oneMinute)
 
 // Ticker statistics for a symbol, sent every second
-webSocket.subscribe(ticker: "BNB_BTC.B-918")
+webSocket.subscribe(ticker: ["BNB_BTC.B-918"])
 
 // Ticker statistics for all symbols, sent every second
 webSocket.subscribe(ticker: .all)
 
 // Reduced ticker statistics for a symbol, sent every second
-webSocket.subscribe(miniTicker: "BNB_BTC.B-918")
+webSocket.subscribe(miniTicker: ["BNB_BTC.B-918"])
 
 // Reduced ticker statistics all symbols, sent every second
 webSocket.subscribe(miniTicker: .all)
 
 // Latest block height
 webSocket.subscribe(blockheight: .all)
+
+// Keep a reference to unsubscribe
+let subscription = webSocket.subscribe(ticker: all)
+webSocket.unsubscribe(subscription)
 ```
 
 ### Alternating networks
