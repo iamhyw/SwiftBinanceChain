@@ -217,7 +217,7 @@ Broadcast messages are an active work in progress, signing is not complete and t
 
 ```swift
 let binance = BinanceChain()
-let wallet = Wallet(mnemonic: "mnemonic word list")
+let wallet = Wallet()
 
 // Create a new order to buy or sell tokens
 let msg = NewOrderMessage(symbol: "BNB_BTC.B-918", orderType: .limit, side: .buy, price: 100,
