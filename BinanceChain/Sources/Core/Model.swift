@@ -257,19 +257,18 @@ public class Amount: CustomStringConvertible {
 public class Message {
 
     enum MessageType: String {
-        case none = ""
+        case transfer = "2A2C87FA"
         case newOrder = "CE6DC043"
         case cancelOrder = "166E681B"
         case freeze = "E774B32D"
         case unfreeze = "6515FF0D"
-        case signature = "TODO"
-        case stdTx = "F0625DEE"
+        case signature = ""
         case pubKey = "EB5AE987"
         var data: Data { return self.rawValue.unhexlify }
     }
 
-    var type: MessageType = .newOrder
-    var includeLengthPrefix: Bool = false
+    fileprivate var type: MessageType = .newOrder
+    fileprivate var includeLengthPrefix: Bool = false
 
     var protobuf: Data {
         return Data()
@@ -302,12 +301,12 @@ public class Message {
 
 class NewOrderMessage: Message {
 
-    var symbol: String = ""
-    var orderType: OrderType = .limit
-    var side: Side = .buy
-    var price: Double = 0
-    var quantity: Double = 0
-    var timeInForce: TimeInForce = .goodTillExpire
+    private var symbol: String = ""
+    private var orderType: OrderType = .limit
+    private var side: Side = .buy
+    private var price: Double = 0
+    private var quantity: Double = 0
+    private var timeInForce: TimeInForce = .goodTillExpire
 
     required init(symbol: String, orderType: OrderType, side: Side, price: Double, quantity: Double, timeInForce: TimeInForce) {
         super.init()
@@ -331,53 +330,134 @@ class NewOrderMessage: Message {
         pb.timeinforce = Int64(self.timeInForce.rawValue)
         return try! pb.serializedData()
     }
-    
+
+}
+
+class CancelMessage: Message {
+
+    private var symbol: String = ""
+    private var orderId: String = ""
+
+    required init(symbol: String, orderId: String) {
+        super.init()
+        self.type = .freeze
+        self.symbol = symbol
+        self.orderId = orderId
+    }
+
+    override var protobuf: Data {
+        var pb = CancelOrder()
+        pb.symbol = symbol
+        pb.refid = self.orderId
+        return try! pb.serializedData()
+    }
+
 }
 
 class FreezeMessage: Message {
-    
-    override init() {
+
+    private var symbol: String = ""
+    private var amount: Int = 0
+
+    required init(symbol: String, amount: Int) {
         super.init()
         self.type = .freeze
+        self.symbol = symbol
+        self.amount = amount
+    }
+
+    override var protobuf: Data {
+        var pb = TokenFreeze()
+        pb.symbol = symbol
+        pb.amount = Int64(self.amount)
+        return try! pb.serializedData()
+    }
+
+}
+
+class UnFreezeMessage: Message {
+
+    private var symbol: String = ""
+    private var amount: Int = 0
+
+    required init(symbol: String, amount: Int) {
+        super.init()
+        self.type = .unfreeze
+        self.symbol = symbol
+        self.amount = amount
+    }
+
+    override var protobuf: Data {
+        var pb = TokenUnfreeze()
+        pb.symbol = symbol
+        pb.amount = Int64(self.amount)
+        return try! pb.serializedData()
     }
     
 }
 
-class UnFreezeMessage: Message {
-    
-    override init() {
+class TransferMessage: Message {
+
+    private struct Token {
+        var address: String = ""
+        var amount: Int = 0
+    }
+
+    required init(fromAddress: String, fromDenom: String, fromAmount: Int, toAddress: String, toDenom: String, toAmount: Int) {
         super.init()
-        self.type = .unfreeze
+        self.type = .transfer
+    }
+
+    override var protobuf: Data {
+        var pb = Send()
+        pb.inputs = []
+        pb.outputs = []
+        // TODO
+        return try! pb.serializedData()
     }
     
 }
 
 class SignatureMessage: Message {
-    
-    override init() {
+
+    private var publicKey: PubKeyMessage!
+    private var signature: Data = Data()
+    private var accountNumber: Int = 0
+    private var sequence: Int = 0
+
+    required init(publicKey: PubKeyMessage, signature: Data, accountNumber: Int, sequence: Int) {
         super.init()
         self.type = .signature
+        self.signature = signature
+        self.publicKey = publicKey
+        self.accountNumber = accountNumber
+        self.sequence = sequence
     }
-    
-}
 
-class StdTxMessage: Message {
-    
-    override init() {
-        super.init()
-        self.type = .stdTx
-        self.includeLengthPrefix = true
+    override var protobuf: Data {
+        var pb = StdSignature()
+        pb.pubKey = self.publicKey.bytes
+        pb.accountNumber = Int64(accountNumber)
+        pb.sequence = Int64(sequence)
+        return try! pb.serializedData()
     }
-    
+
 }
 
 class PubKeyMessage: Message {
     
-    override init() {
+    private var data: Data = Data()
+
+    required init(data: Data) {
         super.init()
         self.type = .pubKey
+        self.data = data
     }
 
+    override var protobuf: Data {
+        return self.data
+    }
+    
     override var bytes: Data {
         let protobuf = self.protobuf
         let varint = Varint.encodedSize(of: UInt32(protobuf.count))
