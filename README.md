@@ -203,7 +203,7 @@ import BinanceChain
 let wallet = Wallet()
 
 // Restore with a mnemonic
-let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward nature drop keys phrase")
+let wallet = Wallet(mnemonic: "mnemonic word list")
 
 // Access wallet
 print(wallet.address)
@@ -217,7 +217,7 @@ Broadcast messages are an active work in progress, signing is not complete and t
 
 ```swift
 let binance = BinanceChain()
-let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward nature drop keys phrase")
+let wallet = Wallet(mnemonic: "mnemonic word list")
 
 // Create a new order to buy or sell tokens
 let msg = NewOrderMessage(symbol: "BNB_BTC.B-918", orderType: .limit, side: .buy, price: 100,
