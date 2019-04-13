@@ -168,7 +168,7 @@ webSocket.subscribe(orders: address)
 webSocket.subscribe(transfer: address)
 
 // Individual trade updates
-WebSocket.subscribe(trades: [symbol])
+webSocket.subscribe(trades: [symbol])
 
 // Order book price and quantity depth updates
 webSocket.subscribe(marketDiff: [symbol])
@@ -176,7 +176,7 @@ webSocket.subscribe(marketDiff: [symbol])
 // Top 20 levels of bids and asks
 webSocket.subscribe(marketDepth: [symbol])
 
-// Updates to the current candlestick at requested interval
+// The current candlestick at requested interval
 webSocket.subscribe(candlestick: [symbol], interval: .oneMinute)
 
 // Ticker statistics for a symbol, sent every second
