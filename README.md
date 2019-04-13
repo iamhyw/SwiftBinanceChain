@@ -207,7 +207,7 @@ import BinanceChain
 let wallet = Wallet()
 
 // Restore with a mnemonic
-let wallet = Wallet(mnemonic: "quality mind spend rigid ladder toast settle toward nature drop witness phrase")
+let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward nature drop keys phrase")
 ```
 
 ### Alternating networks
