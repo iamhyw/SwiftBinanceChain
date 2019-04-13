@@ -1,4 +1,5 @@
 import Foundation
+import HDWalletKit
 
 public protocol TestDelegate {
     func testComplete(label: String, property: Any, error: Error?)
@@ -204,26 +205,29 @@ public class Test: WebSocketDelegate {
 
     public func testWebSocket(endpoint: WebSocket.Endpoint = .testnet) {
 
+        let runAllTests = false
+        
         let webSocket = WebSocket(delegate: self)
         self.webSocket = webSocket
         webSocket.connect(endpoint: endpoint) {
 
-            webSocket.subscribe(candlestick: [self.symbol], interval: .oneMinute)
+            if (runAllTests) {
+                webSocket.subscribe(accounts: self.address)
+                webSocket.subscribe(orders: self.address)
+                webSocket.subscribe(transfer: self.address)
+                webSocket.subscribe(trades: [self.symbol])
+                webSocket.subscribe(marketDiff: [self.symbol])
+                webSocket.subscribe(marketDepth: [self.symbol])
+                webSocket.subscribe(candlestick: [self.symbol], interval: .oneMinute)
+                webSocket.subscribe(ticker: [self.symbol])
+                webSocket.subscribe(ticker: .all)
+                webSocket.subscribe(miniTicker: [self.symbol])
+                webSocket.subscribe(miniTicker: .all)
+                webSocket.subscribe(blockheight: .all)
+            } else {
+                webSocket.subscribe(candlestick: [self.symbol], interval: .oneMinute)
+            }
 
-            /*
-            webSocket.subscribe(accounts: self.address)
-            webSocket.subscribe(orders: self.address)
-            webSocket.subscribe(transfer: self.address)
-            webSocket.subscribe(trades: [self.symbol])
-            webSocket.subscribe(marketDiff: [self.symbol])
-            webSocket.subscribe(marketDepth: [self.symbol])
-            webSocket.subscribe(candlestick: [self.symbol], interval: .oneMinute)
-            webSocket.subscribe(ticker: [self.symbol])
-            webSocket.subscribe(ticker: .all)
-            webSocket.subscribe(miniTicker: [self.symbol])
-            webSocket.subscribe(miniTicker: .all)
-            webSocket.subscribe(blockheight: .all)
-             */
         }
 
     }
@@ -290,16 +294,15 @@ public class Test: WebSocketDelegate {
     
     public func testWallet(endpoint: BinanceChain.Endpoint) {
 
-        let mnemonic = "quality mind spend rigid ladder toast settle toward nature drop witness phrase"
-        let key = "356f480166914051b55578f7fc7ae72f764a1f78b9e5e5a6dd2a1ae8dee2ad62"
+        let mnemonic = Mnemonic.create()
         
         let walletAuto = Wallet(endpoint: endpoint)
         output("wallet.auto", walletAuto)
         
         let walletMnemonic = Wallet(mnemonic: mnemonic, endpoint: endpoint)
         output("wallet.mnemonic", walletMnemonic)
-        
-        let walletKey = Wallet(privateKey: key, endpoint: endpoint)
+
+        let walletKey = Wallet(privateKey: walletMnemonic.privateKey.hexlify, endpoint: endpoint)
         output("wallet.privatekey", walletKey)
 
     }
