@@ -205,15 +205,19 @@ let wallet = Wallet()
 // Restore with a mnemonic
 let wallet = Wallet(mnemonic: "mnemonic word list")
 
+// Sign a message
+wallet.sign(message: data)
+
 // Access wallet
 print(wallet.address)
 print(wallet.privateKey)
 print(wallet.publicKey)
+
 ```
 
 ### Broadcast Transactions
 
-Broadcast messages are an active work in progress, signing is not complete and these interfaces may change.
+Broadcast messages are a work in progress. Signing is not complete and these interfaces may change.
 
 ```swift
 let binance = BinanceChain()
@@ -241,7 +245,7 @@ let msg = UnFreezeMessage(symbol: "BNB_BTC.B-18", amount: 10, wallet: wallet)
 let vote = VoteMessage(proposalId: 1, vote: .yes, address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr",
                        wallet: wallet)
 
-// Then, broadcast the message
+// Broadcast the message
 binance.broadcast(message: msg, sync: true) { (response) in
     if let error = response.error { return print(error) }
     print(response)
