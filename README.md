@@ -26,7 +26,7 @@ To add BinanceChain to your project, add a dependency:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/mh7821/BinanceChain.git", from: "1.0.0-alpha")
+    .package(url: "https://github.com/mh7821/BinanceChain.git", from: "0.0.0")
 ]
 ```
 
@@ -35,7 +35,7 @@ dependencies: [
 To integrate BinanceChain into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'BinanceChain', :git => 'https://github.com/mh7821/BinanceChain/'
+pod 'BinanceChain', :git => 'https://github.com/mh7821/BinanceChain.git'
 ```
 
 ## Usage
