@@ -24,8 +24,10 @@ class ViewController: NSViewController, TestDelegate {
         var text = label + ":\n"
         if let error = error {
             text += error.localizedDescription
+        } else {
+            text += String(describing: property)
         }
-        self.textField.stringValue = text + "\n\n" + self.textField.stringValue
+        self.textField.stringValue = text + "\n\n"
 
     }
 

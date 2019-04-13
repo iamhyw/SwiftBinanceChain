@@ -49,7 +49,11 @@ public class Wallet: CustomStringConvertible {
     // MARK: - Wallet
 
     func sign(message: Data) -> Data {
-        // TODO
+        do {
+            return try self.key.sign(hash: message)
+        } catch let error {
+            print(error)
+        }
         return Data()
     }
     

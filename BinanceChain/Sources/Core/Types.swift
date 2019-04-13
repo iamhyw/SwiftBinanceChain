@@ -90,3 +90,10 @@ public enum FeeFor: Int {
     case all = 2
     case free = 3
 }
+
+public enum VoteOption: Int {
+    case yes = 1
+    case abstain = 2
+    case no = 3
+    case noWithVeto = 4
+}

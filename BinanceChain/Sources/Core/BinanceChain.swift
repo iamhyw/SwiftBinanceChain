@@ -137,7 +137,11 @@ public class BinanceChain {
         self.api(path: .depth, method: .get, parameters: parameters, parser: MarketDepthParser(), completion: completion)
     }
 
-    public func broadcast(sync: Bool = true, message bytes: Data, completion: Completion? = nil) {
+    public func broadcast(message: Message, sync: Bool = true, completion: Completion? = nil) {
+        self.broadcast(message: message.bytes, sync: sync, completion: completion)
+    }
+
+    public func broadcast(message bytes: Data, sync: Bool = true, completion: Completion? = nil) {
         var path = Path.broadcast.rawValue
         if (sync) { path += "/?sync=1" }
         self.api(path: path, method: .post, body: bytes, parser: BroadcastParser(), completion: completion)

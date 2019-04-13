@@ -103,11 +103,6 @@ binance.marketDepth(symbol: "BNB_BTC.B-918") { (response) in
     print(response.marketDepth)
 }
 
-// Broadcast a transaction
-binance.broadcast(body: Data()) { (response) in
-    
-}
-
 // Get candlestick/kline bars for a symbol
 binance.klines(symbol: "BNB_BTC.B-918", interval: .fiveMinutes) { (response) in
     print(response.candlesticks)
@@ -208,6 +203,44 @@ let wallet = Wallet()
 
 // Restore with a mnemonic
 let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward nature drop keys phrase")
+```
+
+### Transactions (Broadcast messages)
+
+Broadcast messages are a work in progress, these interfaces may change.
+
+```
+let binance = BinanceChain()
+let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward nature drop keys phrase")
+
+// Create a new order to buy or sell tokens
+let msg = NewOrderMessage(symbol: "BNB_BTC.B-918", orderType: .limit, side: .buy, price: 100,
+                          quantity: 1, timeInForce: .goodTillExpire, wallet: wallet)
+
+// Cancel an outstanding (unfilled) order
+let msg = CancelMessage(symbol: "BNB_BTC.B-918", orderId: "id", wallet: wallet)
+
+// Transfer funds
+let msg = TransferMessage(from: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr", fromDenom: "BNB", 
+                          fromAmount: 200, to: "tbnb1066kkxlf823w9lwr6l9hzw4uyphcw7q22ud2ry",
+                          toDenom: "BNB", toAmount: 200, wallet: wallet)
+
+// Move tokens into a frozen state, meaning they can't be used to transfer or send new orders
+let msg = FreezeMessage(symbol: "BNB_BTC.B-918", amount: 10, wallet: wallet)
+
+// Reverse tokens back into a free state
+let msg = UnFreezeMessage(symbol: "BNB_BTC.B-18", amount: 10, wallet: wallet)
+
+// Vote for proposals
+let vote = VoteMessage(proposalId: 1, vote: .yes, address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr",
+                       wallet: wallet)
+
+// Then, broadcast the message
+binance.broadcast(message: msg, sync: true) { (response) in
+    if let error = response.error { return print(error) }
+    print(response)
+}
+
 ```
 
 ### Changing networks

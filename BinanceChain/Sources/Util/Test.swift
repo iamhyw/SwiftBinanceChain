@@ -7,9 +7,11 @@ public protocol TestDelegate {
 public class Test: WebSocketDelegate {
 
     private let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
+    private let addressTwo = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
     private let symbol = "BNB_BTC.B-918"
     private let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
     private let orderId = "7F756B1BE93AA2E2FDC3D7CB713ABC206F877802-43"
+    private let amount = 200
 
     public var delegate: TestDelegate?
     
@@ -19,13 +21,12 @@ public class Test: WebSocketDelegate {
     // MARK: - Test
     
     public func runAllTestsOnTestnet() {
-/*
+
         self.testAPI(endpoint: .testnet) {
             self.testWallet(endpoint: .testnet)
+            self.testBroadcast(endpoint: .testnet)
             self.testWebSocket(endpoint: .testnet)
         }
- */
-        self.testBroadcast(endpoint: .testnet)
 
     }
 
@@ -163,16 +164,38 @@ public class Test: WebSocketDelegate {
         let binance = BinanceChain(endpoint: endpoint)
         let wallet = Wallet(endpoint: endpoint)
 
-        // Test error
-        binance.broadcast(message: Data()) { (response) in
-            self.output("broadcast", response, response.error)
+        let msgNewOrder = NewOrderMessage(symbol: symbol, orderType: .limit, side: .buy, price: 100,
+                                          quantity: 1, timeInForce: .goodTillExpire, wallet: wallet)
+        binance.broadcast(message: msgNewOrder) { (response) in
+            self.output("broadcast.neworder", response, response.error)
         }
 
-        let newOrderMsg = NewOrderMessage(symbol: symbol, orderType: .limit, side: .buy, price: 100, quantity: 1, timeInForce: .goodTillExpire, wallet: wallet)
-        binance.broadcast(message: newOrderMsg.bytes) { (response) in
-            self.output("broadcast", response, response.error)
+        let msgCancel = CancelMessage(symbol: symbol, orderId: orderId, wallet: wallet)
+        binance.broadcast(message: msgCancel) { (response) in
+            self.output("broadcast.cancel", response, response.error)
         }
-        
+
+        let msgTransfer = TransferMessage(from: address, fromDenom: symbol, fromAmount: amount,
+                                   to: addressTwo, toDenom: symbol, toAmount: amount, wallet: wallet)
+        binance.broadcast(message: msgTransfer) { (response) in
+            self.output("broadcast.transfer", response, response.error)
+        }
+
+        let msgFreeze = FreezeMessage(symbol: symbol, amount: amount, wallet: wallet)
+        binance.broadcast(message: msgFreeze) { (response) in
+            self.output("broadcast.freeze", response, response.error)
+        }
+
+        let msgUnFreeze = UnFreezeMessage(symbol: symbol, amount: amount, wallet: wallet)
+        binance.broadcast(message: msgUnFreeze) { (response) in
+            self.output("broadcast.unfreeze", response, response.error)
+        }
+
+        let vote = VoteMessage(proposalId: 1, vote: .yes, address: address, wallet: wallet)
+        binance.broadcast(message: vote) { (response) in
+            self.output("broadcast.vote", response, response.error)
+        }
+
     }
     
     // MARK: - WebSocket
@@ -184,6 +207,10 @@ public class Test: WebSocketDelegate {
         let webSocket = WebSocket(delegate: self)
         self.webSocket = webSocket
         webSocket.connect(endpoint: endpoint) {
+
+            webSocket.subscribe(ticker: [self.symbol])
+
+            /*
             webSocket.subscribe(accounts: self.address)
             webSocket.subscribe(orders: self.address)
             webSocket.subscribe(transfer: self.address)
@@ -196,6 +223,7 @@ public class Test: WebSocketDelegate {
             webSocket.subscribe(miniTicker: [self.symbol])
             webSocket.subscribe(miniTicker: .all)
             webSocket.subscribe(blockheight: .all)
+ */
         }
 
     }

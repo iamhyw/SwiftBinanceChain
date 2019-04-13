@@ -265,6 +265,7 @@ public class Message {
         case stdTx = "0xF0625DEE"
         case signature = ""
         case pubKey = "EB5AE987"
+        case vote = "A1CADD36"
         var data: Data { return self.rawValue.unhexlify }
     }
 
@@ -433,7 +434,7 @@ class TransferMessage: Message {
         var amount: Int = 0
     }
 
-    required init(fromAddress: String, fromDenom: String, fromAmount: Int, toAddress: String, toDenom: String, toAmount: Int, wallet: Wallet) {
+    required init(from: String, fromDenom: String, fromAmount: Int, to: String, toDenom: String, toAmount: Int, wallet: Wallet) {
         super.init(wallet: wallet)
         self.type = .transfer
     }
@@ -444,6 +445,30 @@ class TransferMessage: Message {
         pb.outputs = []
         // TODO
         return try! pb.serializedData()
+    }
+    
+}
+
+class VoteMessage: Message {
+
+    private var proposalId: Int = 0
+    private var address: String = ""
+    private var vote: VoteOption = .no
+
+    required init(proposalId: Int, vote: VoteOption, address: String, wallet: Wallet) {
+        super.init(wallet: wallet)
+        self.type = .vote
+        self.proposalId = proposalId
+        self.address = address
+        self.vote = vote
+    }
+
+    override fileprivate var protobuf: Data {
+        var vote = Vote()
+        vote.proposalID = Int64(self.proposalId)
+        vote.voter = Data(address.utf8)
+        vote.option = Int64(self.vote.rawValue)
+        return try! vote.serializedData()
     }
     
 }
