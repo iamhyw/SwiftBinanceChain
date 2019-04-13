@@ -208,7 +208,7 @@ public class Test: WebSocketDelegate {
         self.webSocket = webSocket
         webSocket.connect(endpoint: endpoint) {
 
-            webSocket.subscribe(ticker: [self.symbol])
+            webSocket.subscribe(candlestick: [self.symbol], interval: .oneMinute)
 
             /*
             webSocket.subscribe(accounts: self.address)
@@ -223,7 +223,7 @@ public class Test: WebSocketDelegate {
             webSocket.subscribe(miniTicker: [self.symbol])
             webSocket.subscribe(miniTicker: .all)
             webSocket.subscribe(blockheight: .all)
- */
+             */
         }
 
     }
