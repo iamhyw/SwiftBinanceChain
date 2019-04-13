@@ -137,14 +137,10 @@ public class BinanceChain {
         self.api(path: .depth, method: .get, parameters: parameters, parser: MarketDepthParser(), completion: completion)
     }
 
-    public func broadcast(sync: Bool = true, message: Message, completion: Completion? = nil) {
-        self.broadcast(sync: sync, message: message.bytes, completion: completion)
-    }
-    
-    public func broadcast(sync: Bool = true, message: Data, completion: Completion? = nil) {
+    public func broadcast(sync: Bool = true, message bytes: Data, completion: Completion? = nil) {
         var path = Path.broadcast.rawValue
         if (sync) { path += "/?sync=1" }
-        self.api(path: path, method: .post, body: message, parser: BroadcastParser(), completion: completion)
+        self.api(path: path, method: .post, body: bytes, parser: BroadcastParser(), completion: completion)
     }
 
     public func klines(symbol: String, interval: Interval? = nil, limit: Limit? = nil, startTime: TimeInterval? = nil, endTime: TimeInterval? = nil, completion: Completion? = nil) {
@@ -232,10 +228,12 @@ public class BinanceChain {
     @discardableResult
     internal func api(path: String, method: HTTPMethod = .get, parameters: Parameters = [:], body: Data? = nil, parser: Parser = Parser(), completion: Completion? = nil) -> Request? {
 
+        var encoding: ParameterEncoding = URLEncoding.default
+        if let body = body { encoding = HexEncoding(data: body) }
         let url = String(format: "%@/%@", self.endpoint, path)
-        var request = Alamofire.request(url, method: method, parameters: parameters, encoding: URLEncoding.default)
-        if let body = body { request = Alamofire.upload(body, to: url, method: method) }
+        let request = Alamofire.request(url, method: method, parameters: parameters, encoding: encoding)
         request.validate(statusCode: 200..<300)
+        debugPrint(request)
         request.responseData() { (http) -> Void in
             DispatchQueue.global(qos: .background).async {
                 let response = BinanceChain.Response()
@@ -273,4 +271,22 @@ public class BinanceChain {
 
     }
 
+    // MARK: - Alamofire Util
+
+    private struct HexEncoding: ParameterEncoding {
+
+        private let data: Data
+
+        init(data: Data) {
+            self.data = data
+        }
+
+        func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
+            var urlRequest = try urlRequest.asURLRequest()
+            urlRequest.setValue("text/plain", forHTTPHeaderField: "Content-Type")
+            urlRequest.httpBody = data.hexdata
+            return urlRequest
+        }
+    }
+    
 }

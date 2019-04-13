@@ -280,28 +280,55 @@ public class Message {
         var data = Data()
         if (includeLengthPrefix) {
             let length: Int = Varint.encodedSize(of: Int32(type.data.count + protobuf.count))
+            print("  VARINT of: \(type.data.count + protobuf.count)")
+            print("  VARINT length: \(length)")
             data.append(UInt8(length))
         }
         data += type.data
         data += protobuf
+        print("  TYPE length: \(type.data.count)")
+        print("  PROTOBUF length: \(protobuf.count)")
+        print("  DATA length: \(data.count)")
         return data
     }
-    
+
+    func sign(with wallet: Wallet) -> Data {
+
+        return self.bytes
+        
+    }
+
 }
 
 class NewOrderMessage: Message {
 
     var symbol: String = ""
+    var orderType: OrderType = .limit
+    var side: Side = .buy
+    var price: Double = 0
+    var quantity: Double = 0
+    var timeInForce: TimeInForce = .goodTillExpire
 
-    required init(symbol: String) {
+    required init(symbol: String, orderType: OrderType, side: Side, price: Double, quantity: Double, timeInForce: TimeInForce) {
         super.init()
+        self.symbol = symbol
         self.type = .newOrder
+        self.orderType = orderType
+        self.side = side
+        self.price = price
+        self.quantity = quantity
+        self.timeInForce = timeInForce
         self.symbol = symbol
     }
 
     override var protobuf: Data {
         var pb = NewOrder()
         pb.symbol = symbol
+        pb.ordertype = Int64(self.orderType.rawValue)
+        pb.side = Int64(self.side.rawValue)
+        pb.price = Int64(price)
+        pb.quantity = Int64(quantity)
+        pb.timeinforce = Int64(self.timeInForce.rawValue)
         return try! pb.serializedData()
     }
     

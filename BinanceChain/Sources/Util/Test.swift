@@ -153,14 +153,16 @@ public class Test: WebSocketDelegate {
     public func testBroadcast(endpoint: BinanceChain.Endpoint = .testnet) {
 
         let binance = BinanceChain(endpoint: endpoint)
+        let wallet = Wallet()
 
         // Test error
         binance.broadcast(message: Data()) { (response) in
             self.output("broadcast", response, response.error)
         }
 
-        let newOrderMessage = NewOrderMessage(symbol: symbol)
-        binance.broadcast(message: newOrderMessage.bytes) { (response) in
+        let newOrderMessage = NewOrderMessage(symbol: symbol, orderType: .limit, side: .buy, price: 100, quantity: 1, timeInForce: .goodTillExpire)
+        let newOrderBytes = newOrderMessage.sign(with: wallet)
+        binance.broadcast(message: newOrderBytes) { (response) in
             self.output("broadcast", response, response.error)
         }
         

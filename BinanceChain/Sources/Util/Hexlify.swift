@@ -20,6 +20,10 @@ extension String {
 
 extension Data {
 
+    var hexdata: Data {
+        return Data(self.hexlify.utf8)
+    }
+
     var hexlify: String {
         let hexDigits = Array("0123456789abcdef".utf16)
         var hexChars = [UTF16.CodeUnit]()
