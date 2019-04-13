@@ -151,52 +151,56 @@ binance.transactions(address: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr") { (
 
 ### WebSockets
 
-To get real-time updates, create a [WebSocket](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift), register a [WebSocketDelegate](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift), then subscribe. The delegate will be notified as updates become available.
+To get real-time updates, create a [WebSocket](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift), register a [WebSocketDelegate](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Core/WebSocket.swift), connect and subscribe. The delegate will be notified as updates become available.
 
 ```swift
 let webSocket = WebSocket()
 webSocket.delegate = self
 webSocket.connect(endpoint: .testnet)
 
-// Individual order updates
-webSocket.subscribe(accounts: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
+func webSocketDidConnect(webSocket: WebSocket) {
+    
+    // Individual order updates
+    webSocket.subscribe(accounts: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
+    
+    // Account updates
+    webSocket.subscribe(orders: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
+    
+    // Transfer updates when the address is sender or receiver
+    webSocket.subscribe(transfer: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
+    
+    // Individual trade updates
+    webSocket.subscribe(trades: ["BNB_BTC.B-918"])
+    
+    // Order book price and quantity depth updates
+    webSocket.subscribe(marketDiff: ["BNB_BTC.B-918"])
+    
+    // Top 20 levels of bids and asks
+    webSocket.subscribe(marketDepth: ["BNB_BTC.B-918"])
+    
+    // The current candlestick at requested interval
+    webSocket.subscribe(candlestick: ["BNB_BTC.B-918"], interval: .oneMinute)
+    
+    // Ticker statistics for a symbol, sent every second
+    webSocket.subscribe(ticker: ["BNB_BTC.B-918"])
+    
+    // Ticker statistics for all symbols, sent every second
+    webSocket.subscribe(ticker: .all)
+    
+    // Reduced ticker statistics for a symbol, sent every second
+    webSocket.subscribe(miniTicker: ["BNB_BTC.B-918"])
+    
+    // Reduced ticker statistics all symbols, sent every second
+    webSocket.subscribe(miniTicker: .all)
+    
+    // Latest block height
+    webSocket.subscribe(blockheight: .all)
+    
+    // Keep a reference to unsubscribe
+    let subscription = webSocket.subscribe(ticker: all)
+    webSocket.unsubscribe(subscription)
 
-// Account updates
-webSocket.subscribe(orders: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
-
-// Transfer updates when the address is sender or receiver
-webSocket.subscribe(transfer: "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr")
-
-// Individual trade updates
-webSocket.subscribe(trades: ["BNB_BTC.B-918"])
-
-// Order book price and quantity depth updates
-webSocket.subscribe(marketDiff: ["BNB_BTC.B-918"])
-
-// Top 20 levels of bids and asks
-webSocket.subscribe(marketDepth: ["BNB_BTC.B-918"])
-
-// The current candlestick at requested interval
-webSocket.subscribe(candlestick: ["BNB_BTC.B-918"], interval: .oneMinute)
-
-// Ticker statistics for a symbol, sent every second
-webSocket.subscribe(ticker: ["BNB_BTC.B-918"])
-
-// Ticker statistics for all symbols, sent every second
-webSocket.subscribe(ticker: .all)
-
-// Reduced ticker statistics for a symbol, sent every second
-webSocket.subscribe(miniTicker: ["BNB_BTC.B-918"])
-
-// Reduced ticker statistics all symbols, sent every second
-webSocket.subscribe(miniTicker: .all)
-
-// Latest block height
-webSocket.subscribe(blockheight: .all)
-
-// Keep a reference to unsubscribe
-let subscription = webSocket.subscribe(ticker: all)
-webSocket.unsubscribe(subscription)
+}
 ```
 
 ### Alternating networks
@@ -211,7 +215,8 @@ let websocket = WebSocket(endpoint: .testnet)
 
 ### Wallet
 
-
+```swift
+```
 
 ## Sample apps
 
