@@ -222,7 +222,7 @@ let wallet = Wallet(endpoint: "https://dex.binance.org/api/v1")
 
 ## Sample apps
 
-Sample apps are provided for iOS and macOS. They use [Test.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Util/Test.swift) and run through all features of the library.
+Sample apps are provided for iOS and macOS. They use [Test.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Util/Test.swift) to demonstrate all features of the library.
 
 The command line app uses Swift Package Manager:
 
@@ -239,7 +239,7 @@ While the iOS and macOS apps use Cocoapods and Xcode:
 
 ## In Progress
 
-* Broadcast messages
+* Broadcast message signing
 
 ## License
 
