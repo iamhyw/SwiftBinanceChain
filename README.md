@@ -1,6 +1,6 @@
 # Binance Chain Swift SDK
 
-![Version: alpha](https://img.shields.io/badge/version-1.0.0--alpha-orange.svg)
+![Version: beta](https://img.shields.io/badge/version-1.0.0--beta-orange.svg)
 ![Platforms: ios | macos | watchos | tvos](https://img.shields.io/badge/platform-ios%20%7C%20macos%20%7C%20watchos%20%7C%20tvos-blue.svg)
 ![Swift: 5.0](https://img.shields.io/badge/swift-5.0-brightgreen.svg)
 ![License: MIT](https://img.shields.io/badge/license-MIT-ff69b4.svg)
@@ -9,8 +9,9 @@
 
 - [x] Connect to mainnet, testnet, or a custom address
 - [x] HTTP API
-- [x] WebSockets
 - [x] Wallet
+- [x] WebSockets
+- [x] Broadcast Transactions
 
 ## Requirements
 
@@ -210,7 +211,7 @@ print(wallet.privateKey)
 print(wallet.publicKey)
 ```
 
-### Transactions (Broadcast messages)
+### Broadcast Transactions
 
 Broadcast messages are an active work in progress, signing is not complete and these interfaces may change.
 
