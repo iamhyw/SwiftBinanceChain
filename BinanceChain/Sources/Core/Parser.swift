@@ -419,6 +419,14 @@ class TxParser: Parser {
     }
 }
 
+class BroadcastParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) throws {
+        print("BROADCAST RESPONSE: \(json)")
+//        print(json)
+        // TODO
+    }
+}
+
 class CandlestickParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
         response.candlesticks = [ self.parseCandlestickDict(json) ]

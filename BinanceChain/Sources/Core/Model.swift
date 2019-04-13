@@ -254,7 +254,7 @@ public class Amount: CustomStringConvertible {
 
 // MARK: - Messages
 
-class Message {
+public class Message {
 
     enum MessageType: String {
         case none = ""
@@ -275,7 +275,7 @@ class Message {
         return Data()
     }
 
-    var amino: Data {
+    var bytes: Data {
         let protobuf = self.protobuf
         var data = Data()
         if (includeLengthPrefix) {
@@ -350,8 +350,8 @@ class PubKeyMessage: Message {
         super.init()
         self.type = .pubKey
     }
-    
-    override var amino: Data {
+
+    override var bytes: Data {
         let protobuf = self.protobuf
         let varint = Varint.encodedSize(of: UInt32(protobuf.count))
         var data = Data()

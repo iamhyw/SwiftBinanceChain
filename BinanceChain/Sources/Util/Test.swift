@@ -10,12 +10,23 @@ public class Test: WebSocketDelegate {
     public init() {
     }
 
+    // MARK: - Test
+    
+    public func runAllTestsOnTestnet() {
+
+        self.testAPI(endpoint: .testnet) {
+            self.testWallet(endpoint: .testnet)
+            self.testWebSocket(endpoint: .testnet)
+        }
+        self.testBroadcast(endpoint: .testnet)
+
+    }
+
     // MARK: - API
     
-    public func testAPI(completion: @escaping ()->()) {
+    public func testAPI(endpoint: BinanceChain.Endpoint = .testnet, completion: @escaping ()->()) {
 
-        let binance = BinanceChain(endpoint: .testnet)
-
+        let binance = BinanceChain(endpoint: endpoint)
         let group = DispatchGroup()
 
         group.enter()
@@ -85,7 +96,7 @@ public class Test: WebSocketDelegate {
         }
 
         group.enter()
-        binance.broadcast(body: Data()) { (response) in
+        binance.broadcast(message: Data()) { (response) in
             group.leave()
         }
 
@@ -137,15 +148,33 @@ public class Test: WebSocketDelegate {
 
     }
 
+    // MARK: - API: Broadcast
+    
+    public func testBroadcast(endpoint: BinanceChain.Endpoint = .testnet) {
+
+        let binance = BinanceChain(endpoint: endpoint)
+
+        // Test error
+        binance.broadcast(message: Data()) { (response) in
+            self.output("broadcast", response, response.error)
+        }
+
+        let newOrderMessage = NewOrderMessage(symbol: symbol)
+        binance.broadcast(message: newOrderMessage.bytes) { (response) in
+            self.output("broadcast", response, response.error)
+        }
+        
+    }
+    
     // MARK: - WebSocket
 
     private var webSocket: WebSocket?
 
-    public func testWebSocket() {
+    public func testWebSocket(endpoint: WebSocket.Endpoint = .testnet) {
 
         let webSocket = WebSocket(delegate: self)
         self.webSocket = webSocket
-        webSocket.connect(endpoint: .testnet) {
+        webSocket.connect(endpoint: endpoint) {
             webSocket.subscribe(accounts: self.address)
             webSocket.subscribe(orders: self.address)
             webSocket.subscribe(transfer: self.address)
@@ -222,8 +251,8 @@ public class Test: WebSocketDelegate {
 
     // MARK: - Wallet
     
-    public func testWallet() {
-        let wallet = Wallet()
+    public func testWallet(endpoint: BinanceChain.Endpoint) {
+        let wallet = Wallet(endpoint: endpoint)
         print(wallet.description)
     }
     

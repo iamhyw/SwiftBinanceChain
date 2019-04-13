@@ -203,8 +203,11 @@ webSocket.connect(endpoint: .testnet) {
 ```swift
 import BinanceChain
 
+// Generate a new wallet
 let wallet = Wallet()
-let wallet = Wallet(mnemonic: "fruit album mosquito bracket album lyrics arrest swift shell brain security desk")
+
+// Restore a wallet
+let wallet = Wallet(mnemonic: "palace boil curve consider spirit depth away denial swear okay flower turtle")
 ```
 
 ### Alternating networks
