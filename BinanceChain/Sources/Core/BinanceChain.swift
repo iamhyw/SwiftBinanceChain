@@ -137,11 +137,14 @@ public class BinanceChain {
         self.api(path: .depth, method: .get, parameters: parameters, parser: MarketDepthParser(), completion: completion)
     }
 
-    public func broadcast(sync: Bool = true, body: Data, completion: Completion? = nil) {
+    public func broadcast(sync: Bool = true, message: Message, completion: Completion? = nil) {
+        self.broadcast(sync: sync, message: message.bytes, completion: completion)
+    }
+    
+    public func broadcast(sync: Bool = true, message: Data, completion: Completion? = nil) {
         var path = Path.broadcast.rawValue
         if (sync) { path += "/?sync=1" }
-        // TODO post body
-        self.api(path: path, method: .post, parser: TransactionsParser(), completion: completion)
+        self.api(path: path, method: .post, body: message, parser: BroadcastParser(), completion: completion)
     }
 
     public func klines(symbol: String, interval: Interval? = nil, limit: Limit? = nil, startTime: TimeInterval? = nil, endTime: TimeInterval? = nil, completion: Completion? = nil) {
@@ -222,44 +225,39 @@ public class BinanceChain {
     // MARK: - Utils
 
     @discardableResult
-    internal func api(path: Path, method: HTTPMethod = .get, parameters: Parameters = [:], encoding: ParameterEncoding = URLEncoding.default, parser: Parser = Parser(), completion: Completion? = nil) -> Request? {
-        return self.api(path: path.rawValue, method: method, parameters: parameters, encoding: encoding, parser: parser, completion: completion)
+    internal func api(path: Path, method: HTTPMethod = .get, parameters: Parameters = [:], body: Data? = nil, parser: Parser = Parser(), completion: Completion? = nil) -> Request? {
+        return self.api(path: path.rawValue, method: method, parameters: parameters, parser: parser, completion: completion)
     }
 
     @discardableResult
-    internal func api(path: String, method: HTTPMethod = .get, parameters: Parameters = [:], encoding: ParameterEncoding = URLEncoding.default, parser: Parser = Parser(), completion: Completion? = nil) -> Request? {
+    internal func api(path: String, method: HTTPMethod = .get, parameters: Parameters = [:], body: Data? = nil, parser: Parser = Parser(), completion: Completion? = nil) -> Request? {
 
         let url = String(format: "%@/%@", self.endpoint, path)
-        print(url)
-
-        let request = Alamofire.request(url, method: method, parameters: parameters, encoding: encoding)
-        request.validate(statusCode: [200, 400, 404])
+        var request = Alamofire.request(url, method: method, parameters: parameters, encoding: URLEncoding.default)
+        if let body = body { request = Alamofire.upload(body, to: url, method: method) }
+        request.validate(statusCode: 200..<300)
         request.responseData() { (http) -> Void in
-
             DispatchQueue.global(qos: .background).async {
                 let response = BinanceChain.Response()
 
                 switch http.result {
                 case .success(let data):
-                    
+
                     do {
-                        switch (http.response?.statusCode) {
-                        case 400, 404:
-                            response.isError = true
-                            try ErrorParser().parse(response: response, data: data)
-
-                        default:
-                            try parser.parse(response: response, data: data)
-                        }
-
+                        try parser.parse(response: response, data: data)
                     } catch {
                         response.isError = true
                         response.error = error
                     }
 
                 case .failure(let error):
+
                     response.isError = true
                     response.error = error
+                    if let data = http.data {
+                        try? ErrorParser().parse(response: response, data: data)
+                    }
+                    
                 }
 
                 DispatchQueue.main.async {
