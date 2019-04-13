@@ -210,7 +210,7 @@ let wallet = Wallet()
 let wallet = Wallet(mnemonic: "boat mind spend tea ladder toast settle toward nature drop keys phrase")
 ```
 
-### Alternating networks
+### Changing networks
 
 Switch between mainnet, testnet, or a custom endpoint easily:
 
