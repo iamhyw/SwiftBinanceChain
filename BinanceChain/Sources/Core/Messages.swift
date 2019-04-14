@@ -305,10 +305,6 @@ private class StdTxMessage: Message {
         return try! stdTx.serializedData()
     }
 
-    override var amino: Data {
-        return self.protobuf
-    }
-    
 }
 
 // MARK: - Signature
