@@ -231,7 +231,7 @@ let msg = Message.newOrder(symbol: "BNB_BTC.B-918", orderType: .limit, side: .bu
 let msg = Message.cancelOrder(symbol: "BNB_BTC.B-918", orderId: "id", wallet: wallet)
 
 // Transfer funds
-let msg = Message.transfer(symbol: "BNB_BTC.B-918", amount: 200, toAddress: address, wallet: Wallet)
+let msg = Message.transfer(symbol: "BNB_BTC.B-918", amount: 200, to: address, wallet: Wallet)
 
 // Move tokens into a frozen state, meaning they can't be used to transfer or send new orders
 let msg = Message.freeze(symbol: "BNB_BTC.B-918", amount: 10, wallet: wallet)

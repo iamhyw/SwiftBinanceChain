@@ -75,11 +75,11 @@ public class Message {
         return message
     }
 
-    public static func transfer(symbol: String, amount: Double, toAddress: String, wallet: Wallet) -> Message {
+    public static func transfer(symbol: String, amount: Double, to address: String, wallet: Wallet) -> Message {
         let message = Message(type: .transfer, wallet: wallet)
         message.symbol = symbol
         message.amount = amount
-        message.toAddress = toAddress
+        message.toAddress = address
         return message
     }
 
