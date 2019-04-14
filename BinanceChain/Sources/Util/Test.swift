@@ -9,12 +9,13 @@ public class Test: WebSocketDelegate {
 
     public enum Tests: String {
         case all = "all"
+        case allMinimised = "minimised"
         case api = "api"
         case wallet = "wallet"
         case broadcast = "broadcast"
         case websocket = "websocket"
     }
-    
+
     private let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
     private let addressTwo = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
     private let symbol = "BNB_BTC.B-918"
@@ -39,6 +40,13 @@ public class Test: WebSocketDelegate {
                 self.testWebSocket(endpoint: .testnet)
             }
 
+        case .allMinimised:
+            self.testAPI(endpoint: .testnet) {
+                self.testWallet(endpoint: .testnet)
+                self.testBroadcast(endpoint: .testnet)
+                self.testWebSocket(minimise: true, endpoint: .testnet)
+            }
+            
         case .api:
             self.testAPI(endpoint: .testnet) {}
             
@@ -226,15 +234,15 @@ public class Test: WebSocketDelegate {
 
     private var webSocket: WebSocket?
 
-    public func testWebSocket(endpoint: WebSocket.Endpoint = .testnet) {
+    public func testWebSocket(minimise: Bool = false, endpoint: WebSocket.Endpoint = .testnet) {
 
-        let runAllTests = true
-        
         let webSocket = WebSocket(delegate: self)
         self.webSocket = webSocket
         webSocket.connect(endpoint: endpoint) {
 
-            if (runAllTests) {
+            if (minimise) {
+                webSocket.subscribe(candlestick: [self.symbol], interval: .oneMinute)
+            } else {
                 webSocket.subscribe(accounts: self.address)
                 webSocket.subscribe(orders: self.address)
                 webSocket.subscribe(transfer: self.address)
@@ -247,8 +255,6 @@ public class Test: WebSocketDelegate {
                 webSocket.subscribe(miniTicker: [self.symbol])
                 webSocket.subscribe(miniTicker: .all)
                 webSocket.subscribe(blockheight: .all)
-            } else {
-                webSocket.subscribe(candlestick: [self.symbol], interval: .oneMinute)
             }
 
         }

@@ -13,7 +13,7 @@ class ViewController: NSViewController, TestDelegate {
         // Run tests
         self.test = Test()
         self.test?.delegate = self
-        self.test?.runTestsOnTestnet(.all)
+        self.test?.runTestsOnTestnet(.allMinimised)
 
     }
 

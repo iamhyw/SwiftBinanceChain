@@ -48,6 +48,11 @@ public class Message {
 
     var bytes: Data {
         let standard = StdTxMessage(message: self, wallet: self.wallet)
+
+        // TEMP
+        print(standard.amino.hexlify)
+        print("\n")
+        
         return standard.amino
     }
 
@@ -313,13 +318,13 @@ private class Signature {
     private var wallet: Wallet!
     private var message: Message!
     private var chainId: String = ""
-    private var data: Data = Data()
+    private var data: Data?
     private var memo: String = ""
 
     required init(message: Message, data: Data? = nil, memo: String = "", wallet: Wallet) {
         self.message = message
         self.wallet = wallet
-        self.data = data ?? Data()
+        self.data = data
         self.memo = memo
     }
 
@@ -327,7 +332,7 @@ private class Signature {
         return [
             "account_number": self.wallet.accountNumber,
             "chain_id": self.wallet.chainId,
-            "data": self.data,
+            "data": self.data ?? Data(),
             "memo": self.memo,
             "msgs": [self.message.keyValuePairs],
             "sequence": self.wallet.sequence,
@@ -336,7 +341,7 @@ private class Signature {
     }
 
     var bytes: Data {
-        
+
         // TEMP
         print(self.keyValuePairs.json)
 
