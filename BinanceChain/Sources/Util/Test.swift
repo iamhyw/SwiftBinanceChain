@@ -212,7 +212,7 @@ public class Test: WebSocketDelegate {
             self.output("broadcast.cancel", response.transactions, response.error)
         }
 
-        let msgTransfer = Message.transfer(symbol: symbol, amount: amount, toAddress: addressTwo, wallet: wallet)
+        let msgTransfer = Message.transfer(symbol: symbol, amount: amount, to: addressTwo, wallet: wallet)
         binance.broadcast(message: msgTransfer) { (response) in
             self.output("broadcast.transfer", response.transactions, response.error)
         }
