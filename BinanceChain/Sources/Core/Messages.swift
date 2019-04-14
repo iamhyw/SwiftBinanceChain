@@ -30,6 +30,10 @@ public class Message {
         return Data()
     }
 
+    fileprivate var keyValuePairs: KeyValuePairs<String, Any> {
+        return [:]
+    }
+    
     var amino: Data {
         let protobuf = self.protobuf
         var data = Data()
@@ -43,10 +47,10 @@ public class Message {
     }
 
     var bytes: Data {
-        let standard = StdTxMessage(message: self)
+        let standard = StdTxMessage(message: self, wallet: self.wallet)
         return standard.amino
     }
-    
+
 }
 
 // MARK: - NewOrderMessage
@@ -72,6 +76,18 @@ public class NewOrderMessage: Message {
         self.symbol = symbol
     }
 
+    override fileprivate var keyValuePairs: KeyValuePairs<String, Any> {
+        return [
+            "id": self.wallet.generateOrderId(),
+            "ordertype": self.orderType.rawValue,
+            "price": self.price,
+            "quantity": self.quantity,
+            "side": self.side.rawValue,
+            "symbol": self.symbol,
+            "timeinforce": self.timeInForce.rawValue
+        ]
+    }
+
     override fileprivate var protobuf: Data {
         var pb = NewOrder()
         pb.symbol = symbol
@@ -85,9 +101,9 @@ public class NewOrderMessage: Message {
 
 }
 
-// MARK: - CancelMessage
+// MARK: - CancelOrderMessage
 
-public class CancelMessage: Message {
+public class CancelOrderMessage: Message {
 
     private var symbol: String = ""
     private var orderId: String = ""
@@ -99,6 +115,14 @@ public class CancelMessage: Message {
         self.orderId = orderId
     }
 
+    override fileprivate var keyValuePairs: KeyValuePairs<String, Any> {
+        return [
+            "refid": self.orderId,
+            "sender": self.wallet.address,
+            "symbol": self.symbol
+        ]
+    }
+    
     override fileprivate var protobuf: Data {
         var pb = CancelOrder()
         pb.symbol = symbol
@@ -112,14 +136,22 @@ public class CancelMessage: Message {
 
 public class FreezeMessage: Message {
 
-    private var symbol: String = ""
-    private var amount: Int = 0
+    internal var symbol: String = ""
+    internal var amount: Int = 0
 
     required init(symbol: String, amount: Int, wallet: Wallet) {
         super.init(wallet: wallet)
         self.type = .freeze
         self.symbol = symbol
         self.amount = amount
+    }
+
+    override fileprivate var keyValuePairs: KeyValuePairs<String, Any> {
+        return [
+            "amount": self.amount,
+            "from": self.wallet.address,
+            "symbol": self.symbol
+        ]
     }
 
     override fileprivate var protobuf: Data {
@@ -133,18 +165,13 @@ public class FreezeMessage: Message {
 
 // MARK: - UnFreezeMessage
 
-public class UnFreezeMessage: Message {
-
-    private var symbol: String = ""
-    private var amount: Int = 0
+public class UnFreezeMessage: FreezeMessage {
 
     required init(symbol: String, amount: Int, wallet: Wallet) {
-        super.init(wallet: wallet)
+        super.init(symbol: symbol, amount: amount, wallet: wallet)
         self.type = .unfreeze
-        self.symbol = symbol
-        self.amount = amount
     }
-
+    
     override fileprivate var protobuf: Data {
         var pb = TokenUnfreeze()
         pb.symbol = symbol
@@ -158,22 +185,56 @@ public class UnFreezeMessage: Message {
 
 public class TransferMessage: Message {
 
-    private struct Token {
-        var address: String = ""
-        var amount: Int = 0
-    }
+    private var symbol: String = ""
+    private var amount: Int = 0
+    private var to: String = ""
 
-    required init(from: String, fromDenom: String, fromAmount: Int, to: String, toDenom: String, toAmount: Int, wallet: Wallet) {
+    required init(symbol: String, amount: Int, to: String, wallet: Wallet) {
         super.init(wallet: wallet)
         self.type = .transfer
+        self.symbol = symbol
+        self.amount = amount
+        self.to = to
+    }
+
+    private func coins(symbol: String, amount: Int) -> KeyValuePairs<String, Any> {
+        return  [
+            "amount": amount,
+            "denom": symbol
+        ]
+    }
+
+    private func coins(address: String, symbol: String, amount: Int) -> KeyValuePairs<String, Any> {
+        return [
+            "address": address,
+            "coins": self.coins(symbol: symbol, amount: amount)
+        ]
+    }
+    
+    override fileprivate var keyValuePairs: KeyValuePairs<String, Any> {
+        return [
+            "inputs": [ coins(address: self.wallet.address, symbol: symbol, amount: amount) ],
+            "outputs": [ coins(address: to, symbol: symbol, amount: amount) ]
+        ]
     }
 
     override fileprivate var protobuf: Data {
-        var pb = Send()
-        pb.inputs = []
-        pb.outputs = []
-        // TODO
-        return try! pb.serializedData()
+        var token = Send.Token()
+        token.denom = self.symbol
+        token.amount = Int64(amount)
+
+        var input = Send.Input()
+        input.address = Segwit.decode(address: self.wallet.address)
+        input.coins.append(token)
+        
+        var output = Send.Output()
+        output.address = Segwit.decode(address: to)
+        output.coins.append(token)
+        
+        var send = Send()
+        send.inputs.append(input)
+        send.outputs.append(output)
+        return try! send.serializedData()
     }
     
 }
@@ -183,22 +244,28 @@ public class TransferMessage: Message {
 public class VoteMessage: Message {
 
     private var proposalId: Int = 0
-    private var address: String = ""
-    private var vote: VoteOption = .no
+    private var option: VoteOption = .no
 
-    required init(proposalId: Int, vote: VoteOption, address: String, wallet: Wallet) {
+    required init(proposalId: Int, vote option: VoteOption, wallet: Wallet) {
         super.init(wallet: wallet)
         self.type = .vote
         self.proposalId = proposalId
-        self.address = address
-        self.vote = vote
+        self.option = option
     }
 
+    override fileprivate var keyValuePairs: KeyValuePairs<String, Any> {
+        return [
+            "proposal_id": Int64(self.proposalId),
+            "voter": self.wallet.address,
+            "option": UInt64(self.option.rawValue)
+        ]
+    }
+    
     override fileprivate var protobuf: Data {
         var vote = Vote()
         vote.proposalID = Int64(self.proposalId)
-        vote.voter = Data(address.utf8)
-        vote.option = Int64(self.vote.rawValue)
+        vote.voter = Data(self.wallet.address.utf8)
+        vote.option = Int64(self.option.rawValue)
         return try! vote.serializedData()
     }
     
@@ -209,23 +276,32 @@ public class VoteMessage: Message {
 private class StdTxMessage: Message {
     
     var message: Message!
-    var signature: SignatureMessage!
-    
-    convenience init(message: Message) {
+    var signatureMessage: SignatureMessage!
+    var data: Data = Data()
+    var memo: String = ""
+
+    convenience init(message: Message, wallet: Wallet, data: Data = Data(), memo: String = "") {
         self.init(wallet: message.wallet)
         self.type = .stdTx
         self.includeLengthPrefix = true
         self.message = message
-        self.signature = SignatureMessage(message: message, wallet: wallet)
+        self.data = data
+        self.memo = memo
+        self.signatureMessage = SignatureMessage(message: message, wallet: wallet)
     }
     
-    override var bytes: Data {
+    override var protobuf: Data {
         var stdTx = StdTx()
         stdTx.msgs.append(self.message.amino)
-        stdTx.signatures.append(self.signature.amino)
-        stdTx.msgs = [self.message.bytes]
+        stdTx.signatures.append(self.signatureMessage.amino)
+        stdTx.data = self.data
+        stdTx.memo = self.memo
         stdTx.source = 1
         return try! stdTx.serializedData()
+    }
+
+    override var amino: Data {
+        return self.protobuf
     }
     
 }
@@ -234,25 +310,38 @@ private class StdTxMessage: Message {
 
 private class Signature {
     
+    private var wallet: Wallet!
     private var message: Message!
     private var chainId: String = ""
-    private var data: Data?
+    private var data: Data = Data()
     private var memo: String = ""
 
-    required init(message: Message, data: Data? = nil, memo: String = "") {
+    required init(message: Message, data: Data? = nil, memo: String = "", wallet: Wallet) {
         self.message = message
-        self.data = data
+        self.wallet = wallet
+        self.data = data ?? Data()
         self.memo = memo
     }
 
-    var bytes: Data {
-        // JSON
-        // to bytes
-        return Data()
+    fileprivate var keyValuePairs: KeyValuePairs<String, Any> {
+        return [
+            "account_number": self.wallet.accountNumber,
+            "chain_id": self.wallet.chainId,
+            "data": self.data,
+            "memo": self.memo,
+            "msgs": [self.message.keyValuePairs],
+            "sequence": self.wallet.sequence,
+            "source": 1
+        ]
     }
 
-    var signedBytes: Data {
-        let signed = self.message.wallet.sign(message: self.bytes)
+    var bytes: Data {
+        
+        // TEMP
+        print(self.keyValuePairs.json)
+
+        let data = Data(self.keyValuePairs.json.utf8)
+        let signed = self.message.wallet.sign(message: data)
         return signed.suffix(64)
     }
     
@@ -271,12 +360,12 @@ private class SignatureMessage: Message {
     }
 
     override fileprivate var protobuf: Data {
-        let signature = Signature(message: self.message)
+        let signature = Signature(message: self.message, wallet: wallet)
         var pb = StdSignature()
         pb.sequence = Int64(self.wallet.sequence)
         pb.accountNumber = Int64(self.wallet.accountNumber)
         pb.pubKey = PubKeyMessage(wallet: self.wallet).amino
-        pb.signature = signature.signedBytes
+        pb.signature = signature.bytes
         return try! pb.serializedData()
     }
 
@@ -303,6 +392,17 @@ private class PubKeyMessage: Message {
         data.append(UInt8(varint))
         data.append(protobuf)
         return data
+    }
+    
+}
+
+// MARK: - Segwit
+
+class Segwit {
+    
+    static func decode(address: String) -> Data {
+        // TODO
+        return Data()
     }
     
 }
