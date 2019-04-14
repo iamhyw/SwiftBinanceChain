@@ -7,12 +7,12 @@ public protocol TestDelegate {
 
 public class Test: WebSocketDelegate {
 
-    public enum Tests {
-        case all
-        case api
-        case wallet
-        case broadcast
-        case websocket
+    public enum Tests: String {
+        case all = "all"
+        case api = "api"
+        case wallet = "wallet"
+        case broadcast = "broadcast"
+        case websocket = "websocket"
     }
     
     private let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
@@ -228,7 +228,7 @@ public class Test: WebSocketDelegate {
 
     public func testWebSocket(endpoint: WebSocket.Endpoint = .testnet) {
 
-        let runAllTests = false
+        let runAllTests = true
         
         let webSocket = WebSocket(delegate: self)
         self.webSocket = webSocket

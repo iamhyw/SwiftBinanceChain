@@ -268,10 +268,18 @@ Sample apps are provided for iOS and macOS. They use [Test.swift](https://github
 The command line app uses Swift Package Manager:
 
 ```console
-% swift run
+% swift run binancechain [test]
+
+Available tests:
+
+        all: Run everything
+        api: HTTP API
+  websocket: Websockets
+  broadcast: Broadcast Transactions
+     wallet: Wallet
 ```
 
-While the iOS and macOS apps use Cocoapods and Xcode:
+The iOS and macOS apps use Cocoapods and Xcode:
 
 ```console
 % pod install
