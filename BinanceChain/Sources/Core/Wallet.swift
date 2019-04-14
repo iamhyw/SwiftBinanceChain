@@ -7,10 +7,6 @@ public class Wallet: CustomStringConvertible {
     var endpoint: String = BinanceChain.Endpoint.testnet.rawValue
     var privateKey: Data { return self.key.raw }
     var publicKey: Data { return self.key.publicKey.data }
-    var address: String {
-        // TODO: generate BNB address from public key (and human readable part: bnb or tbnb)
-        return ""
-    }
     var mnemonic: String = ""
     
     var sequence: Int = 0
@@ -58,8 +54,14 @@ public class Wallet: CustomStringConvertible {
         let key = PrivateKey(seed: seed, coin: .bitcoin)
         self.key = key.bip44PrivateKey
     }
-    
+
     // MARK: - Wallet
+
+    func address(hrp: String? = nil) -> Data {
+        let hrp = hrp ?? ((self.endpoint == BinanceChain.Endpoint.testnet.rawValue) ? "tbnb" : "bnb")
+        // TODO
+        return self.publicKey.sha256()
+    }
 
     func sign(message: Data) -> Data {
         do {
@@ -74,7 +76,7 @@ public class Wallet: CustomStringConvertible {
 
     public var description: String {
         return String(format: "Wallet [mnemonic=%@, address=%@, publicKey=%@, privateKey=%@, endpoint=%@]",
-                      mnemonic, address, publicKey.hexlify, privateKey.hexlify, endpoint)
+                      mnemonic, address().hexlify, publicKey.hexlify, privateKey.hexlify, endpoint)
     }
 
 }
@@ -102,3 +104,4 @@ fileprivate extension HDWalletKit.PrivateKey {
     }
     
 }
+

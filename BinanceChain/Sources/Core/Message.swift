@@ -46,6 +46,7 @@ public class Message {
 
     public static func newOrder(symbol: String, orderType: OrderType, side: Side, price: Double, quantity: Double, timeInForce: TimeInForce, wallet: Wallet) -> Message {
         let message = Message(type: .newOrder, wallet: wallet)
+        message.symbol = symbol
         message.orderType = orderType
         message.side = side
         message.price = price
@@ -93,6 +94,8 @@ public class Message {
     // MARK: - Public
 
     public func encode() throws -> Data {
+
+        print("Address  : ", self.wallet.address().hexlify)
         
         // Generate encoded message
         var message = Data()
@@ -100,9 +103,11 @@ public class Message {
         message.append(body.varint)
         message.append(self.type.rawValue.unhexlify)
         message.append(body)
+        print("Message  : ", message.hexlify)
 
         // Generate signature
         let signature = try self.body(type: .signature)
+        print("Signature: ", signature.hexlify)
         
         // Wrap in StdTx structure
         var stdtx = StdTx()
@@ -111,16 +116,19 @@ public class Message {
         stdtx.memo = self.memo
         stdtx.source = Int64(Source.broadcast.rawValue)
         stdtx.data = Data()
-
+        print("StdTd    : ", try stdtx.serializedData().hexlify)
+        
         // Prefix length and stdtx type
         var content = Data()
         content.append(MessageType.stdtx.rawValue.unhexlify)
         content.append(try stdtx.serializedData())
-        
+        print("StdTd Len: ", content.hexlify)
+
         // Complete Standard Transaction
         var transaction = Data()
         transaction.append(content.varint)
         transaction.append(content)
+        print("Trans    : ", transaction.hexlify)
         return transaction
 
     }
@@ -129,11 +137,11 @@ public class Message {
 
     private func body(type: MessageType) throws -> Data {
 
-        switch (self.type) {
+        switch (type) {
 
         case .newOrder:
             var pb = NewOrder()
-            pb.sender = self.wallet.address.unhexlify // TODO  - address from public key, for environment (hrp: bnb or tbnb)
+            pb.sender = self.wallet.address()
             pb.id = self.wallet.orderId
             pb.symbol = symbol
             pb.timeinforce = Int64(self.timeInForce.rawValue)
@@ -145,9 +153,9 @@ public class Message {
 
         case .cancelOrder:
             var pb = CancelOrder()
-            pb.symbol = symbol
+            pb.symbol = self.symbol
             pb.refid = self.orderId
-            return try! pb.serializedData()
+            return try pb.serializedData()
 
         case .freeze:
             var pb = TokenFreeze()
@@ -167,9 +175,9 @@ public class Message {
             token.amount = Int64(amount)
 
             var input = Send.Input()
-            //input.address = Segwit.decode(address: self.wallet.address)
+            input.address = self.wallet.address()
             input.coins.append(token)
-            
+
             var output = Send.Output()
             //output.address = Segwit.decode(address: to)
             output.coins.append(token)
@@ -198,32 +206,29 @@ public class Message {
         case .vote:
             var vote = Vote()
             vote.proposalID = Int64(self.proposalId)
-            vote.voter = Data(self.wallet.address.utf8)
+            vote.voter = self.wallet.address()
             vote.option = Int64(self.voteOption.rawValue)
             return try vote.serializedData()
             
         default:
-            throw BinanceError(message: "Unavailable")
+            throw BinanceError(message: "Invalid type")
 
         }
 
     }
 
     private func signature() throws -> Data {
-        guard let data = self.json().data(using: .utf8) else { throw BinanceError(message: "Invalid signature") }
+        guard let json = try self.json().rawString() else { throw BinanceError(message: "Invalid JSON")}
+        print(json)
+        guard let data = json.data(using: .utf8) else { throw BinanceError(message: "Invalid JSON") }
         return self.wallet.sign(message: data)
     }
 
-    private func json() -> String {
-        // TODO
-        return keyValuePairs().json
-    }
-
-    private func keyValuePairs() -> KeyValuePairs<String, Any> {
+    private func json() throws -> JSON {
 
         switch (self.type) {
         case .newOrder:
-            return [
+            return JSON([
                 "id": self.wallet.orderId,
                 "ordertype": self.orderType.rawValue,
                 "price": self.price,
@@ -231,64 +236,68 @@ public class Message {
                 "side": self.side.rawValue,
                 "symbol": self.symbol,
                 "timeinforce": self.timeInForce.rawValue
-            ]
+            ])
 
         case .cancelOrder:
-            return [
+            return JSON([
                 "refid": self.orderId,
-                "sender": self.wallet.address,
+                "sender": self.wallet.address().hexlify,
                 "symbol": self.symbol
-            ]
+            ])
 
         case .freeze:
-            return [
+            return JSON([
                 "amount": self.amount,
-                "from": self.wallet.address,
+                "from": self.wallet.address().hexlify,
                 "symbol": self.symbol
-            ]
+            ])
  
         case .unfreeze:
-            return [
+            return JSON([
                 "amount": self.amount,
-                "from": self.wallet.address,
+                "from": self.wallet.address().hexlify,
                 "symbol": self.symbol
-            ]
+            ])
 
         case .transfer:
-            return [
-                "inputs": [ self.accountKeyValuePair(address: self.wallet.address, symbol: symbol, amount: amount) ],
+            /*
+            let dictionary: [String:Array[String:Any]] = [
+                "inputs": [ self.accountKeyValuePair(address: try self.wallet.address(), symbol: symbol, amount: amount) ],
                 "outputs": [ self.accountKeyValuePair(address: toAddress, symbol: symbol, amount: amount) ]
             ]
+            return JSON(dictionary)
+ */
+            return JSON([:])
 
         case .publicKey:
-            return  [
+            return JSON([
                 "amount": amount,
                 "denom": symbol
-            ]
+            ])
 
         case .vote:
-            return [
+            return JSON([
                 "proposal_id": Int64(self.proposalId),
-                "voter": self.wallet.address,
+                "voter": self.wallet.address().hexlify,
                 "option": UInt64(self.voteOption.rawValue)
-            ]
+            ])
             
         default:
-            return [:]
+            return JSON([:])
 
         }
 
     }
 
-    private func accountKeyValuePair(address: String, symbol: String, amount: Double) -> KeyValuePairs<String, Any> {
+    private func accountKeyValuePair(address: String, symbol: String, amount: Double) -> [String:Any] {
         return [
             "address": address,
             "coins": self.moneyKeyValuePair(symbol: symbol, amount: amount)
         ]
     }
 
-    private func moneyKeyValuePair(symbol: String, amount: Double) -> KeyValuePairs<String, Any> {
-        return  [
+    private func moneyKeyValuePair(symbol: String, amount: Double) -> [String:Any] {
+        return [
             "amount": amount,
             "denom": symbol
         ]

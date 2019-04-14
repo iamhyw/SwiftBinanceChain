@@ -210,6 +210,7 @@ let data = wallet.sign(message: data)
 
 // Access wallet
 print(wallet.address)
+print(wallet.mnemonic)
 print(wallet.privateKey)
 print(wallet.publicKey)
 
