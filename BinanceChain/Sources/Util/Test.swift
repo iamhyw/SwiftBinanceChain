@@ -7,6 +7,14 @@ public protocol TestDelegate {
 
 public class Test: WebSocketDelegate {
 
+    public enum Tests {
+        case all
+        case api
+        case wallet
+        case broadcast
+        case websocket
+    }
+    
     private let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
     private let addressTwo = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
     private let symbol = "BNB_BTC.B-918"
@@ -21,12 +29,28 @@ public class Test: WebSocketDelegate {
 
     // MARK: - Test
     
-    public func runAllTestsOnTestnet() {
+    public func runTestsOnTestnet(_ which: Tests) {
 
-        self.testAPI(endpoint: .testnet) {
+        switch (which) {
+        case .all:
+            self.testAPI(endpoint: .testnet) {
+                self.testWallet(endpoint: .testnet)
+                self.testBroadcast(endpoint: .testnet)
+                self.testWebSocket(endpoint: .testnet)
+            }
+
+        case .api:
+            self.testAPI(endpoint: .testnet) {}
+            
+        case .wallet:
             self.testWallet(endpoint: .testnet)
+            
+        case .broadcast:
             self.testBroadcast(endpoint: .testnet)
+            
+        case .websocket:
             self.testWebSocket(endpoint: .testnet)
+            
         }
 
     }
@@ -171,13 +195,12 @@ public class Test: WebSocketDelegate {
             self.output("broadcast.neworder", response, response.error)
         }
 
-        let msgCancel = CancelMessage(symbol: symbol, orderId: orderId, wallet: wallet)
+        let msgCancel = CancelOrderMessage(symbol: symbol, orderId: orderId, wallet: wallet)
         binance.broadcast(message: msgCancel) { (response) in
             self.output("broadcast.cancel", response, response.error)
         }
 
-        let msgTransfer = TransferMessage(from: address, fromDenom: symbol, fromAmount: amount,
-                                   to: addressTwo, toDenom: symbol, toAmount: amount, wallet: wallet)
+        let msgTransfer = TransferMessage(symbol: symbol, amount: amount, to: addressTwo, wallet: wallet)
         binance.broadcast(message: msgTransfer) { (response) in
             self.output("broadcast.transfer", response, response.error)
         }
@@ -192,7 +215,7 @@ public class Test: WebSocketDelegate {
             self.output("broadcast.unfreeze", response, response.error)
         }
 
-        let vote = VoteMessage(proposalId: 1, vote: .yes, address: address, wallet: wallet)
+        let vote = VoteMessage(proposalId: 1, vote: .yes, wallet: wallet)
         binance.broadcast(message: vote) { (response) in
             self.output("broadcast.vote", response, response.error)
         }

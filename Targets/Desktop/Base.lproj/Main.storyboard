@@ -715,7 +715,7 @@
                                     <constraint firstAttribute="height" constant="300" id="3af-cO-TNY"/>
                                     <constraint firstAttribute="width" constant="480" id="if4-hY-h5I"/>
                                 </constraints>
-                                <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="M6O-Dy-zMd">
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="M6O-Dy-zMd">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
