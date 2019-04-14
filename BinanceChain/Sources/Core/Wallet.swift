@@ -1,5 +1,6 @@
 import Foundation
 import HDWalletKit
+import CryptoSwift
 
 public class Wallet: CustomStringConvertible {
 
@@ -50,21 +51,26 @@ public class Wallet: CustomStringConvertible {
 
     func sign(message: Data) -> Data {
         do {
-            return try self.key.sign(hash: message)
+            return try self.key.sign(hash: message.sha256())
         } catch let error {
             print(error)
         }
         return Data()
     }
     
+    func generateOrderId() -> String {
+        return "TODO"
+    }
+
     // MARK: - CustomStringConvertible
 
     public var description: String {
         return String(format: "Wallet [mnemonic=%@, address=%@, publicKey=%@, privateKey=%@, endpoint=%@]",
                       mnemonic, address, publicKey.hexlify, privateKey.hexlify, endpoint)
     }
-    
+
 }
+
 
 // MARK: - HDWalletKit
 
