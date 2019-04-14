@@ -4,6 +4,8 @@ author_url: http://github.com/mh7821/SwiftBinanceChain
 clean: true
 exclude:
  - "**/Protobuf*"
+ - "**/CustomStringConvertible*"
+ - "**/Test*"
 xcodebuild_arguments:
  - -workspace
  - BinanceChain.xcworkspace
