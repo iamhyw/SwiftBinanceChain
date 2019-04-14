@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'BinanceChain'
-  s.version      = '1.0.0-alpha'
+  s.version      = '1.0.0-beta'
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.summary      = 'BinanceChain'
   s.author       = { 'Michael Henderson' => 'roadkillrabbit@gmail.com' }
@@ -22,6 +22,8 @@ Pod::Spec.new do |s|
     sub.source_files = 'BinanceChain/Sources/Core/*.swift'
     sub.dependency 'BinanceChain/Protobuf'
     sub.dependency 'BinanceChain/Util'
+    sub.dependency 'BinanceChain/Bech32'
+    sub.dependency 'BinanceChain/OrderedDict'
     sub.dependency 'Alamofire', '~> 4.8'
     sub.dependency 'SwiftyJSON', '~> 4.3'
     sub.dependency 'SwiftProtobuf', '~> 1.4'
@@ -45,6 +47,10 @@ Pod::Spec.new do |s|
 
   s.subspec 'Bech32' do |sub|
     sub.source_files = 'BinanceChain/Sources/Bech32/*.swift'
+  end
+
+  s.subspec 'OrderedDict' do |sub|
+    sub.source_files = 'BinanceChain/Sources/OrderedDict/*.swift'
   end
 
 end
