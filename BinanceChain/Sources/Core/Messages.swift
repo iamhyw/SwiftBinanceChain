@@ -10,7 +10,7 @@ public class Message {
         case cancelOrder = "166E681B"
         case freeze = "E774B32D"
         case unfreeze = "6515FF0D"
-        case stdTx = "0xF0625DEE"
+        case stdTx = "F0625DEE"
         case signature = ""
         case pubKey = "EB5AE987"
         case vote = "A1CADD36"
