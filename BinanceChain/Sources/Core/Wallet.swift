@@ -7,7 +7,10 @@ public class Wallet: CustomStringConvertible {
     var endpoint: String = BinanceChain.Endpoint.testnet.rawValue
     var privateKey: Data { return self.key.raw }
     var publicKey: Data { return self.key.publicKey.data }
-    // var address: String { return self.key.publicKey.address }
+    var address: String {
+        // TODO: generate BNB address from public key (and human readable part: bnb or tbnb)
+        return ""
+    }
     var address: String = ""
     var mnemonic: String = ""
     
