@@ -138,7 +138,19 @@ public class BinanceChain {
     }
 
     public func broadcast(message: Message, sync: Bool = true, completion: Completion? = nil) {
-        self.broadcast(message: message.bytes, sync: sync, completion: completion)
+
+        do {
+            let bytes = try message.encode()
+            self.broadcast(message: bytes, sync: sync, completion: completion)
+        } catch let error {
+            let response = Response()
+            response.isError = true
+            response.error = error
+            if let completion = completion {
+                completion(response)
+            }
+        }
+            
     }
 
     public func broadcast(message bytes: Data, sync: Bool = true, completion: Completion? = nil) {
