@@ -16,8 +16,12 @@ public class Wallet: CustomStringConvertible {
     
     private var key: PrivateKey!
 
+    required init() {
+        self.initialise(mnemonic: Mnemonic.create())
+    }
+    
     convenience init(endpoint: BinanceChain.Endpoint = .testnet) {
-        self.init(endpoint: endpoint.rawValue)
+        self.init(mnemonic: Mnemonic.create(), endpoint: endpoint.rawValue)
     }
 
     convenience init(endpoint: String? = nil) {
@@ -30,11 +34,8 @@ public class Wallet: CustomStringConvertible {
 
     convenience init(mnemonic: String, endpoint: String? = nil) {
         self.init()
-        self.mnemonic = mnemonic
         if let endpoint = endpoint { self.endpoint = endpoint }
-        let seed = Mnemonic.createSeed(mnemonic: mnemonic)
-        let key = PrivateKey(seed: seed, coin: .bitcoin)
-        self.key = key.bip44PrivateKey
+        self.initialise(mnemonic: mnemonic)
     }
 
     convenience init(privateKey: String, endpoint: BinanceChain.Endpoint) {
@@ -47,6 +48,13 @@ public class Wallet: CustomStringConvertible {
         self.key = PrivateKey(pk: privateKey, coin: .bitcoin)
     }
 
+    private func initialise(mnemonic: String) {
+        self.mnemonic = mnemonic
+        let seed = Mnemonic.createSeed(mnemonic: mnemonic)
+        let key = PrivateKey(seed: seed, coin: .bitcoin)
+        self.key = key.bip44PrivateKey
+    }
+    
     // MARK: - Wallet
 
     func sign(message: Data) -> Data {
@@ -55,9 +63,9 @@ public class Wallet: CustomStringConvertible {
         } catch let error {
             print(error)
         }
-        return Data()
+        return message
     }
-    
+
     func generateOrderId() -> String {
         return "TODO"
     }
