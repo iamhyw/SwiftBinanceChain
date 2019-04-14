@@ -217,31 +217,31 @@ print(wallet.publicKey)
 
 ### Broadcast Transactions
 
-Broadcast messages are a work in progress. Signing is not complete and these interfaces may change.
+Broadcast transactions are a work in progress.
 
 ```swift
 let binance = BinanceChain()
 let wallet = Wallet()
 
 // Create a new order to buy or sell tokens
-let msg = NewOrderMessage(symbol: "BNB_BTC.B-918", orderType: .limit, side: .buy, price: 100,
-                          quantity: 1, timeInForce: .goodTillExpire, wallet: wallet)
+let msg = Message.newOrder(symbol: "BNB_BTC.B-918", orderType: .limit, side: .buy, price: 100,
+                           quantity: 1, timeInForce: .goodTillExpire, wallet: wallet)
 
 // Cancel an outstanding (unfilled) order
-let msg = CancelOrderMessage(symbol: "BNB_BTC.B-918", orderId: "id", wallet: wallet)
+let msg = Message.cancelOrder(symbol: "BNB_BTC.B-918", orderId: "id", wallet: wallet)
 
 // Transfer funds
-let msg = TransferMessage(denom: "BNB", amount: 200, to: "tbnb1066kkxlf823w9lwr6l9hzw4uyphcw7q22ud2",
+let msg = Message.transfer(denom: "BNB", amount: 200, to: "tbnb1066kkxlf823w9lwr6l9hzw4uyphcw7q22ud2",
                           toDenom: "BNB", toAmount: 200, wallet: wallet)
 
 // Move tokens into a frozen state, meaning they can't be used to transfer or send new orders
-let msg = FreezeMessage(symbol: "BNB_BTC.B-918", amount: 10, wallet: wallet)
+let msg = Message.freeze(symbol: "BNB_BTC.B-918", amount: 10, wallet: wallet)
 
 // Revert frozen tokens back to a free state
-let msg = UnFreezeMessage(symbol: "BNB_BTC.B-18", amount: 10, wallet: wallet)
+let msg = Message.unfreeze(symbol: "BNB_BTC.B-18", amount: 10, wallet: wallet)
 
 // Vote for proposals
-let msg = VoteMessage(proposalId: 1, vote: .yes, wallet: wallet)
+let msg = Message.vote(proposalId: 1, vote: .yes, wallet: wallet)
 
 // Broadcast the message
 binance.broadcast(message: msg, sync: true) { (response) in

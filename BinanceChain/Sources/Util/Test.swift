@@ -22,7 +22,7 @@ public class Test: WebSocketDelegate {
     private let symbol = "BNB_BTC.B-918"
     private let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
     private let orderId = "7F756B1BE93AA2E2FDC3D7CB713ABC206F877802-43"
-    private let amount = 200
+    private let amount: Double = 200
 
     public var delegate: TestDelegate?
     
@@ -201,33 +201,33 @@ public class Test: WebSocketDelegate {
         let binance = BinanceChain(endpoint: endpoint)
         let wallet = Wallet(endpoint: endpoint)
 
-        let msgNewOrder = NewOrderMessage(symbol: symbol, orderType: .limit, side: .buy, price: 100,
+        let msgNewOrder = Message.newOrder(symbol: symbol, orderType: .limit, side: .buy, price: 100,
                                           quantity: 1, timeInForce: .goodTillExpire, wallet: wallet)
         binance.broadcast(message: msgNewOrder) { (response) in
             self.output("broadcast.neworder", response.transactions, response.error)
         }
 
-        let msgCancel = CancelOrderMessage(symbol: symbol, orderId: orderId, wallet: wallet)
+        let msgCancel = Message.cancelOrder(symbol: symbol, orderId: orderId, wallet: wallet)
         binance.broadcast(message: msgCancel) { (response) in
             self.output("broadcast.cancel", response.transactions, response.error)
         }
 
-        let msgTransfer = TransferMessage(symbol: symbol, amount: amount, to: addressTwo, wallet: wallet)
+        let msgTransfer = Message.transfer(symbol: symbol, amount: amount, toAddress: addressTwo, wallet: wallet)
         binance.broadcast(message: msgTransfer) { (response) in
             self.output("broadcast.transfer", response.transactions, response.error)
         }
 
-        let msgFreeze = FreezeMessage(symbol: symbol, amount: amount, wallet: wallet)
+        let msgFreeze = Message.freeze(symbol: symbol, amount: amount, wallet: wallet)
         binance.broadcast(message: msgFreeze) { (response) in
             self.output("broadcast.freeze", response.transactions, response.error)
         }
 
-        let msgUnFreeze = UnFreezeMessage(symbol: symbol, amount: amount, wallet: wallet)
+        let msgUnFreeze = Message.unfreeze(symbol: symbol, amount: amount, wallet: wallet)
         binance.broadcast(message: msgUnFreeze) { (response) in
             self.output("broadcast.unfreeze", response.transactions, response.error)
         }
 
-        let vote = VoteMessage(proposalId: 1, vote: .yes, wallet: wallet)
+        let vote = Message.vote(proposalId: 1, vote: .yes, wallet: wallet)
         binance.broadcast(message: vote) { (response) in
             self.output("broadcast.vote", response.transactions, response.error)
         }
@@ -239,10 +239,9 @@ public class Test: WebSocketDelegate {
         // Run a broadcast control test
         
         let binance = BinanceChain(endpoint: endpoint)
-        let wallet = Wallet()
-        wallet.chainId = "Binance-Chain-Nile"
-        wallet.orderId = "7F756B1BE93AA2E2FDC3D7CB713ABC206F877802-2"
-        wallet.address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
+        let wallet = Wallet(mnemonic: "")
+        wallet.chainId = ""
+        wallet.orderId = ""
 
         let symbol = "ANN-457_BNB"
         let type = OrderType.limit
@@ -251,7 +250,7 @@ public class Test: WebSocketDelegate {
         let quantity: Double = 1200000000
         let tif = TimeInForce.goodTillExpire
 
-        let msgNewOrder = NewOrderMessage(symbol: symbol, orderType: type, side: side, price: price,
+        let msgNewOrder = Message.newOrder(symbol: symbol, orderType: type, side: side, price: price,
                                           quantity: quantity, timeInForce: tif, wallet: wallet)
         binance.broadcast(message: msgNewOrder) { (response) in
             self.output("broadcast.neworder", response.transactions, response.error)
