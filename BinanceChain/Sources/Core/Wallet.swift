@@ -11,7 +11,6 @@ public class Wallet: CustomStringConvertible {
         // TODO: generate BNB address from public key (and human readable part: bnb or tbnb)
         return ""
     }
-    var address: String = ""
     var mnemonic: String = ""
     
     var sequence: Int = 0
