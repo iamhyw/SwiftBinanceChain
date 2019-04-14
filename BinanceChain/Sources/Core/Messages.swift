@@ -33,15 +33,24 @@ public class Message {
     fileprivate var keyValuePairs: KeyValuePairs<String, Any> {
         return [:]
     }
-    
+
     var amino: Data {
         let protobuf = self.protobuf
         var data = Data()
-        if (includeLengthPrefix) {
-            let length: Int = Varint.encodedSize(of: Int32(type.data.count + protobuf.count))
+        var typeData = Data()
+        var length: Int = 0
+
+        if (!self.type.rawValue.isEmpty) {
+            typeData = type.data
+            length = Varint.encodedSize(of: Int32(protobuf.count + typeData.count))
+        } else {
+            length = Varint.encodedSize(of: Int32(protobuf.count))
+        }
+        
+        if (self.includeLengthPrefix) {
             data.append(UInt8(length))
         }
-        data += type.data
+        data += typeData
         data += protobuf
         return data
     }
@@ -83,7 +92,7 @@ public class NewOrderMessage: Message {
 
     override fileprivate var keyValuePairs: KeyValuePairs<String, Any> {
         return [
-            "id": self.wallet.generateOrderId(),
+            "id": self.wallet.orderId,
             "ordertype": self.orderType.rawValue,
             "price": self.price,
             "quantity": self.quantity,
@@ -95,12 +104,14 @@ public class NewOrderMessage: Message {
 
     override fileprivate var protobuf: Data {
         var pb = NewOrder()
+        pb.sender = self.wallet.address.unhexlify
+        pb.id = self.wallet.orderId
         pb.symbol = symbol
+        pb.timeinforce = Int64(self.timeInForce.rawValue)
         pb.ordertype = Int64(self.orderType.rawValue)
         pb.side = Int64(self.side.rawValue)
         pb.price = Int64(price)
         pb.quantity = Int64(quantity)
-        pb.timeinforce = Int64(self.timeInForce.rawValue)
         return try! pb.serializedData()
     }
 
