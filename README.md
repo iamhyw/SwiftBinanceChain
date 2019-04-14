@@ -231,17 +231,17 @@ let msg = NewOrderMessage(symbol: "BNB_BTC.B-918", orderType: .limit, side: .buy
 let msg = CancelOrderMessage(symbol: "BNB_BTC.B-918", orderId: "id", wallet: wallet)
 
 // Transfer funds
-let msg = TransferMessage(denom: "BNB", amount: 200, to: "tbnb1066kkxlf823w9lwr6l9hzw4uyphcw7q22ud2ry",
+let msg = TransferMessage(denom: "BNB", amount: 200, to: "tbnb1066kkxlf823w9lwr6l9hzw4uyphcw7q22ud2",
                           toDenom: "BNB", toAmount: 200, wallet: wallet)
 
 // Move tokens into a frozen state, meaning they can't be used to transfer or send new orders
 let msg = FreezeMessage(symbol: "BNB_BTC.B-918", amount: 10, wallet: wallet)
 
-// Reverse tokens back into a free state
+// Revert frozen tokens back to a free state
 let msg = UnFreezeMessage(symbol: "BNB_BTC.B-18", amount: 10, wallet: wallet)
 
 // Vote for proposals
-let vote = VoteMessage(proposalId: 1, vote: .yes, wallet: wallet)
+let msg = VoteMessage(proposalId: 1, vote: .yes, wallet: wallet)
 
 // Broadcast the message
 binance.broadcast(message: msg, sync: true) { (response) in
@@ -263,7 +263,7 @@ let wallet = Wallet(endpoint: "https://dex.binance.org/api/v1")
 
 ## Sample apps
 
-Sample apps are provided for iOS and macOS. They use [Test.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Util/Test.swift) to demonstrate all features of the library.
+Sample apps are provided for iOS and macOS. They all use [Test.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Util/Test.swift) and demonstrate features of the library.
 
 The command line app uses Swift Package Manager:
 
