@@ -7,12 +7,14 @@ public class Wallet: CustomStringConvertible {
     var endpoint: String = BinanceChain.Endpoint.testnet.rawValue
     var privateKey: Data { return self.key.raw }
     var publicKey: Data { return self.key.publicKey.data }
-    var address: String { return self.key.publicKey.address }
+    // var address: String { return self.key.publicKey.address }
+    var address: String = ""
     var mnemonic: String = ""
-
+    
     var sequence: Int = 0
     var accountNumber: Int = 0
     var chainId: String = ""
+    var orderId: String = ""
     
     private var key: PrivateKey!
 
@@ -64,10 +66,6 @@ public class Wallet: CustomStringConvertible {
             print(error)
         }
         return message
-    }
-
-    func generateOrderId() -> String {
-        return "TODO"
     }
 
     // MARK: - CustomStringConvertible
