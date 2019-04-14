@@ -9,11 +9,12 @@ Usage: swift run binancechain [test]
 
 Available tests:
 
-        all: Run everything
-        api: HTTP API
-  websocket: Websockets
-  broadcast: Broadcast Transactions
-     wallet: Wallet
+               all: Run everything
+               api: HTTP API
+         websocket: Websockets
+            wallet: Wallet
+         broadcast: Broadcast Transactions
+  broadcastcontrol: Broadcast Transactions (specific example)
 
 """)
    exit(0)
