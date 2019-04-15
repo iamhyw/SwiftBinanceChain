@@ -1,6 +1,5 @@
 import Foundation
 import SwiftProtobuf
-import SwiftyJSON
 
 public class Message {
 
@@ -36,6 +35,7 @@ public class Message {
     private var toAddress: String = ""
     private var proposalId: Int = 0
     private var voteOption: VoteOption = .no
+    private var source: Source = .broadcast
 
     // MARK: - Constructors
 
@@ -52,6 +52,7 @@ public class Message {
         message.price = price
         message.quantity = quantity
         message.timeInForce = timeInForce
+        message.orderId = wallet.generateOrderId()
         return message
     }
 
@@ -95,7 +96,7 @@ public class Message {
 
     public func encode() throws -> Data {
 
-        print("Address  : ", self.wallet.address().hexlify)
+        print("Address  : ", self.wallet.address())
         
         // Generate encoded message
         var message = Data()
@@ -141,8 +142,8 @@ public class Message {
 
         case .newOrder:
             var pb = NewOrder()
-            pb.sender = self.wallet.address()
-            pb.id = self.wallet.orderId
+            pb.sender = Data(self.wallet.address().utf8)
+            pb.id = self.orderId
             pb.symbol = symbol
             pb.timeinforce = Int64(self.timeInForce.rawValue)
             pb.ordertype = Int64(self.orderType.rawValue)
@@ -175,7 +176,7 @@ public class Message {
             token.amount = Int64(amount)
 
             var input = Send.Input()
-            input.address = self.wallet.address()
+            input.address = Data(self.wallet.address().utf8)
             input.coins.append(token)
 
             var output = Send.Output()
@@ -192,7 +193,7 @@ public class Message {
             pb.sequence = Int64(self.wallet.sequence)
             pb.accountNumber = Int64(self.wallet.accountNumber)
             pb.pubKey = try self.body(type: .publicKey)
-            pb.signature = try self.signature()
+            pb.signature = self.signature()
             return try pb.serializedData()
 
         case .publicKey:
@@ -206,7 +207,7 @@ public class Message {
         case .vote:
             var vote = Vote()
             vote.proposalID = Int64(self.proposalId)
-            vote.voter = self.wallet.address()
+            vote.voter = Data(self.wallet.address().utf8)
             vote.option = Int64(self.voteOption.rawValue)
             return try vote.serializedData()
             
@@ -217,96 +218,165 @@ public class Message {
 
     }
 
-    private func signature() throws -> Data {
-        guard let json = try self.json().rawString() else { throw BinanceError(message: "Invalid JSON")}
-        print(json)
-        guard let data = json.data(using: .utf8) else { throw BinanceError(message: "Invalid JSON") }
+    private func signature() -> Data {
+        print("\n")
+        print(self.json)
+        print("\n")
+        let data = Data(self.json.utf8)
         return self.wallet.sign(message: data)
     }
 
-    private func json() throws -> JSON {
+    private var json: String {
 
         switch (self.type) {
+
         case .newOrder:
-            return JSON([
-                "id": self.wallet.orderId,
-                "ordertype": self.orderType.rawValue,
-                "price": self.price,
-                "quantity": self.quantity,
-                "side": self.side.rawValue,
-                "symbol": self.symbol,
-                "timeinforce": self.timeInForce.rawValue
-            ])
+            return String(format: JSON.newOrder,
+                          self.orderId,
+                          self.orderType.rawValue,
+                          self.price,
+                          self.quantity,
+                          self.wallet.address(),
+                          self.side.rawValue,
+                          self.symbol,
+                          self.timeInForce.rawValue)
 
         case .cancelOrder:
-            return JSON([
-                "refid": self.orderId,
-                "sender": self.wallet.address().hexlify,
-                "symbol": self.symbol
-            ])
+            return String(format: JSON.cancelOrder,
+                          self.orderId,
+                          self.wallet.address(),
+                          self.symbol)
 
         case .freeze:
-            return JSON([
-                "amount": self.amount,
-                "from": self.wallet.address().hexlify,
-                "symbol": self.symbol
-            ])
- 
+            return String(format: JSON.freeze,
+                          self.amount,
+                          self.wallet.address(),
+                          self.symbol)
+
         case .unfreeze:
-            return JSON([
-                "amount": self.amount,
-                "from": self.wallet.address().hexlify,
-                "symbol": self.symbol
-            ])
+            return String(format: JSON.unfreeze,
+                          self.amount,
+                          self.wallet.address(),
+                          self.symbol)
 
         case .transfer:
-            /*
-            let dictionary: [String:Array[String:Any]] = [
-                "inputs": [ self.accountKeyValuePair(address: try self.wallet.address(), symbol: symbol, amount: amount) ],
-                "outputs": [ self.accountKeyValuePair(address: toAddress, symbol: symbol, amount: amount) ]
-            ]
-            return JSON(dictionary)
- */
-            return JSON([:])
-
-        case .publicKey:
-            return JSON([
-                "amount": amount,
-                "denom": symbol
-            ])
+            return String(format: JSON.transfer,
+                          self.wallet.accountNumber,
+                          self.wallet.chainId,
+                          self.memo,
+                          self.wallet.address(),
+                          self.symbol,
+                          self.amount,
+                          self.toAddress,
+                          self.symbol,
+                          self.amount,
+                          self.wallet.sequence,
+                          self.source.rawValue)
 
         case .vote:
-            return JSON([
-                "proposal_id": Int64(self.proposalId),
-                "voter": self.wallet.address().hexlify,
-                "option": UInt64(self.voteOption.rawValue)
-            ])
-            
+            return String(format: JSON.vote,
+                          self.wallet.address(),
+                          self.voteOption.rawValue)
+
         default:
-            return JSON([:])
-
+            return "{}"
+            
         }
-
+        
     }
 
-    private func accountKeyValuePair(address: String, symbol: String, amount: Double) -> [String:Any] {
-        return [
-            "address": address,
-            "coins": self.moneyKeyValuePair(symbol: symbol, amount: amount)
-        ]
-    }
-
-    private func moneyKeyValuePair(symbol: String, amount: Double) -> [String:Any] {
-        return [
-            "amount": amount,
-            "denom": symbol
-        ]
-    }
-    
 }
 
-extension Data {
+fileprivate extension Data {
     var varint: UInt8 {
         return UInt8(Varint.encodedSize(of: UInt32(self.count)))
     }
+}
+
+fileprivate class JSON {
+
+    // Signing requires a strictly ordered JSON string. Neither swift nor
+    // SwiftyJSON maintain the order, so instead we use strings.
+
+    static let newOrder = """
+{
+   "id" : "%@",
+   "order_type" : "%d",
+   "price" : "%f",
+   "quantity" : "%f",
+   "sender" : "%@",
+   "side" : "%d",
+   "symbol" : "%@",
+   "timeinforce" : "%d"
+}
+"""
+
+    static let cancelOrder = """
+{
+   "refid" : "%@",
+   "sender": "%@",
+   "symbol" : "%@"
+}
+"""
+
+    static let freeze = """
+{
+   "amount" : "%f",
+   "from" : "%@",
+   "symbol" : "%@"
+}
+"""
+
+    static let unfreeze = """
+{
+   "amount" : "%f",
+   "from" : "%@",
+   "symbol" : "%@"
+}
+"""
+
+    static let transfer = """
+{
+   "account_number" : "%d",
+   "data" : null,
+   "chain_id" : "%@",
+   "memo" : "%@",
+   "msgs" : [
+      {
+         "inputs" : [
+            {
+               "address" : "%@",
+               "coins" : [
+                  {
+                     "denom" : "%@",
+                     "amount" : "%f"
+                  }
+               ]
+            }
+         ],
+         "outputs" : [
+            {
+               "address" : "%@",
+               "coins" : [
+                  {
+                     "denom" : "%@",
+                     "amount" : "%f"
+                  }
+               ]
+            }
+         ]
+      }
+   ],
+   "sequence" : "%d",
+   "source" : "%d"
+}
+"""
+
+    static let vote = """
+{
+    "voter": "%@",
+    "option": "%d"
+}
+"""
+    
 }
