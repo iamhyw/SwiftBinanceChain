@@ -18,7 +18,7 @@ public class Wallet: CustomStringConvertible {
     required init() {
         self.initialise(mnemonic: Mnemonic.create())
     }
-    
+
     convenience init(endpoint: BinanceChain.Endpoint = .testnet) {
         self.init(mnemonic: Mnemonic.create(), endpoint: endpoint.rawValue)
     }
@@ -57,7 +57,9 @@ public class Wallet: CustomStringConvertible {
     // MARK: - Wallet
 
     func generateOrderId() -> String {
-        return String(format: "%@-%d", self.publicKey.hexlify, self.sequence+1)
+        let id = String(format: "%@-%d", self.address(hrp: "").uppercased(), self.sequence)
+        self.sequence += 1
+        return id
     }
 
     @discardableResult
