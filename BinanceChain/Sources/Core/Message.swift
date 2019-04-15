@@ -100,14 +100,14 @@ public class Message {
         
         // Generate encoded message
         var message = Data()
-        let body = try self.body(type: self.type)
+        let body = try self.body(for: self.type)
         message.append(body.varint)
         message.append(self.type.rawValue.unhexlify)
         message.append(body)
         print("Message  : ", message.hexlify)
 
         // Generate signature
-        let signature = try self.body(type: .signature)
+        let signature = try self.body(for: .signature)
         print("Signature: ", signature.hexlify)
         
         // Wrap in StdTx structure
@@ -136,7 +136,7 @@ public class Message {
     
     // MARK: - Private
 
-    private func body(type: MessageType) throws -> Data {
+    private func body(for type: MessageType) throws -> Data {
 
         switch (type) {
 
@@ -148,8 +148,8 @@ public class Message {
             pb.timeinforce = Int64(self.timeInForce.rawValue)
             pb.ordertype = Int64(self.orderType.rawValue)
             pb.side = Int64(self.side.rawValue)
-            pb.price = Int64(price)
-            pb.quantity = Int64(quantity)
+            pb.price = Int64(price.encoded)
+            pb.quantity = Int64(quantity.encoded)
             return try pb.serializedData()
 
         case .cancelOrder:
@@ -161,19 +161,19 @@ public class Message {
         case .freeze:
             var pb = TokenFreeze()
             pb.symbol = symbol
-            pb.amount = Int64(self.amount)
+            pb.amount = Int64(self.amount.encoded)
             return try pb.serializedData()
 
         case .unfreeze:
             var pb = TokenUnfreeze()
             pb.symbol = symbol
-            pb.amount = Int64(self.amount)
+            pb.amount = Int64(self.amount.encoded)
             return try pb.serializedData()
 
         case .transfer:
             var token = Send.Token()
             token.denom = self.symbol
-            token.amount = Int64(amount)
+            token.amount = Int64(amount.encoded)
 
             var input = Send.Input()
             input.address = Data(self.wallet.address().utf8)
@@ -192,7 +192,7 @@ public class Message {
             var pb = StdSignature()
             pb.sequence = Int64(self.wallet.sequence)
             pb.accountNumber = Int64(self.wallet.accountNumber)
-            pb.pubKey = try self.body(type: .publicKey)
+            pb.pubKey = try self.body(for: .publicKey)
             pb.signature = self.signature()
             return try pb.serializedData()
 
@@ -219,21 +219,23 @@ public class Message {
     }
 
     private func signature() -> Data {
-        let data = Data(self.json.utf8)
+        print(self.json(for: .signature))
+        let data = Data(self.json(for: .signature).utf8)
         let signed = self.wallet.sign(message: data)
-        return signed
+        let sig = signed.subdata(in: (signed.count - 64)..<signed.count)
+        return sig
     }
 
-    private var json: String {
+    private func json(for type: MessageType) -> String {
 
-        switch (self.type) {
+        switch (type) {
 
         case .newOrder:
             return String(format: JSON.newOrder,
                           self.orderId,
                           self.orderType.rawValue,
-                          self.price,
-                          self.quantity,
+                          self.price.encoded,
+                          self.quantity.encoded,
                           self.wallet.address(),
                           self.side.rawValue,
                           self.symbol,
@@ -247,13 +249,13 @@ public class Message {
 
         case .freeze:
             return String(format: JSON.freeze,
-                          self.amount,
+                          self.amount.encoded,
                           self.wallet.address(),
                           self.symbol)
 
         case .unfreeze:
             return String(format: JSON.unfreeze,
-                          self.amount,
+                          self.amount.encoded,
                           self.wallet.address(),
                           self.symbol)
 
@@ -264,10 +266,10 @@ public class Message {
                           self.memo,
                           self.wallet.address(),
                           self.symbol,
-                          self.amount,
+                          self.amount.encoded,
                           self.toAddress,
                           self.symbol,
-                          self.amount,
+                          self.amount.encoded,
                           self.wallet.sequence,
                           self.source.rawValue)
 
@@ -275,6 +277,15 @@ public class Message {
             return String(format: JSON.vote,
                           self.wallet.address(),
                           self.voteOption.rawValue)
+
+        case .signature:
+            return String(format: JSON.signature,
+                          self.wallet.accountNumber,
+                          self.wallet.chainId,
+                          self.memo,
+                          self.json(for: self.type),
+                          self.wallet.sequence,
+                          self.source.rawValue)
 
         default:
             return "{}"
@@ -296,8 +307,12 @@ fileprivate class JSON {
     // Signing requires a strictly ordered JSON string. Neither swift nor
     // SwiftyJSON maintain the order, so instead we use strings.
 
+    static let signature = """
+    {"account_number":"%d","chain_id":"%@","data":null,"memo":"%@","msgs":[%@],"sequence":"%d","source":"%d"}
+    """
+
     static let newOrder = """
-    {"id":"%@","order_type":"%d","price":"%f","quantity":"%f","sender":"%@","side":"%d","symbol":"%@","timeinforce":"%d"}
+    {"id":"%@","ordertype":%d,"price":%d,"quantity":%d,"sender":"%@","side":%d,"symbol":"%@","timeinforce":%d}
     """
 
     static let cancelOrder = """
@@ -305,15 +320,15 @@ fileprivate class JSON {
     """
 
     static let freeze = """
-    {"amount":"%f","from":"%@","symbol":"%@"}
+    {"amount":"%d","from":"%@","symbol":"%@"}
     """
 
     static let unfreeze = """
-    {"amount":"%f","from":"%@","symbol":"%@"}
+    {"amount":"%d","from":"%@","symbol":"%@"}
     """
 
     static let transfer = """
-    {"account_number":"%d","data":null,"chain_id":"%@","memo":"%@","msgs":[{"inputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%f"}]}],"outputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%f"}]}]}],"sequence":"%d","source":"%d"}
+    {"inputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%d"}]}],"outputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%d"}]}]}
     """
 
     static let vote = """
@@ -321,3 +336,13 @@ fileprivate class JSON {
     """
 
 }
+
+fileprivate extension Double {
+
+    var encoded: Int {
+        // Multiply by 1e8 (10^8) and round to int
+        return Int(self * pow(10, 8))
+    }
+    
+}
+
