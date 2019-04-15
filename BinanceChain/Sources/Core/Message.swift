@@ -219,11 +219,9 @@ public class Message {
     }
 
     private func signature() -> Data {
-        print("\n")
-        print(self.json)
-        print("\n")
         let data = Data(self.json.utf8)
-        return self.wallet.sign(message: data)
+        let signed = self.wallet.sign(message: data)
+        return signed
     }
 
     private var json: String {
@@ -289,7 +287,7 @@ public class Message {
 
 fileprivate extension Data {
     var varint: UInt8 {
-        return UInt8(Varint.encodedSize(of: UInt32(self.count)))
+        return UInt8(Varint.encodedSize(of: UInt64(self.count)))
     }
 }
 
@@ -299,84 +297,27 @@ fileprivate class JSON {
     // SwiftyJSON maintain the order, so instead we use strings.
 
     static let newOrder = """
-{
-   "id" : "%@",
-   "order_type" : "%d",
-   "price" : "%f",
-   "quantity" : "%f",
-   "sender" : "%@",
-   "side" : "%d",
-   "symbol" : "%@",
-   "timeinforce" : "%d"
-}
-"""
+    {"id":"%@","order_type":"%d","price":"%f","quantity":"%f","sender":"%@","side":"%d","symbol":"%@","timeinforce":"%d"}
+    """
 
     static let cancelOrder = """
-{
-   "refid" : "%@",
-   "sender": "%@",
-   "symbol" : "%@"
-}
-"""
+    {"refid":"%@","sender":"%@","symbol":"%@"}
+    """
 
     static let freeze = """
-{
-   "amount" : "%f",
-   "from" : "%@",
-   "symbol" : "%@"
-}
-"""
+    {"amount":"%f","from":"%@","symbol":"%@"}
+    """
 
     static let unfreeze = """
-{
-   "amount" : "%f",
-   "from" : "%@",
-   "symbol" : "%@"
-}
-"""
+    {"amount":"%f","from":"%@","symbol":"%@"}
+    """
 
     static let transfer = """
-{
-   "account_number" : "%d",
-   "data" : null,
-   "chain_id" : "%@",
-   "memo" : "%@",
-   "msgs" : [
-      {
-         "inputs" : [
-            {
-               "address" : "%@",
-               "coins" : [
-                  {
-                     "denom" : "%@",
-                     "amount" : "%f"
-                  }
-               ]
-            }
-         ],
-         "outputs" : [
-            {
-               "address" : "%@",
-               "coins" : [
-                  {
-                     "denom" : "%@",
-                     "amount" : "%f"
-                  }
-               ]
-            }
-         ]
-      }
-   ],
-   "sequence" : "%d",
-   "source" : "%d"
-}
-"""
+    {"account_number":"%d","data":null,"chain_id":"%@","memo":"%@","msgs":[{"inputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%f"}]}],"outputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%f"}]}]}],"sequence":"%d","source":"%d"}
+    """
 
     static let vote = """
-{
-    "voter": "%@",
-    "option": "%d"
-}
-"""
-    
+    {"voter":"%@","option":"%d"}
+    """
+
 }
