@@ -207,6 +207,12 @@ let wallet = Wallet()
 // Restore with a mnemonic
 let wallet = Wallet(mnemonic: "mnemonic word list")
 
+// Access keys
+print(wallet.privateKey)
+print(wallet.publicKey)
+print(wallet.mnemonic)
+print(wallet.address)
+
 // Synchronise with the remote node before using the wallet
 wallet.synchronise() {
 
@@ -214,17 +220,17 @@ wallet.synchronise() {
         print(error)
     }
 
+    // Generate a new order ID
+    let id = wallet.nextAvailableOrderId()
+
     // Sign a message
     let data = wallet.sign(message: data)
 
+    // Access details
+    print(wallet.accountNumber)
+    print(wallet.sequence)
+
 }
-
-// Access wallet
-print(wallet.address)
-print(wallet.mnemonic)
-print(wallet.privateKey)
-print(wallet.publicKey)
-
 ```
 
 ### Broadcast Transactions

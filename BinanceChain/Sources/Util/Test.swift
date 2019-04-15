@@ -23,6 +23,7 @@ public class Test: WebSocketDelegate {
     private let hashId = "5CAA5E0C6266B3BB6D66C00282DFA0A6A2F9F5A705E6D9049F619B63E1BE43FF"
     private let orderId = "7F756B1BE93AA2E2FDC3D7CB713ABC206F877802-43"
     private let amount: Double = 200
+    private let mnemonic: String = ""
 
     public var delegate: TestDelegate?
     
@@ -199,7 +200,7 @@ public class Test: WebSocketDelegate {
     public func testBroadcast(endpoint: BinanceChain.Endpoint = .testnet) {
 
         let binance = BinanceChain(endpoint: endpoint)
-        let wallet = Wallet(endpoint: endpoint)
+        let wallet = Wallet(mnemonic: mnemonic, endpoint: endpoint)
         wallet.synchronise() { (error) in
 
             self.output("wallet.init", wallet, error)
@@ -245,7 +246,7 @@ public class Test: WebSocketDelegate {
         // Run a broadcast control test
         
         let binance = BinanceChain(endpoint: endpoint)
-        let wallet = Wallet(endpoint: .testnet)
+        let wallet = Wallet(mnemonic: mnemonic, endpoint: .testnet)
         wallet.synchronise() { (error) in
 
             self.output("wallet.init", wallet, error)

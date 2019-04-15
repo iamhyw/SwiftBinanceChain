@@ -1,5 +1,6 @@
 import Foundation
 import SwiftProtobuf
+import HDWalletKit
 
 public class Message {
 
@@ -52,7 +53,7 @@ public class Message {
         message.price = price
         message.quantity = quantity
         message.timeInForce = timeInForce
-        message.orderId = wallet.generateOrderId()
+        message.orderId = wallet.nextAvailableOrderId()
         return message
     }
 
@@ -297,15 +298,22 @@ public class Message {
 }
 
 fileprivate extension Data {
-    var varint: UInt8 {
-        return UInt8(Varint.encodedSize(of: UInt64(self.count)))
+    var varint: Data {
+        return VarInt(self.count).serialized()
+    }
+}
+
+fileprivate extension Double {
+    var encoded: Int {
+        // Multiply by 1e8 (10^8) and round to int
+        return Int(self * pow(10, 8))
     }
 }
 
 fileprivate class JSON {
 
     // Signing requires a strictly ordered JSON string. Neither swift nor
-    // SwiftyJSON maintain the order, so instead we use strings.
+    // SwiftyJSON maintained the order, so instead we use strings.
 
     static let signature = """
     {"account_number":"%d","chain_id":"%@","data":null,"memo":"%@","msgs":[%@],"sequence":"%d","source":"%d"}
@@ -336,13 +344,3 @@ fileprivate class JSON {
     """
 
 }
-
-fileprivate extension Double {
-
-    var encoded: Int {
-        // Multiply by 1e8 (10^8) and round to int
-        return Int(self * pow(10, 8))
-    }
-    
-}
-

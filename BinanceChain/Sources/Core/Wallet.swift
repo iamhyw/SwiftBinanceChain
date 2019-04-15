@@ -101,7 +101,7 @@ public class Wallet: CustomStringConvertible {
 
     }
 
-    public func generateOrderId() -> String {
+    public func nextAvailableOrderId() -> String {
         let address = String(self.address().suffix(40))
         let id = String(format: "%@-%d", address.uppercased(), self.sequence)
         self.sequence += 1
@@ -123,7 +123,7 @@ public class Wallet: CustomStringConvertible {
             let address = Bech32().encode(hrp, values: convertbits)
             return address
         } catch {
-            return "InvalidKey"
+            return "Invalid Key"
         }
     }
 
