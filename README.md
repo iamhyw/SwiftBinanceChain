@@ -218,8 +218,6 @@ print(wallet.publicKey)
 
 ### Broadcast Transactions
 
-Broadcast transactions are a work in progress.
-
 ```swift
 let binance = BinanceChain()
 let wallet = Wallet()
@@ -285,10 +283,6 @@ The iOS and macOS apps use Cocoapods and Xcode:
 % pod install
 % open BinanceChain.xcworkspace
 ```
-
-## In Progress
-
-* Broadcast message signing
 
 ## License
 
