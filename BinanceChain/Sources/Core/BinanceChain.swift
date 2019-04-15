@@ -101,10 +101,8 @@ public class BinanceChain {
     }
 
     public func sequence(address: String, completion: Completion? = nil) {
-        var parameters: Parameters = [:]
-        parameters["format"] = "json"
         let path = String(format: "%@/%@/%@", Path.account.rawValue, address, Path.sequence.rawValue)
-        self.api(path: path, method: .get, parameters: parameters, parser: SequenceParser(), completion: completion)
+        self.api(path: path, method: .get, parser: SequenceParser(), completion: completion)
     }
 
     public func tx(hash: String, completion: Completion? = nil) {
