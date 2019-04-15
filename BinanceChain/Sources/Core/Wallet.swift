@@ -44,7 +44,6 @@ public class Wallet: CustomStringConvertible {
         self.init()
         if let endpoint = endpoint { self.endpoint = endpoint }
         self.key = PrivateKey(pk: privateKey, coin: .bitcoin)
-        self.synchronise(completion: nil)
     }
 
     private func initialise(mnemonic: String, completion: Completion? = nil) {
@@ -52,7 +51,6 @@ public class Wallet: CustomStringConvertible {
         let seed = Mnemonic.createSeed(mnemonic: mnemonic)
         let key = PrivateKey(seed: seed, coin: .bitcoin)
         self.key = key.bip44PrivateKey
-        self.synchronise(completion: nil)
     }
 
     // MARK: - Wallet
@@ -123,16 +121,14 @@ public class Wallet: CustomStringConvertible {
             let convertbits = try SegwitAddrCoder().convertBits(from: 8, to: 5, pad: false, idata: ripemd)
             let address = Bech32().encode(hrp, values: convertbits)
             return address
-        } catch let error {
-            print(error)
+        } catch {
             return "InvalidKey"
         }
     }
 
     public func sign(message: Data) -> Data {
         do {
-            let data = try self.key.sign(hash: message.sha256())
-            print("Got signed data: \(data.count) bytes")
+            return try self.key.sign(hash: message.sha256())
         } catch let error {
             print(error)
         }
