@@ -22,8 +22,7 @@ Pod::Spec.new do |s|
     sub.source_files = 'BinanceChain/Sources/Core/*.swift'
     sub.dependency 'BinanceChain/Protobuf'
     sub.dependency 'BinanceChain/Util'
-    sub.dependency 'BinanceChain/Bech32'
-    sub.dependency 'BinanceChain/OrderedDict'
+    sub.dependency 'BinanceChain/Libraries'
     sub.dependency 'Alamofire', '~> 4.8'
     sub.dependency 'SwiftyJSON', '~> 4.3'
     sub.dependency 'SwiftProtobuf', '~> 1.4'
@@ -45,12 +44,8 @@ Pod::Spec.new do |s|
     sub.source_files = 'BinanceChain/Sources/Test/*.swift'
   end
 
-  s.subspec 'Bech32' do |sub|
-    sub.source_files = 'BinanceChain/Sources/Bech32/*.swift'
-  end
-
-  s.subspec 'OrderedDict' do |sub|
-    sub.source_files = 'BinanceChain/Sources/OrderedDict/*.swift'
+  s.subspec 'Libraries' do |sub|
+    sub.source_files = 'BinanceChain/Sources/Libraries/*/*.swift'
   end
 
 end
