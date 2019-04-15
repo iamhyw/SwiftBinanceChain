@@ -4,14 +4,13 @@ import CryptoSwift
 
 public class Wallet: CustomStringConvertible {
 
-    var endpoint: String = BinanceChain.Endpoint.testnet.rawValue
-    var privateKey: Data { return self.key.raw }
-    var publicKey: Data { return self.key.publicKey.data }
-    var mnemonic: String = ""
-
-    var sequence: Int = 0
-    var accountNumber: Int = 0
-    var chainId: String = ""
+    public var endpoint: String = BinanceChain.Endpoint.testnet.rawValue
+    public var privateKey: Data { return self.key.raw }
+    public var publicKey: Data { return self.key.publicKey.data }
+    public var mnemonic: String = ""
+    public var sequence: Int = 0
+    public var accountNumber: Int = 0
+    public var chainId: String = ""
     
     private var key: PrivateKey!
 
@@ -45,31 +44,78 @@ public class Wallet: CustomStringConvertible {
         self.init()
         if let endpoint = endpoint { self.endpoint = endpoint }
         self.key = PrivateKey(pk: privateKey, coin: .bitcoin)
+        self.synchronise(completion: nil)
     }
 
-    private func initialise(mnemonic: String) {
+    private func initialise(mnemonic: String, completion: Completion? = nil) {
         self.mnemonic = mnemonic
         let seed = Mnemonic.createSeed(mnemonic: mnemonic)
         let key = PrivateKey(seed: seed, coin: .bitcoin)
         self.key = key.bip44PrivateKey
+        self.synchronise(completion: nil)
     }
 
     // MARK: - Wallet
 
-    func generateOrderId() -> String {
+    public typealias Completion = (_ error: Error?)->()
+
+    public func synchronise(completion: Completion? = nil) {
+
+        guard let url = URL(string: self.endpoint) else {
+            if let completion = completion {
+                completion(BinanceError(message: "Invalid endpoint URL"))
+            }
+            return
+        }
+
+        let binance = BinanceChain(endpoint: url)
+        let group = DispatchGroup()
+        var error: Error?
+
+        // Update node info
+        group.enter()
+        binance.nodeInfo() { (response) in
+            if let value = response.error {
+                error = value
+            } else {
+                self.chainId = response.nodeInfo.network
+            }
+            group.leave()
+        }
+
+        // Update account sequence
+        group.enter()
+        binance.account(address: self.address()) { (response) in
+            if let value = response.error {
+                error = value
+            } else {
+                self.accountNumber = response.account.accountNumber
+                self.sequence = response.account.sequence
+            }
+            group.leave()
+        }
+
+        // Synchronisation complete
+        group.notify(queue: .main) {
+            guard let completion = completion else { return }
+            completion(error)
+        }
+
+    }
+
+    public func generateOrderId() -> String {
         let id = String(format: "%@-%d", self.address(hrp: "").uppercased(), self.sequence)
         self.sequence += 1
         return id
     }
 
     @discardableResult
-    func incrementSequence() -> Int {
-        let sequence = self.sequence
+    public func incrementSequence() -> Int {
         self.sequence += 1
         return sequence
     }
 
-    func address(hrp: String? = nil) -> String {
+    public func address(hrp: String? = nil) -> String {
         do {
             let hrp = hrp ?? ((self.endpoint == BinanceChain.Endpoint.testnet.rawValue) ? "tbnb" : "bnb")
             let sha = self.publicKey.sha256()
@@ -83,7 +129,7 @@ public class Wallet: CustomStringConvertible {
         }
     }
 
-    func sign(message: Data) -> Data {
+    public func sign(message: Data) -> Data {
         do {
             let data = try self.key.sign(hash: message.sha256())
             print("Got signed data: \(data.count) bytes")
@@ -96,8 +142,8 @@ public class Wallet: CustomStringConvertible {
     // MARK: - CustomStringConvertible
 
     public var description: String {
-        return String(format: "Wallet [mnemonic=%@, address=%@, publicKey=%@, privateKey=%@, endpoint=%@]",
-                      mnemonic, address(), publicKey.hexlify, privateKey.hexlify, endpoint)
+        return String(format: "Wallet [accountNumber=%d, sequence=%d, chain_id=%@, mnemonic=%@, address=%@, publicKey=%@, privateKey=%@, endpoint=%@]",
+                      accountNumber, sequence, chainId, mnemonic, address(), publicKey.hexlify, privateKey.hexlify, endpoint)
     }
 
 }
