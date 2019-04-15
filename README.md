@@ -207,15 +207,17 @@ let wallet = Wallet()
 // Restore with a mnemonic
 let wallet = Wallet(mnemonic: "mnemonic word list")
 
-// Synchronise with the remote node (chain id, sequence number)
+// Synchronise with the remote node before using the wallet
 wallet.synchronise() {
+
     if let error = error {
         print(error)
     }
-}
 
-// Sign a message
-let data = wallet.sign(message: data)
+    // Sign a message
+    let data = wallet.sign(message: data)
+
+}
 
 // Access wallet
 print(wallet.address)
