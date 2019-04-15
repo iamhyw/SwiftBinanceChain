@@ -204,7 +204,7 @@ import BinanceChain
 // Generate a random wallet
 let wallet = Wallet()
 
-// Restore with a mnemonic
+// Restore with a mnemonic phrase
 let wallet = Wallet(mnemonic: "mnemonic word list")
 
 // Access keys
@@ -214,11 +214,9 @@ print(wallet.mnemonic)
 print(wallet.address())
 
 // Synchronise with the remote node before using the wallet
-wallet.synchronise() {
+wallet.synchronise() { (error) in
 
-    if let error = error {
-        print(error)
-    }
+    if let error = error { return print(error) }
 
     // Generate a new order ID
     let id = wallet.nextAvailableOrderId()
@@ -280,7 +278,7 @@ let wallet = Wallet(endpoint: "https://dex.binance.org/api/v1")
 
 ## Sample apps
 
-Sample apps are provided for iOS and macOS. They all use [Test.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Util/Test.swift) and demonstrate features of the library.
+Sample apps are provided for iOS and macOS. They all use [Test.swift](https://github.com/mh7821/SwiftBinanceChain/blob/master/BinanceChain/Sources/Util/Test.swift) which demonstrates features of the library.
 
 The command line app uses Swift Package Manager:
 
@@ -305,4 +303,4 @@ The iOS and macOS apps use Cocoapods and Xcode:
 
 ## License
 
-BinanceChain is released under the MIT license. See [LICENSE](https://raw.githubusercontent.com/mh7821/SwiftBinanceChain/master/LICENSE) for details.
+SwiftBinanceChain is released under the MIT license. See [LICENSE](https://raw.githubusercontent.com/mh7821/SwiftBinanceChain/master/LICENSE) for details.
