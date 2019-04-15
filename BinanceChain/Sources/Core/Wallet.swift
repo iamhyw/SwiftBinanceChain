@@ -11,9 +11,11 @@ public class Wallet: CustomStringConvertible {
     public var sequence: Int = 0
     public var accountNumber: Int = 0
     public var chainId: String = ""
-    
+
     private var key: PrivateKey!
 
+    // MARK: - Constructors
+    
     required init() {
         self.initialise(mnemonic: Mnemonic.create())
     }
@@ -93,7 +95,7 @@ public class Wallet: CustomStringConvertible {
             group.leave()
         }
 
-        // Synchronisation complete
+        // Synchronise complete
         group.notify(queue: .main) {
             guard let completion = completion else { return }
             completion(error)
@@ -102,9 +104,9 @@ public class Wallet: CustomStringConvertible {
     }
 
     public func nextAvailableOrderId() -> String {
+        self.sequence += 1
         let address = String(self.address().suffix(40))
         let id = String(format: "%@-%d", address.uppercased(), self.sequence)
-        self.sequence += 1
         return id
     }
 
