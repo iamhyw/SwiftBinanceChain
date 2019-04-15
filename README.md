@@ -196,6 +196,8 @@ webSocket.connect(endpoint: .testnet) {
 
 ### Wallet
 
+Initialise wallets using mnemonics or private keys, or generate random new ones.
+
 ```swift
 import BinanceChain
 
@@ -204,6 +206,13 @@ let wallet = Wallet()
 
 // Restore with a mnemonic
 let wallet = Wallet(mnemonic: "mnemonic word list")
+
+// Synchronise with the remote node (chain id, sequence number)
+wallet.synchronise() {
+    if let error = error {
+        print(error)
+    }
+}
 
 // Sign a message
 let data = wallet.sign(message: data)
@@ -217,6 +226,8 @@ print(wallet.publicKey)
 ```
 
 ### Broadcast Transactions
+
+Broadcast signed transactions.
 
 ```swift
 let binance = BinanceChain()
