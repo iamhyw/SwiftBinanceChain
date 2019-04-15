@@ -196,7 +196,7 @@ webSocket.connect(endpoint: .testnet) {
 
 ### Wallet
 
-Initialise wallets using mnemonics or private keys, or generate random new ones.
+Initialise wallets using mnemonic phrases, or generate random new ones.
 
 ```swift
 import BinanceChain
