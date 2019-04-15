@@ -254,7 +254,7 @@ public class Test: WebSocketDelegate {
             let type = OrderType.limit
             let side = Side.buy
             let price: Double = 0.000396000
-            let quantity: Double = 1200000000
+            let quantity: Double = 0.1
             let tif = TimeInForce.goodTillExpire
 
             let msgNewOrder = Message.newOrder(symbol: symbol, orderType: type, side: side, price: price,
