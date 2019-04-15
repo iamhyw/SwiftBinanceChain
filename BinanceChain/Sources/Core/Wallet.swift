@@ -8,11 +8,10 @@ public class Wallet: CustomStringConvertible {
     var privateKey: Data { return self.key.raw }
     var publicKey: Data { return self.key.publicKey.data }
     var mnemonic: String = ""
-    
+
     var sequence: Int = 0
     var accountNumber: Int = 0
     var chainId: String = ""
-    var orderId: String = ""
     
     private var key: PrivateKey!
 
@@ -57,15 +56,35 @@ public class Wallet: CustomStringConvertible {
 
     // MARK: - Wallet
 
-    func address(hrp: String? = nil) -> Data {
-        let hrp = hrp ?? ((self.endpoint == BinanceChain.Endpoint.testnet.rawValue) ? "tbnb" : "bnb")
-        // TODO
-        return self.publicKey.sha256()
+    func generateOrderId() -> String {
+        return String(format: "%@-%d", self.publicKey.hexlify, self.sequence+1)
+    }
+
+    @discardableResult
+    func incrementSequence() -> Int {
+        let sequence = self.sequence
+        self.sequence += 1
+        return sequence
+    }
+
+    func address(hrp: String? = nil) -> String {
+        do {
+            let hrp = hrp ?? ((self.endpoint == BinanceChain.Endpoint.testnet.rawValue) ? "tbnb" : "bnb")
+            let sha = self.publicKey.sha256()
+            let ripemd = RIPEMD160.hash(sha)
+            let convertbits = try SegwitAddrCoder().convertBits(from: 8, to: 5, pad: false, idata: ripemd)
+            let address = Bech32().encode(hrp, values: convertbits)
+            return address
+        } catch let error {
+            print(error)
+            return "InvalidKey"
+        }
     }
 
     func sign(message: Data) -> Data {
         do {
-            return try self.key.sign(hash: message.sha256())
+            let data = try self.key.sign(hash: message.sha256())
+            print("Got signed data: \(data.count) bytes")
         } catch let error {
             print(error)
         }
@@ -76,7 +95,7 @@ public class Wallet: CustomStringConvertible {
 
     public var description: String {
         return String(format: "Wallet [mnemonic=%@, address=%@, publicKey=%@, privateKey=%@, endpoint=%@]",
-                      mnemonic, address().hexlify, publicKey.hexlify, privateKey.hexlify, endpoint)
+                      mnemonic, address(), publicKey.hexlify, privateKey.hexlify, endpoint)
     }
 
 }
