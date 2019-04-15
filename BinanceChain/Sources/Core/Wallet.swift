@@ -105,8 +105,7 @@ public class Wallet: CustomStringConvertible {
 
     public func nextAvailableOrderId() -> String {
         self.sequence += 1
-        let address = String(self.address().suffix(40))
-        let id = String(format: "%@-%d", address.uppercased(), self.sequence)
+        let id = String(format: "%@-%d", self.decodedAddress().uppercased(), self.sequence)
         return id
     }
 
@@ -129,6 +128,10 @@ public class Wallet: CustomStringConvertible {
         }
     }
 
+    public func decodedAddress() -> String {
+        return String(self.address().suffix(40))
+    }
+    
     public func sign(message: Data) -> Data {
         do {
             return try self.key.sign(hash: message.sha256())

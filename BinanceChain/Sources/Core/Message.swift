@@ -96,8 +96,6 @@ public class Message {
     // MARK: - Public
 
     public func encode() throws -> Data {
-
-        print("Address  : ", self.wallet.address())
         
         // Generate encoded message
         var message = Data()
@@ -105,11 +103,9 @@ public class Message {
         message.append(body.varint)
         message.append(self.type.rawValue.unhexlify)
         message.append(body)
-        print("Message  : ", message.hexlify)
 
         // Generate signature
         let signature = try self.body(for: .signature)
-        print("Signature: ", signature.hexlify)
         
         // Wrap in StdTx structure
         var stdtx = StdTx()
@@ -118,19 +114,16 @@ public class Message {
         stdtx.memo = self.memo
         stdtx.source = Int64(Source.broadcast.rawValue)
         stdtx.data = Data()
-        print("StdTd    : ", try stdtx.serializedData().hexlify)
         
         // Prefix length and stdtx type
         var content = Data()
         content.append(MessageType.stdtx.rawValue.unhexlify)
         content.append(try stdtx.serializedData())
-        print("StdTd Len: ", content.hexlify)
 
         // Complete Standard Transaction
         var transaction = Data()
         transaction.append(content.varint)
         transaction.append(content)
-        print("Trans    : ", transaction.hexlify)
         return transaction
 
     }
@@ -143,7 +136,7 @@ public class Message {
 
         case .newOrder:
             var pb = NewOrder()
-            pb.sender = Data(self.wallet.address().utf8)
+            pb.sender = Data(self.wallet.decodedAddress().utf8)
             pb.id = self.orderId
             pb.symbol = symbol
             pb.timeinforce = Int64(self.timeInForce.rawValue)
@@ -220,7 +213,6 @@ public class Message {
     }
 
     private func signature() -> Data {
-        print(self.json(for: .signature))
         let data = Data(self.json(for: .signature).utf8)
         let signed = self.wallet.sign(message: data)
         let sig = signed.subdata(in: (signed.count - 64)..<signed.count)
