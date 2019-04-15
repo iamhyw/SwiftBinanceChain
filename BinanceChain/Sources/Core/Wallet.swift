@@ -102,7 +102,8 @@ public class Wallet: CustomStringConvertible {
     }
 
     public func generateOrderId() -> String {
-        let id = String(format: "%@-%d", self.address(hrp: "").uppercased(), self.sequence)
+        let address = String(self.address().suffix(40))
+        let id = String(format: "%@-%d", address.uppercased(), self.sequence)
         self.sequence += 1
         return id
     }
