@@ -2,11 +2,9 @@ PODS:
   - Alamofire (4.8.2)
   - BinanceChain (1.0.0-beta):
     - BinanceChain/Core (= 1.0.0-beta)
-  - BinanceChain/Bech32 (1.0.0-beta)
   - BinanceChain/Core (1.0.0-beta):
     - Alamofire (~> 4.8)
-    - BinanceChain/Bech32
-    - BinanceChain/OrderedDict
+    - BinanceChain/Libraries
     - BinanceChain/Protobuf
     - BinanceChain/Util
     - HDWalletKit (~> 0.2.7)
@@ -15,7 +13,7 @@ PODS:
     - SwiftProtobuf (~> 1.4)
     - SwiftyJSON (~> 4.3)
     - XCGLogger (~> 7.0)
-  - BinanceChain/OrderedDict (1.0.0-beta)
+  - BinanceChain/Libraries (1.0.0-beta)
   - BinanceChain/Protobuf (1.0.0-beta)
   - BinanceChain/Test (1.0.0-beta)
   - BinanceChain/Util (1.0.0-beta)
@@ -63,7 +61,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  BinanceChain: e4dbaa48b6efbd0d31b25ee302ec3ec56f340f6b
+  BinanceChain: 0fafd2d808e5be8c80fdc46d0e33a9df1c0c54e7
   CryptoSwift: 769f58a9e89f64e8796c2e59ce5f002dc81a2438
   HDWalletKit: 22c841481715ea6e111f71b03eabc9ed72cc1714
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
