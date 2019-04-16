@@ -105,8 +105,7 @@ public class Wallet: CustomStringConvertible {
 
     public func nextAvailableOrderId() -> String {
         self.sequence += 1
-        let id = String(format: "%@-%d", self.decodedAddress().uppercased(), self.sequence)
-        return id
+        return String(format: "%@-%d", self.decodedAddress().uppercased(), self.sequence)
     }
 
     @discardableResult
