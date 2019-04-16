@@ -137,7 +137,7 @@ public class Message {
 
         case .newOrder:
             var pb = NewOrder()
-            pb.sender = Data(self.wallet.address.utf8)
+            pb.sender = self.wallet.address.unhexlify
             pb.id = self.orderId
             pb.symbol = symbol
             pb.timeinforce = Int64(self.timeInForce.rawValue)
