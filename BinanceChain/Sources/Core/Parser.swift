@@ -32,6 +32,9 @@ class Parser {
     func parseError(_ json: JSON) -> Error {
         let code = json["code"].intValue
         let message = json["message"].stringValue
+        if let nested = JSON(parseJSON: message)["message"].string {
+            return BinanceError(code: code, message: nested)
+        }
         return BinanceError(code: code, message: message)
     }
 
