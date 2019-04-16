@@ -213,10 +213,9 @@ public class Message {
     }
 
     private func signature() -> Data {
-        let data = Data(self.json(for: .signature).utf8)
-        let signed = self.wallet.sign(message: data)
-        let sig = signed.subdata(in: (signed.count - 64)..<signed.count)
-        return sig
+        let json = self.json(for: .signature)
+        let data = Data(json.utf8)
+        return self.wallet.sign(message: data)
     }
 
     private func json(for type: MessageType) -> String {
