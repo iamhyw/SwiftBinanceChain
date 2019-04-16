@@ -137,7 +137,7 @@ public class Message {
 
         case .newOrder:
             var pb = NewOrder()
-            pb.sender = Data(self.wallet.decodedAddress().utf8)
+            pb.sender = Data(self.wallet.address.utf8)
             pb.id = self.orderId
             pb.symbol = symbol
             pb.timeinforce = Int64(self.timeInForce.rawValue)
@@ -171,7 +171,7 @@ public class Message {
             token.amount = Int64(amount.encoded)
 
             var input = Send.Input()
-            input.address = Data(self.wallet.address().utf8)
+            input.address = Data(self.wallet.account.utf8)
             input.coins.append(token)
 
             var output = Send.Output()
@@ -202,7 +202,7 @@ public class Message {
         case .vote:
             var vote = Vote()
             vote.proposalID = Int64(self.proposalId)
-            vote.voter = Data(self.wallet.decodedAddress().utf8)
+            vote.voter = Data(self.wallet.address.utf8)
             vote.option = Int64(self.voteOption.rawValue)
             return try vote.serializedData()
             
@@ -229,7 +229,7 @@ public class Message {
                           self.orderType.rawValue,
                           self.price.encoded,
                           self.quantity.encoded,
-                          self.wallet.address(),
+                          self.wallet.account,
                           self.side.rawValue,
                           self.symbol,
                           self.timeInForce.rawValue)
@@ -237,39 +237,34 @@ public class Message {
         case .cancelOrder:
             return String(format: JSON.cancelOrder,
                           self.orderId,
-                          self.wallet.address(),
+                          self.wallet.account,
                           self.symbol)
 
         case .freeze:
             return String(format: JSON.freeze,
                           self.amount.encoded,
-                          self.wallet.address(),
+                          self.wallet.account,
                           self.symbol)
 
         case .unfreeze:
             return String(format: JSON.unfreeze,
                           self.amount.encoded,
-                          self.wallet.address(),
+                          self.wallet.account,
                           self.symbol)
 
         case .transfer:
             return String(format: JSON.transfer,
-                          self.wallet.accountNumber,
-                          self.wallet.chainId,
-                          self.memo,
-                          self.wallet.address(),
+                          self.wallet.account,
                           self.symbol,
                           self.amount.encoded,
                           self.toAddress,
                           self.symbol,
-                          self.amount.encoded,
-                          self.wallet.sequence,
-                          self.source.rawValue)
+                          self.amount.encoded)
 
         case .vote:
             return String(format: JSON.vote,
                           self.proposalId,
-                          self.wallet.address(),
+                          self.wallet.account,
                           self.voteOption.rawValue)
 
         case .signature:

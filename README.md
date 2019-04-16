@@ -211,7 +211,8 @@ let wallet = Wallet(mnemonic: "mnemonic word list")
 print(wallet.privateKey)
 print(wallet.publicKey)
 print(wallet.mnemonic)
-print(wallet.address())
+print(wallet.account)
+print(wallet.address)
 
 // Synchronise with the remote node before using the wallet
 wallet.synchronise() { (error) in

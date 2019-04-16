@@ -85,7 +85,7 @@ public class Wallet: CustomStringConvertible {
 
         // Update account sequence
         group.enter()
-        binance.account(address: self.address()) { (response) in
+        binance.account(address: self.account) { (response) in
             if let value = response.error {
                 error = value
             } else {
@@ -105,7 +105,7 @@ public class Wallet: CustomStringConvertible {
 
     public func nextAvailableOrderId() -> String {
         self.sequence += 1
-        return String(format: "%@-%d", self.decodedAddress().uppercased(), self.sequence)
+        return String(format: "%@-%d", self.address.uppercased(), self.sequence)
     }
 
     @discardableResult
@@ -114,7 +114,11 @@ public class Wallet: CustomStringConvertible {
         return sequence
     }
 
-    public func address(hrp: String? = nil) -> String {
+    public var account: String {
+        return self.account()
+    }
+    
+    public func account(hrp: String? = nil) -> String {
         do {
             let hrp = hrp ?? ((self.endpoint == BinanceChain.Endpoint.testnet.rawValue) ? "tbnb" : "bnb")
             let sha = self.publicKey.sha256()
@@ -127,8 +131,10 @@ public class Wallet: CustomStringConvertible {
         }
     }
 
-    public func decodedAddress() -> String {
-        return String(self.address().suffix(40))
+    public var address: String {
+        let sha = self.publicKey.sha256()
+        let ripemd = RIPEMD160.hash(sha)
+        return ripemd.hexlify
     }
 
     public func sign(message: Data) -> Data {
@@ -143,8 +149,8 @@ public class Wallet: CustomStringConvertible {
     // MARK: - CustomStringConvertible
 
     public var description: String {
-        return String(format: "Wallet [accountNumber=%d, sequence=%d, chain_id=%@, mnemonic=%@, address=%@, publicKey=%@, privateKey=%@, endpoint=%@]",
-                      accountNumber, sequence, chainId, mnemonic, address(), publicKey.hexlify, privateKey.hexlify, endpoint)
+        return String(format: "Wallet [address=%@ accountNumber=%d, sequence=%d, chain_id=%@, mnemonic=%@, account=%@, publicKey=%@, privateKey=%@, endpoint=%@]",
+                      address, accountNumber, sequence, chainId, mnemonic, account, publicKey.hexlify, privateKey.hexlify, endpoint)
     }
 
 }
