@@ -131,10 +131,10 @@ public class Wallet: CustomStringConvertible {
     public func decodedAddress() -> String {
         return String(self.address().suffix(40))
     }
-    
+
     public func sign(message: Data) -> Data {
         do {
-            return try self.key.sign(hash: message.sha256())
+            return try ECDSA.sign(message.sha256(), privateKey: self.privateKey)
         } catch let error {
             print(error)
         }
