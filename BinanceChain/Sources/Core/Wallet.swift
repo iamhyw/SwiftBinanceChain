@@ -108,12 +108,6 @@ public class Wallet: CustomStringConvertible {
         return String(format: "%@-%d", self.address.uppercased(), self.sequence)
     }
 
-    @discardableResult
-    public func incrementSequence() -> Int {
-        self.sequence += 1
-        return sequence
-    }
-
     public var account: String {
         return self.account()
     }
