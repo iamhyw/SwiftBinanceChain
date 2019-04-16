@@ -104,7 +104,7 @@ public class Message {
         
         // Generate signature
         let signature = try self.body(for: .signature)
-        
+
         // Wrap in StdTx structure
         var stdtx = StdTx()
         stdtx.msgs.append(message)
@@ -117,7 +117,7 @@ public class Message {
         var content = Data()
         content.append(MessageType.stdtx.rawValue.unhexlify)
         content.append(try stdtx.serializedData())
-
+        
         // Complete Standard Transaction
         var transaction = Data()
         transaction.append(content.varint)
@@ -143,7 +143,7 @@ public class Message {
             pb.timeinforce = Int64(self.timeInForce.rawValue)
             pb.ordertype = Int64(self.orderType.rawValue)
             pb.side = Int64(self.side.rawValue)
-            pb.price = Int64(price.encoded)
+            pb.price = Int64(price.encoded - 1)
             pb.quantity = Int64(quantity.encoded)
             return try pb.serializedData()
 
@@ -185,7 +185,7 @@ public class Message {
 
         case .signature:
             var pb = StdSignature()
-            pb.sequence = Int64(self.wallet.sequence)
+            pb.sequence = 47// Int64(self.wallet.sequence)
             pb.accountNumber = Int64(self.wallet.accountNumber)
             pb.pubKey = try self.body(for: .publicKey)
             pb.signature = self.signature()
@@ -227,7 +227,7 @@ public class Message {
             return String(format: JSON.newOrder,
                           self.orderId,
                           self.orderType.rawValue,
-                          self.price.encoded,
+                          self.price.encoded - 1,
                           self.quantity.encoded,
                           self.wallet.account,
                           self.side.rawValue,
@@ -273,7 +273,7 @@ public class Message {
                           self.wallet.chainId,
                           self.memo,
                           self.json(for: self.type),
-                          self.wallet.sequence,
+                          47,//self.wallet.sequence,
                           self.source.rawValue)
 
         default:
