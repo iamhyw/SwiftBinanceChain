@@ -96,14 +96,12 @@ public class Message {
     // MARK: - Public
 
     public func encode() throws -> Data {
-        
+
         // Generate encoded message
         var message = Data()
-        let body = try self.body(for: self.type)
-        message.append(body.varint)
         message.append(self.type.rawValue.unhexlify)
-        message.append(body)
-
+        message.append(try self.body(for: self.type))
+        
         // Generate signature
         let signature = try self.body(for: .signature)
         
@@ -113,7 +111,7 @@ public class Message {
         stdtx.signatures.append(signature)
         stdtx.memo = self.memo
         stdtx.source = Int64(Source.broadcast.rawValue)
-        stdtx.data = Data()
+        stdtx.data = self.data
         
         // Prefix length and stdtx type
         var content = Data()
@@ -124,6 +122,9 @@ public class Message {
         var transaction = Data()
         transaction.append(content.varint)
         transaction.append(content)
+
+        print("\n\(transaction.hexlify)\n")
+
         return transaction
 
     }
@@ -201,7 +202,7 @@ public class Message {
         case .vote:
             var vote = Vote()
             vote.proposalID = Int64(self.proposalId)
-            vote.voter = Data(self.wallet.address().utf8)
+            vote.voter = Data(self.wallet.decodedAddress().utf8)
             vote.option = Int64(self.voteOption.rawValue)
             return try vote.serializedData()
             
@@ -267,6 +268,7 @@ public class Message {
 
         case .vote:
             return String(format: JSON.vote,
+                          self.proposalId,
                           self.wallet.address(),
                           self.voteOption.rawValue)
 
@@ -331,7 +333,7 @@ fileprivate class JSON {
     """
 
     static let vote = """
-    {"voter":"%@","option":"%d"}
+    {"proposal_id":"%d",voter":"%@","option":"%d"}
     """
 
 }
