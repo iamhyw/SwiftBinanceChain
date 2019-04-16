@@ -134,7 +134,7 @@ public class Wallet: CustomStringConvertible {
 
     public func sign(message: Data) -> Data {
         do {
-            return try ECDSA.sign(message.sha256(), privateKey: self.privateKey)
+            return try ECDSA.compactsign(message.sha256(), privateKey: self.privateKey)
         } catch let error {
             print(error)
         }
