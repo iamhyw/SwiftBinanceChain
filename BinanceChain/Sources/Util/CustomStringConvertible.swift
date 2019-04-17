@@ -2,7 +2,7 @@ public extension CustomStringConvertible {
 
     var description: String {
 
-        // Use reflection to describe the object and its property
+        // Use reflection to describe the object and its properties
         let name = String(describing: type(of: self))
         let mirror = Mirror(reflecting: self)
         let properties: [String] = mirror.children.compactMap ({
