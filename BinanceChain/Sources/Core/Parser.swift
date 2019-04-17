@@ -75,8 +75,8 @@ class Parser {
 
     func parseTrade(_ json: JSON) throws -> Trade {
         let trade = Trade()
-        trade.baseAsset = json["baseAsset"].string ?? json[""].stringValue
-        trade.blockHeight = json["blockHeight"].intValue
+        trade.baseAsset = json["baseAsset"].stringValue
+        trade.blockHeight = json["blockHeight"].int ?? json["E"].intValue
         trade.buyFee = json["buyFee"].stringValue
         trade.buyerId = json["buyerId"].string ?? json["ba"].stringValue
         trade.price = json["price"].string ?? json["p"].stringValue
