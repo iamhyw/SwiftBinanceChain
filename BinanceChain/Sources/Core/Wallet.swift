@@ -103,9 +103,12 @@ public class Wallet: CustomStringConvertible {
 
     }
 
-    public func nextAvailableOrderId() -> String {
+    public func incrementSequence() {
         self.sequence += 1
-        return String(format: "%@-%d", self.address.uppercased(), self.sequence)
+    }
+
+    public func nextAvailableOrderId() -> String {
+        return String(format: "%@-%d", self.address.uppercased(), self.sequence+1)
     }
 
     public var account: String {
