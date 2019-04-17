@@ -120,11 +120,11 @@ public class Message {
 
         // Complete Standard Transaction
         var transaction = Data()
-        transaction.append(content.varint)
-        transaction.append("01".unhexlify) // TODO
+        transaction.append(content.count.varint)
         transaction.append(content)
 
-        print("\n\(transaction.hexlify)\n")
+        // Prepare for next transaction
+        self.wallet.incrementSequence()
 
         return transaction
 
@@ -196,7 +196,7 @@ public class Message {
             let key = self.wallet.publicKey
             var data = Data()
             data.append(type.rawValue.unhexlify)
-            data.append(key.varint)
+            data.append(key.count.varint)
             data.append(key)
             return data
 
@@ -286,9 +286,16 @@ public class Message {
 
 }
 
-fileprivate extension Data {
+fileprivate extension Int {
     var varint: Data {
-        return VarInt(self.count).serialized()
+        var data = Data()
+        var v = UInt64(self)
+        while (v > 127) {
+            data.append(UInt8(v & 0x7f | 0x80))
+            v >>= 7
+        }
+        data.append(UInt8(v))
+        return data
     }
 }
 
