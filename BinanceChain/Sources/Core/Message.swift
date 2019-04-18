@@ -314,11 +314,11 @@ fileprivate class JSON {
     """
 
     static let freeze = """
-    {"amount":"%ld","from":"%@","symbol":"%@"}
+    {"amount":%ld,"from":"%@","symbol":"%@"}
     """
 
     static let unfreeze = """
-    {"amount":"%ld","from":"%@","symbol":"%@"}
+    {"amount":%ld,"from":"%@","symbol":"%@"}
     """
 
     static let transfer = """
