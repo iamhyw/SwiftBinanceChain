@@ -179,7 +179,7 @@ public class Message {
             input.coins.append(token)
 
             var output = Send.Output()
-            //output.address = Segwit.decode(address: to)
+            output.address = Data(self.toAddress.utf8)
             output.coins.append(token)
             
             var send = Send()
@@ -289,19 +289,6 @@ public class Message {
 
 }
 
-fileprivate extension Int {
-    var varint: Data {
-        var data = Data()
-        var v = UInt64(self)
-        while (v > 127) {
-            data.append(UInt8(v & 0x7f | 0x80))
-            v >>= 7
-        }
-        data.append(UInt8(v))
-        return data
-    }
-}
-
 fileprivate extension Double {
     var encoded: Int {
         // Multiply by 1e8 (10^8) and round to int
@@ -327,15 +314,15 @@ fileprivate class JSON {
     """
 
     static let freeze = """
-    {"amount":"%d","from":"%@","symbol":"%@"}
+    {"amount":"%ld","from":"%@","symbol":"%@"}
     """
 
     static let unfreeze = """
-    {"amount":"%d","from":"%@","symbol":"%@"}
+    {"amount":"%ld","from":"%@","symbol":"%@"}
     """
 
     static let transfer = """
-    {"inputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%d"}]}],"outputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%d"}]}]}
+    {"inputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%ld"}]}],"outputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%ld"}]}]}
     """
 
     static let vote = """
