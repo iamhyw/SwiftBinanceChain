@@ -26,7 +26,7 @@ PODS:
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
   - secp256k1.swift (0.1.4)
   - Starscream (3.1.0)
-  - SwiftDate (6.0.1)
+  - SwiftDate (6.0.2)
   - SwiftProtobuf (1.5.0)
   - SwiftyJSON (4.3.0)
   - XCGLogger (7.0.0):
@@ -67,11 +67,11 @@ SPEC CHECKSUMS:
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
-  SwiftDate: 2b3ef6b8fc30c22391033d1acad5622a51660016
+  SwiftDate: bbed9b23bfec599bd62b9a305afc554f7bd0eb6f
   SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: 53e8abc98be4647014cf72eeeccea7fa2612aa22
+PODFILE CHECKSUM: cfb2910cf0365b0aa2b33287e22c830c7419fbf4
 
 COCOAPODS: 1.6.1

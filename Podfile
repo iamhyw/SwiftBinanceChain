@@ -10,7 +10,7 @@ def common
 	pod 'CryptoSwift', :inhibit_warnings => true
 end
 
-target "BinanceChain" do
+target "Mobile" do
 	platform :ios, '11.0'
 	common
 end

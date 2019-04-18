@@ -16,12 +16,12 @@
 		31BCB694225B5ABA008B5F58 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BCB693225B5ABA008B5F58 /* ViewController.swift */; };
 		31BCB696225B5ABB008B5F58 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31BCB695225B5ABB008B5F58 /* Assets.xcassets */; };
 		31BCB699225B5ABB008B5F58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31BCB697225B5ABB008B5F58 /* Main.storyboard */; };
-		A407A716444CAD5270AF8FBE /* Pods_BinanceChain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2851E49DB19F64E87298041 /* Pods_BinanceChain.framework */; };
 		C6A57ECAAA68A8EA13E757EB /* Pods_Desktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F13AE213E7E490FF4C483108 /* Pods_Desktop.framework */; };
+		FDB0F04791F4D8ACB1D61FD4 /* Pods_Mobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D69719ED111607F234BFE68F /* Pods_Mobile.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		319D4691225B4A0500C60E66 /* BinanceChain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BinanceChain.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		319D4691225B4A0500C60E66 /* Mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		319D4694225B4A0500C60E66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		319D4696225B4A0500C60E66 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		319D4699225B4A0500C60E66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -36,11 +36,13 @@
 		31BCB69A225B5ABB008B5F58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		31BCB69B225B5ABB008B5F58 /* Desktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Desktop.entitlements; sourceTree = "<group>"; };
 		31BCB6A1225B5CC2008B5F58 /* Targets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Targets; sourceTree = "<group>"; };
+		33ACD1D379C27566225C0860 /* Pods-Mobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mobile.debug.xcconfig"; path = "Target Support Files/Pods-Mobile/Pods-Mobile.debug.xcconfig"; sourceTree = "<group>"; };
 		56959F3EE524CDF27569AF2E /* Pods-Desktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Desktop.release.xcconfig"; path = "Target Support Files/Pods-Desktop/Pods-Desktop.release.xcconfig"; sourceTree = "<group>"; };
+		6F2004F5908FD20E2EB45A45 /* Pods-Mobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mobile.release.xcconfig"; path = "Target Support Files/Pods-Mobile/Pods-Mobile.release.xcconfig"; sourceTree = "<group>"; };
 		7603CD79F57F52CD588BC8A0 /* Pods-BinanceChain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinanceChain.debug.xcconfig"; path = "Target Support Files/Pods-BinanceChain/Pods-BinanceChain.debug.xcconfig"; sourceTree = "<group>"; };
 		96E680F3F74BAE76E8F989FF /* Pods-Desktop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Desktop.debug.xcconfig"; path = "Target Support Files/Pods-Desktop/Pods-Desktop.debug.xcconfig"; sourceTree = "<group>"; };
 		9726436550EEB044494D94DB /* Pods-BinanceChain.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinanceChain.release.xcconfig"; path = "Target Support Files/Pods-BinanceChain/Pods-BinanceChain.release.xcconfig"; sourceTree = "<group>"; };
-		D2851E49DB19F64E87298041 /* Pods_BinanceChain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BinanceChain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D69719ED111607F234BFE68F /* Pods_Mobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F13AE213E7E490FF4C483108 /* Pods_Desktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Desktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -49,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A407A716444CAD5270AF8FBE /* Pods_BinanceChain.framework in Frameworks */,
+				FDB0F04791F4D8ACB1D61FD4 /* Pods_Mobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,8 +70,8 @@
 			isa = PBXGroup;
 			children = (
 				31BCB6A1225B5CC2008B5F58 /* Targets */,
-				D2851E49DB19F64E87298041 /* Pods_BinanceChain.framework */,
 				F13AE213E7E490FF4C483108 /* Pods_Desktop.framework */,
+				D69719ED111607F234BFE68F /* Pods_Mobile.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -87,13 +89,13 @@
 		319D4692225B4A0500C60E66 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				319D4691225B4A0500C60E66 /* BinanceChain.app */,
+				319D4691225B4A0500C60E66 /* Mobile.app */,
 				31BCB68F225B5ABA008B5F58 /* Desktop.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		319D4693225B4A0500C60E66 /* BinanceChain */ = {
+		319D4693225B4A0500C60E66 /* Mobile */ = {
 			isa = PBXGroup;
 			children = (
 				319D4694225B4A0500C60E66 /* AppDelegate.swift */,
@@ -103,7 +105,7 @@
 				319D469D225B4A0600C60E66 /* LaunchScreen.storyboard */,
 				319D46A0225B4A0600C60E66 /* Info.plist */,
 			);
-			path = BinanceChain;
+			path = Mobile;
 			sourceTree = "<group>";
 		};
 		31BCB690225B5ABA008B5F58 /* Desktop */ = {
@@ -122,7 +124,7 @@
 		31BCB6A2225B5CCF008B5F58 /* Targets */ = {
 			isa = PBXGroup;
 			children = (
-				319D4693225B4A0500C60E66 /* BinanceChain */,
+				319D4693225B4A0500C60E66 /* Mobile */,
 				31BCB690225B5ABA008B5F58 /* Desktop */,
 			);
 			path = Targets;
@@ -135,6 +137,8 @@
 				9726436550EEB044494D94DB /* Pods-BinanceChain.release.xcconfig */,
 				96E680F3F74BAE76E8F989FF /* Pods-Desktop.debug.xcconfig */,
 				56959F3EE524CDF27569AF2E /* Pods-Desktop.release.xcconfig */,
+				33ACD1D379C27566225C0860 /* Pods-Mobile.debug.xcconfig */,
+				6F2004F5908FD20E2EB45A45 /* Pods-Mobile.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -142,9 +146,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		319D4690225B4A0500C60E66 /* BinanceChain */ = {
+		319D4690225B4A0500C60E66 /* Mobile */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 319D46A3225B4A0600C60E66 /* Build configuration list for PBXNativeTarget "BinanceChain" */;
+			buildConfigurationList = 319D46A3225B4A0600C60E66 /* Build configuration list for PBXNativeTarget "Mobile" */;
 			buildPhases = (
 				BB0C50FA3443467C3C5ED215 /* [CP] Check Pods Manifest.lock */,
 				319D468D225B4A0500C60E66 /* Sources */,
@@ -156,9 +160,9 @@
 			);
 			dependencies = (
 			);
-			name = BinanceChain;
+			name = Mobile;
 			productName = BinanceChain;
-			productReference = 319D4691225B4A0500C60E66 /* BinanceChain.app */;
+			productReference = 319D4691225B4A0500C60E66 /* Mobile.app */;
 			productType = "com.apple.product-type.application";
 		};
 		31BCB68E225B5ABA008B5F58 /* Desktop */ = {
@@ -202,7 +206,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 319D468C225B4A0500C60E66 /* Build configuration list for PBXProject "BinanceChain" */;
+			buildConfigurationList = 319D468C225B4A0500C60E66 /* Build configuration list for PBXProject "Mobile" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -215,7 +219,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				319D4690225B4A0500C60E66 /* BinanceChain */,
+				319D4690225B4A0500C60E66 /* Mobile */,
 				31BCB68E225B5ABA008B5F58 /* Desktop */,
 			);
 		};
@@ -312,7 +316,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BinanceChain/Pods-BinanceChain-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Mobile/Pods-Mobile-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire-iOS/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift-iOS/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging-iOS/ObjcExceptionBridging.framework",
@@ -339,7 +343,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BinanceChain/Pods-BinanceChain-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mobile/Pods-Mobile-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BB0C50FA3443467C3C5ED215 /* [CP] Check Pods Manifest.lock */ = {
@@ -357,7 +361,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BinanceChain-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Mobile-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -533,11 +537,11 @@
 		};
 		319D46A4225B4A0600C60E66 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7603CD79F57F52CD588BC8A0 /* Pods-BinanceChain.debug.xcconfig */;
+			baseConfigurationReference = 33ACD1D379C27566225C0860 /* Pods-Mobile.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = Targets/BinanceChain/Info.plist;
+				INFOPLIST_FILE = Targets/Mobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -551,11 +555,11 @@
 		};
 		319D46A5225B4A0600C60E66 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9726436550EEB044494D94DB /* Pods-BinanceChain.release.xcconfig */;
+			baseConfigurationReference = 6F2004F5908FD20E2EB45A45 /* Pods-Mobile.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = Targets/BinanceChain/Info.plist;
+				INFOPLIST_FILE = Targets/Mobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -612,7 +616,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		319D468C225B4A0500C60E66 /* Build configuration list for PBXProject "BinanceChain" */ = {
+		319D468C225B4A0500C60E66 /* Build configuration list for PBXProject "Mobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				319D46A1225B4A0600C60E66 /* Debug */,
@@ -621,7 +625,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		319D46A3225B4A0600C60E66 /* Build configuration list for PBXNativeTarget "BinanceChain" */ = {
+		319D46A3225B4A0600C60E66 /* Build configuration list for PBXNativeTarget "Mobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				319D46A4225B4A0600C60E66 /* Debug */,
