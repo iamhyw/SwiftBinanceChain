@@ -175,12 +175,12 @@ public class Message {
             token.amount = Int64(amount.encoded)
 
             var input = Send.Input()
-            input.address = Data(self.wallet.account.utf8)
-            input.coins.append(token)
+            input.address = self.wallet.address.unhexlify
+            input.coins = [token]
 
             var output = Send.Output()
-            output.address = Data(self.toAddress.utf8)
-            output.coins.append(token)
+            output.address = self.wallet.address(from: toAddress).unhexlify
+            output.coins = [token]
             
             var send = Send()
             send.inputs.append(input)
@@ -267,9 +267,9 @@ public class Message {
             
         case .vote:
             return String(format: JSON.vote,
+                          self.voteOption.rawValue,
                           self.proposalId,
-                          self.wallet.account,
-                          self.voteOption.rawValue)
+                          self.wallet.account)
 
         case .signature:
             return String(format: JSON.signature,
@@ -326,7 +326,7 @@ fileprivate class JSON {
     """
 
     static let vote = """
-    {"proposal_id":"%d",voter":"%@","option":"%d"}
+    {"option":%d,proposal_id":%d,voter":"%@"}
     """
 
 }
