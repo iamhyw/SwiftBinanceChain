@@ -259,12 +259,12 @@ public class Message {
         case .transfer:
             return String(format: JSON.transfer,
                           self.wallet.account,
-                          self.symbol,
                           self.amount.encoded,
-                          self.toAddress,
                           self.symbol,
-                          self.amount.encoded)
-
+                          self.toAddress,
+                          self.amount.encoded,
+                          self.symbol)
+            
         case .vote:
             return String(format: JSON.vote,
                           self.proposalId,
@@ -322,7 +322,7 @@ fileprivate class JSON {
     """
 
     static let transfer = """
-    {"inputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%ld"}]}],"outputs":[{"address":"%@","coins":[{"denom":"%@","amount":"%ld"}]}]}
+    {"inputs":[{"address":"%@","coins":[{"amount":%ld,"denom":"%@"}]}],"outputs":[{"address":"%@","coins":[{"amount":%ld,"denom":"%@"}]}]}
     """
 
     static let vote = """
