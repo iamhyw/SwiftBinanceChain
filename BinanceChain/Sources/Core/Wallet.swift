@@ -16,33 +16,33 @@ public class Wallet: CustomStringConvertible {
 
     // MARK: - Constructors
     
-    required init() {
+    public required init() {
         self.initialise(mnemonic: Mnemonic.create())
     }
 
-    convenience init(endpoint: BinanceChain.Endpoint = .testnet) {
+    public convenience init(endpoint: BinanceChain.Endpoint = .testnet) {
         self.init(mnemonic: Mnemonic.create(), endpoint: endpoint.rawValue)
     }
 
-    convenience init(endpoint: String? = nil) {
+    public convenience init(endpoint: String? = nil) {
         self.init(mnemonic: Mnemonic.create(), endpoint: endpoint)
     }
 
-    convenience init(mnemonic: String, endpoint: BinanceChain.Endpoint) {
+    public convenience init(mnemonic: String, endpoint: BinanceChain.Endpoint) {
         self.init(mnemonic: mnemonic, endpoint: endpoint.rawValue)
     }
 
-    convenience init(mnemonic: String, endpoint: String? = nil) {
+    public convenience init(mnemonic: String, endpoint: String? = nil) {
         self.init()
         if let endpoint = endpoint { self.endpoint = endpoint }
         self.initialise(mnemonic: mnemonic)
     }
 
-    convenience init(privateKey: String, endpoint: BinanceChain.Endpoint) {
+    public convenience init(privateKey: String, endpoint: BinanceChain.Endpoint) {
         self.init(privateKey: privateKey, endpoint: endpoint.rawValue)
     }
 
-    convenience init(privateKey: String, endpoint: String? = nil) {
+    public convenience init(privateKey: String, endpoint: String? = nil) {
         self.init()
         if let endpoint = endpoint { self.endpoint = endpoint }
         self.key = PrivateKey(pk: privateKey, coin: .bitcoin)
