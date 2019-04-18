@@ -46,6 +46,7 @@ public class BinanceChain {
         public var markets: [Market] = []
         public var candlesticks: [Candlestick] = []
         public var ticker: [TickerStatistics] = []
+        public var broadcast: [Transaction] = []
         public var orders: [Order] = []
         public var order: Order = Order()
         public var orderList: OrderList = OrderList()
@@ -154,7 +155,7 @@ public class BinanceChain {
     public func broadcast(message bytes: Data, sync: Bool = true, completion: Completion? = nil) {
         var path = Path.broadcast.rawValue
         if (sync) { path += "/?sync=1" }
-        self.api(path: path, method: .post, body: bytes, parser: TransactionsParser(), completion: completion)
+        self.api(path: path, method: .post, body: bytes, parser: BroadcastParser(), completion: completion)
     }
 
     public func klines(symbol: String, interval: Interval? = nil, limit: Limit? = nil, startTime: TimeInterval? = nil, endTime: TimeInterval? = nil, completion: Completion? = nil) {

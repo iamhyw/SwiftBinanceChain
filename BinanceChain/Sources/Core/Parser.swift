@@ -133,6 +133,16 @@ class Parser {
         return Data(bytes: &key, count: key.count * MemoryLayout<UInt8>.size)
     }
 
+    func parseTransaction(_ json: JSON) throws -> Transaction {
+        let transaction = Transaction()
+        transaction.hash = json["hash"].stringValue
+        transaction.log = json["log"].stringValue
+        transaction.ok = json["ok"].boolValue
+        let data = JSON(parseJSON: json["data"].stringValue)
+        transaction.tx = try self.parseTx(data)
+        return transaction
+    }
+
     func parseTransactions(_ json: JSON) throws -> Transactions {
         let transactions = Transactions()
         transactions.total = json["total"].intValue
@@ -147,7 +157,7 @@ class Parser {
         tx.confirmBlocks = json["confirm_blocks"].doubleValue
         tx.data = json["data"].stringValue
         tx.fromAddr = json["from_addr"].stringValue
-        tx.orderId = json["orderId"].stringValue
+        tx.orderId = json["orderId"].string ?? json["order_id"].stringValue
         tx.timestamp = json["timeStamp"].string?.toDate()?.date ?? Date()
         tx.toAddr = json["toAddr"].stringValue
         tx.txAge = json["tx_age"].doubleValue
@@ -205,33 +215,19 @@ class Parser {
 
     func parseCandlestick(_ json: JSON) throws -> Candlestick {
         let candlestick = Candlestick()
-        candlestick.closeTime = Date(millisecondsSince1970: json.arrayValue[0].doubleValue)
-        candlestick.close = json.arrayValue[1].doubleValue
-        candlestick.high = json.arrayValue[2].doubleValue
-        candlestick.low = json.arrayValue[3].doubleValue
-        candlestick.numberOfTrades = json.arrayValue[4].intValue
-        candlestick.open = json.arrayValue[5].doubleValue
-        candlestick.openTime = Date(millisecondsSince1970: json.arrayValue[6].doubleValue)
-        candlestick.quoteAssetVolume = json.arrayValue[7].doubleValue
-        candlestick.volume = json.arrayValue[8].doubleValue
-        return candlestick
-    }
-
-    func parseCandlestickDict(_ json: JSON) -> Candlestick {
-        let candlestick = Candlestick()
-        candlestick.closeTime = Date(millisecondsSince1970: json["T"].doubleValue)
-        candlestick.close = json["c"].doubleValue
-        candlestick.high = json["h"].doubleValue
-        candlestick.low = json["l"].doubleValue
-        candlestick.numberOfTrades = json["n"].intValue
-        candlestick.open = json["o"].doubleValue
-        candlestick.openTime = Date(millisecondsSince1970: json["t"].doubleValue)
-        candlestick.quoteAssetVolume = json["q"].doubleValue
-        candlestick.volume = json["q"].doubleValue
+        candlestick.closeTime = Date(millisecondsSince1970: json["T"].double ?? json.arrayValue[6].doubleValue)
+        candlestick.close = json["c"].double ?? json.arrayValue[4].doubleValue
+        candlestick.high = json["h"].double ?? json.arrayValue[2].doubleValue
+        candlestick.low = json["l"].double ?? json.arrayValue[3].doubleValue
+        candlestick.numberOfTrades = json["n"].int ?? json.arrayValue[8].intValue
+        candlestick.open = json["o"].double ?? json.arrayValue[1].doubleValue
+        candlestick.openTime = Date(millisecondsSince1970: json["t"].double ?? json.arrayValue[0].doubleValue)
+        candlestick.quoteAssetVolume = json["q"].double ?? json.arrayValue[7].doubleValue
+        candlestick.volume = json["q"].double ?? json.arrayValue[5].doubleValue
         candlestick.closed = json["x"].boolValue
         return candlestick
     }
-    
+
     func parseTickerStatistics(_ json: JSON) throws -> TickerStatistics {
         let ticker = TickerStatistics()
         ticker.askPrice = json["askPrice"].double ?? json["a"].doubleValue
@@ -386,6 +382,12 @@ class ValidatorsParser: Parser {
     }
 }
 
+class BroadcastParser: Parser {
+    override func parse(_ json: JSON, response: BinanceChain.Response) throws {
+        response.broadcast = try json.map({ try self.parseTransaction($0.1) })
+    }
+}
+
 class TransactionsParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
         response.transactions = try self.parseTransactions(json)
@@ -424,7 +426,7 @@ class TxParser: Parser {
 
 class CandlestickParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
-        response.candlesticks = [ self.parseCandlestickDict(json) ]
+        response.candlesticks = [ try self.parseCandlestick(json) ]
     }
 }
 

@@ -51,7 +51,8 @@ public class Transaction: CustomStringConvertible {
     public var hash: String = ""
     public var log: String = ""
     public var data: String = ""
-    public var tx: Data = Data()
+    public var ok: Bool = false
+    public var tx: Tx = Tx()
 }
 
 public class Account: CustomStringConvertible {
