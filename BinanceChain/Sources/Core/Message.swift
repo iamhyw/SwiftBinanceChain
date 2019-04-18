@@ -151,18 +151,21 @@ public class Message {
         case .cancelOrder:
             var pb = CancelOrder()
             pb.symbol = self.symbol
+            pb.sender = self.wallet.address.unhexlify
             pb.refid = self.orderId
             return try pb.serializedData()
 
         case .freeze:
             var pb = TokenFreeze()
             pb.symbol = symbol
+            pb.from = self.wallet.address.unhexlify
             pb.amount = Int64(self.amount.encoded)
             return try pb.serializedData()
 
         case .unfreeze:
             var pb = TokenUnfreeze()
             pb.symbol = symbol
+            pb.from = self.wallet.address.unhexlify
             pb.amount = Int64(self.amount.encoded)
             return try pb.serializedData()
 
@@ -203,7 +206,7 @@ public class Message {
         case .vote:
             var vote = Vote()
             vote.proposalID = Int64(self.proposalId)
-            vote.voter = Data(self.wallet.address.utf8)
+            vote.voter = self.wallet.address.unhexlify
             vote.option = Int64(self.voteOption.rawValue)
             return try vote.serializedData()
             
