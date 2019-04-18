@@ -262,7 +262,7 @@ let msg = Message.vote(proposalId: 1, vote: .yes, wallet: wallet)
 // Broadcast the message
 binance.broadcast(message: msg, sync: true) { (response) in
     if let error = response.error { return print(error) }
-    print(response)
+    print(response.broadcast)
 }
 
 ```
