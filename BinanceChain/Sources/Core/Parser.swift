@@ -86,7 +86,7 @@ class Parser {
         trade.sellerId = json["sellerId"].string ?? json["sa"].stringValue
         trade.symbol = json["symbol"].string ?? json["s"].stringValue
         trade.tradeId = json["tradeId"].string ?? json["t"].stringValue
-        trade.time = Date(millisecondsSince1970: json["time"].double ?? json["T"].doubleValue)
+        trade.time = Date(millisecondsSince1970: json["time"].doubleString ?? json["T"].doubleValue)
         return trade
     }
 
@@ -207,50 +207,50 @@ class Parser {
     func parseBalance(_ json: JSON) -> Balance {
         let balance = Balance()
         balance.symbol = json["symbol"].string ?? json["a"].stringValue
-        balance.free = json["free"].double ?? json["f"].doubleValue
-        balance.locked = json["locked"].double ?? json["l"].doubleValue
-        balance.frozen = json["frozen"].double ?? json["r"].doubleValue
+        balance.free = json["free"].doubleString ?? json["f"].doubleValue
+        balance.locked = json["locked"].doubleString ?? json["l"].doubleValue
+        balance.frozen = json["frozen"].doubleString ?? json["r"].doubleValue
         return balance
     }
 
     func parseCandlestick(_ json: JSON) throws -> Candlestick {
         let candlestick = Candlestick()
-        candlestick.closeTime = Date(millisecondsSince1970: json["T"].double ?? json.arrayValue[6].doubleValue)
-        candlestick.close = json["c"].double ?? json.arrayValue[4].doubleValue
-        candlestick.high = json["h"].double ?? json.arrayValue[2].doubleValue
-        candlestick.low = json["l"].double ?? json.arrayValue[3].doubleValue
+        candlestick.closeTime = Date(millisecondsSince1970: json["T"].doubleString ?? json.arrayValue[6].doubleValue)
+        candlestick.close = json["c"].doubleString ?? json.arrayValue[4].doubleValue
+        candlestick.high = json["h"].doubleString ?? json.arrayValue[2].doubleValue
+        candlestick.low = json["l"].doubleString ?? json.arrayValue[3].doubleValue
         candlestick.numberOfTrades = json["n"].int ?? json.arrayValue[8].intValue
-        candlestick.open = json["o"].double ?? json.arrayValue[1].doubleValue
-        candlestick.openTime = Date(millisecondsSince1970: json["t"].double ?? json.arrayValue[0].doubleValue)
-        candlestick.quoteAssetVolume = json["q"].double ?? json.arrayValue[7].doubleValue
-        candlestick.volume = json["q"].double ?? json.arrayValue[5].doubleValue
+        candlestick.open = json["o"].doubleString ?? json.arrayValue[1].doubleValue
+        candlestick.openTime = Date(millisecondsSince1970: json["t"].doubleString ?? json.arrayValue[0].doubleValue)
+        candlestick.quoteAssetVolume = json["q"].doubleString ?? json.arrayValue[7].doubleValue
+        candlestick.volume = json["q"].doubleString ?? json.arrayValue[5].doubleValue
         candlestick.closed = json["x"].boolValue
         return candlestick
     }
 
     func parseTickerStatistics(_ json: JSON) throws -> TickerStatistics {
         let ticker = TickerStatistics()
-        ticker.askPrice = json["askPrice"].double ?? json["a"].doubleValue
-        ticker.askQuantity = json["askQuantity"].double ?? json["A"].doubleValue
-        ticker.bidPrice = json["bidPrice"].double ?? json["b"].doubleValue
-        ticker.bidQuantity = json["bidQuantity"].double ?? json["B"].doubleValue
+        ticker.askPrice = json["askPrice"].doubleString ?? json["a"].doubleValue
+        ticker.askQuantity = json["askQuantity"].doubleString ?? json["A"].doubleValue
+        ticker.bidPrice = json["bidPrice"].doubleString ?? json["b"].doubleValue
+        ticker.bidQuantity = json["bidQuantity"].doubleString ?? json["B"].doubleValue
         ticker.count = json["count"].int ?? json["n"].intValue
         ticker.firstId = json["firstId"].string ?? json["F"].stringValue
-        ticker.highPrice = json["high_price"].double ?? json["h"].doubleValue
+        ticker.highPrice = json["high_price"].doubleString ?? json["h"].doubleValue
         ticker.lastId = json["lastId"].string ?? json["L"].stringValue
-        ticker.lastPrice = json["lastPrice"].double ?? json["o"].doubleValue
+        ticker.lastPrice = json["lastPrice"].doubleString ?? json["o"].doubleValue
         ticker.lastQuantity = json["lastQuantity"].doubleValue
-        ticker.lowPrice = json["lowPrice"].double ?? json["l"].doubleValue
-        ticker.openPrice = json["openPrice"].double ?? json["o"].doubleValue
-        ticker.prevClosePrice = json["prevClosePrice"].double ?? json["x"].doubleValue
-        ticker.priceChange = json["priceChange"].double ?? json["p"].doubleValue
-        ticker.priceChangePercent = json["priceChangePercent"].double ?? json["P"].doubleValue
-        ticker.quoteVolume = json["quoteVolume"].double ?? json["q"].doubleValue
+        ticker.lowPrice = json["lowPrice"].doubleString ?? json["l"].doubleValue
+        ticker.openPrice = json["openPrice"].doubleString ?? json["o"].doubleValue
+        ticker.prevClosePrice = json["prevClosePrice"].doubleString ?? json["x"].doubleValue
+        ticker.priceChange = json["priceChange"].doubleString ?? json["p"].doubleValue
+        ticker.priceChangePercent = json["priceChangePercent"].doubleString ?? json["P"].doubleValue
+        ticker.quoteVolume = json["quoteVolume"].doubleString ?? json["q"].doubleValue
         ticker.symbol = json["symbol"].string ?? json["s"].stringValue
-        ticker.volume = json["volume"].double ?? json["v"].doubleValue
+        ticker.volume = json["volume"].doubleString ?? json["v"].doubleValue
         ticker.weightedAvgPrice = json["weightedAvgPrice"].doubleValue
-        ticker.openTime = Date(millisecondsSince1970: json["openTime"].double ?? json["O"].doubleValue)
-        ticker.closeTime = Date(millisecondsSince1970: json["closeTime"].double ?? json["C"].doubleValue)
+        ticker.openTime = Date(millisecondsSince1970: json["openTime"].doubleString ?? json["O"].doubleValue)
+        ticker.closeTime = Date(millisecondsSince1970: json["closeTime"].doubleString ?? json["C"].doubleValue)
         return ticker
     }
 
@@ -262,7 +262,7 @@ class Parser {
         order.lastExecuteQuantity = json["lastExecutedQuantity"].string ?? json["l"].stringValue
         order.orderId = json["orderId"].string ?? json["i"].stringValue
         order.owner = json["owner"].stringValue
-        order.price = json["price"].double ?? json["p"].doubleValue
+        order.price = json["price"].doubleString ?? json["p"].doubleValue
         order.symbol = json["symbol"].string ?? json["s"].stringValue
         order.tradeId = json["tradeId"].string ?? json["t"].stringValue
         order.transactionHash = json["transactionHash"].stringValue
