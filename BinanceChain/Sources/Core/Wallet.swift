@@ -134,6 +134,16 @@ public class Wallet: CustomStringConvertible {
         return ripemd.hexlify
     }
 
+    public func address(from account: String) -> String {
+        do {
+            let (_, data) = try Bech32().decode(account)
+            let bits = try SegwitAddrCoder().convertBits(from: 5, to: 8, pad: false, idata: data)
+            return bits.hexlify
+        } catch {
+            return "Invalid Key"
+        }
+    }
+    
     public func sign(message: Data) -> Data {
         do {
             return try ECDSA.compactsign(message.sha256(), privateKey: self.privateKey)
