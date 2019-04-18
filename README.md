@@ -234,7 +234,7 @@ wallet.synchronise() { (error) in
 
 ### Broadcast Transactions
 
-Broadcast signed transactions.
+Sign and broadcast a transaction.
 
 ```swift
 let binance = BinanceChain()
