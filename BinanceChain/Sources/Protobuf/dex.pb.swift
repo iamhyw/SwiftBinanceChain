@@ -20,243 +20,243 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
 }
 
 /// please note the field name is the JSON name.
-public struct StdTx {
+struct StdTx {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   ///    uint64 SIZE-OF-ENCODED // varint encoded length of the structure after encoding
   ///    0xF0625DEE   // hardcoded, object type prefix in 4 bytes
-  public var msgs: [Data] = []
+  var msgs: [Data] = []
 
   /// array of size 1, containing the standard signature structure of the transaction sender
-  public var signatures: [Data] = []
+  var signatures: [Data] = []
 
   /// a short sentence of remark for the transaction. Please only `Transfer` transaction allows 'memo' input, and other transactions with non-empty `Memo` would be rejected.
-  public var memo: String = String()
+  var memo: String = String()
 
   /// an identifier for tools triggerring this transaction, set to zero if unwilling to disclose.
-  public var source: Int64 = 0
+  var source: Int64 = 0
 
   ///byte array, reserved for future use
-  public var data: Data = SwiftProtobuf.Internal.emptyData
+  var data: Data = SwiftProtobuf.Internal.emptyData
 
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  public init() {}
+  init() {}
 }
 
-public struct StdSignature {
+struct StdSignature {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   /// public key bytes of the signer address
-  public var pubKey: Data = SwiftProtobuf.Internal.emptyData
+  var pubKey: Data = SwiftProtobuf.Internal.emptyData
 
   /// signature bytes, please check chain access section for signature generation
-  public var signature: Data = SwiftProtobuf.Internal.emptyData
+  var signature: Data = SwiftProtobuf.Internal.emptyData
 
   /// another identifier of signer, which can be read from chain by account REST API or RPC
-  public var accountNumber: Int64 = 0
+  var accountNumber: Int64 = 0
 
   /// sequence number for the next transaction of the client, which can be read fro chain by account REST API or RPC. please check chain acces section for details.
-  public var sequence: Int64 = 0
+  var sequence: Int64 = 0
 
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
   /// please note there is no type prefix for StdSignature
-  public struct PubKey {
+  struct PubKey {
     // SwiftProtobuf.Message conformance is added in an extension below. See the
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    public var unknownFields = SwiftProtobuf.UnknownStorage()
+    var unknownFields = SwiftProtobuf.UnknownStorage()
 
-    public init() {}
+    init() {}
   }
 
-  public init() {}
+  init() {}
 }
 
 /// please note the field name is the JSON name.
-public struct NewOrder {
+struct NewOrder {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   ///    0xCE6DC043 // hardcoded, object type prefix in 4 bytes
-  public var sender: Data = SwiftProtobuf.Internal.emptyData
+  var sender: Data = SwiftProtobuf.Internal.emptyData
 
   /// order id, optional
-  public var id: String = String()
+  var id: String = String()
 
   /// symbol for trading pair in full name of the tokens
-  public var symbol: String = String()
+  var symbol: String = String()
 
   /// only accept 2 for now, meaning limit order
-  public var ordertype: Int64 = 0
+  var ordertype: Int64 = 0
 
   /// 1 for buy and 2 fory sell
-  public var side: Int64 = 0
+  var side: Int64 = 0
 
   /// price of the order, which is the real price multiplied by 1e8 (10^8) and rounded to integer
-  public var price: Int64 = 0
+  var price: Int64 = 0
 
   /// quantity of the order, which is the real price multiplied by 1e8 (10^8) and rounded to integer
-  public var quantity: Int64 = 0
+  var quantity: Int64 = 0
 
   /// 1 for Good Till Expire(GTE) order and 3 for Immediate Or Cancel (IOC)
-  public var timeinforce: Int64 = 0
+  var timeinforce: Int64 = 0
 
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  public init() {}
+  init() {}
 }
 
 /// please note the field name is the JSON name.
-public struct CancelOrder {
+struct CancelOrder {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   ///    0x166E681B   // hardcoded, object type prefix in 4 bytes
-  public var sender: Data = SwiftProtobuf.Internal.emptyData
+  var sender: Data = SwiftProtobuf.Internal.emptyData
 
   /// symbol for trading pair in full name of the tokens
-  public var symbol: String = String()
+  var symbol: String = String()
 
   /// order id of the one to cancel
-  public var refid: String = String()
+  var refid: String = String()
 
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  public init() {}
+  init() {}
 }
 
 /// please note the field name is the JSON name.
-public struct TokenFreeze {
+struct TokenFreeze {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   ///    0xE774B32D   // hardcoded, object type prefix in 4 bytes
-  public var from: Data = SwiftProtobuf.Internal.emptyData
+  var from: Data = SwiftProtobuf.Internal.emptyData
 
   /// token symbol, in full name with "-" suffix
-  public var symbol: String = String()
+  var symbol: String = String()
 
   /// amount of token to freeze
-  public var amount: Int64 = 0
+  var amount: Int64 = 0
 
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  public init() {}
+  init() {}
 }
 
 /// please note the field name is the JSON name.
-public struct TokenUnfreeze {
+struct TokenUnfreeze {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   ///    0x6515FF0D   // hardcoded, object type prefix in 4 bytes
-  public var from: Data = SwiftProtobuf.Internal.emptyData
+  var from: Data = SwiftProtobuf.Internal.emptyData
 
   /// token symbol, in full name with "-" suffix
-  public var symbol: String = String()
+  var symbol: String = String()
 
   /// amount of token to freeze
-  public var amount: Int64 = 0
+  var amount: Int64 = 0
 
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  public init() {}
+  init() {}
 }
 
 /// please note the field name is the JSON name.
-public struct Send {
+struct Send {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var inputs: [Send.Input] = []
+  var inputs: [Send.Input] = []
 
-  public var outputs: [Send.Output] = []
+  var outputs: [Send.Output] = []
 
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
   ///    0x2A2C87FA   // hardcoded, object type prefix in 4 bytes
-  public struct Token {
+  struct Token {
     // SwiftProtobuf.Message conformance is added in an extension below. See the
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    public var denom: String = String()
+    var denom: String = String()
 
-    public var amount: Int64 = 0
+    var amount: Int64 = 0
 
-    public var unknownFields = SwiftProtobuf.UnknownStorage()
+    var unknownFields = SwiftProtobuf.UnknownStorage()
 
-    public init() {}
+    init() {}
   }
 
-  public struct Input {
+  struct Input {
     // SwiftProtobuf.Message conformance is added in an extension below. See the
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    public var address: Data = SwiftProtobuf.Internal.emptyData
+    var address: Data = SwiftProtobuf.Internal.emptyData
 
-    public var coins: [Send.Token] = []
+    var coins: [Send.Token] = []
 
-    public var unknownFields = SwiftProtobuf.UnknownStorage()
+    var unknownFields = SwiftProtobuf.UnknownStorage()
 
-    public init() {}
+    init() {}
   }
 
-  public struct Output {
+  struct Output {
     // SwiftProtobuf.Message conformance is added in an extension below. See the
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    public var address: Data = SwiftProtobuf.Internal.emptyData
+    var address: Data = SwiftProtobuf.Internal.emptyData
 
-    public var coins: [Send.Token] = []
+    var coins: [Send.Token] = []
 
-    public var unknownFields = SwiftProtobuf.UnknownStorage()
+    var unknownFields = SwiftProtobuf.UnknownStorage()
 
-    public init() {}
+    init() {}
   }
 
-  public init() {}
+  init() {}
 }
 
 /// please note the field name is the JSON name.
-public struct Vote {
+struct Vote {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   ///    0xA1CADD36	    // hardcoded, object type prefix in 4 bytes
-  public var proposalID: Int64 = 0
+  var proposalID: Int64 = 0
 
   /// address of the voter
-  public var voter: Data = SwiftProtobuf.Internal.emptyData
+  var voter: Data = SwiftProtobuf.Internal.emptyData
 
   /// option from OptionSet chosen by the voter,
-  public var option: Int64 = 0
+  var option: Int64 = 0
 
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  public init() {}
+  init() {}
 }
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 extension StdTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = "StdTx"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = "StdTx"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "msgs"),
     2: .same(proto: "signatures"),
     3: .same(proto: "memo"),
@@ -264,7 +264,7 @@ extension StdTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase
     5: .same(proto: "data"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeRepeatedBytesField(value: &self.msgs)
@@ -277,7 +277,7 @@ extension StdTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.msgs.isEmpty {
       try visitor.visitRepeatedBytesField(value: self.msgs, fieldNumber: 1)
     }
@@ -296,7 +296,7 @@ extension StdTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: StdTx, rhs: StdTx) -> Bool {
+  static func ==(lhs: StdTx, rhs: StdTx) -> Bool {
     if lhs.msgs != rhs.msgs {return false}
     if lhs.signatures != rhs.signatures {return false}
     if lhs.memo != rhs.memo {return false}
@@ -308,15 +308,15 @@ extension StdTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase
 }
 
 extension StdSignature: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = "StdSignature"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = "StdSignature"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "pub_key"),
     2: .same(proto: "signature"),
     3: .standard(proto: "account_number"),
     4: .same(proto: "sequence"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularBytesField(value: &self.pubKey)
@@ -328,7 +328,7 @@ extension StdSignature: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.pubKey.isEmpty {
       try visitor.visitSingularBytesField(value: self.pubKey, fieldNumber: 1)
     }
@@ -344,7 +344,7 @@ extension StdSignature: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: StdSignature, rhs: StdSignature) -> Bool {
+  static func ==(lhs: StdSignature, rhs: StdSignature) -> Bool {
     if lhs.pubKey != rhs.pubKey {return false}
     if lhs.signature != rhs.signature {return false}
     if lhs.accountNumber != rhs.accountNumber {return false}
@@ -355,27 +355,27 @@ extension StdSignature: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
 }
 
 extension StdSignature.PubKey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = StdSignature.protoMessageName + ".PubKey"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+  static let protoMessageName: String = StdSignature.protoMessageName + ".PubKey"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let _ = try decoder.nextFieldNumber() {
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: StdSignature.PubKey, rhs: StdSignature.PubKey) -> Bool {
+  static func ==(lhs: StdSignature.PubKey, rhs: StdSignature.PubKey) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
 extension NewOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = "NewOrder"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = "NewOrder"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "sender"),
     2: .same(proto: "id"),
     3: .same(proto: "symbol"),
@@ -386,7 +386,7 @@ extension NewOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
     8: .same(proto: "timeinforce"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularBytesField(value: &self.sender)
@@ -402,7 +402,7 @@ extension NewOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.sender.isEmpty {
       try visitor.visitSingularBytesField(value: self.sender, fieldNumber: 1)
     }
@@ -430,7 +430,7 @@ extension NewOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: NewOrder, rhs: NewOrder) -> Bool {
+  static func ==(lhs: NewOrder, rhs: NewOrder) -> Bool {
     if lhs.sender != rhs.sender {return false}
     if lhs.id != rhs.id {return false}
     if lhs.symbol != rhs.symbol {return false}
@@ -445,14 +445,14 @@ extension NewOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
 }
 
 extension CancelOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = "CancelOrder"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = "CancelOrder"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "sender"),
     2: .same(proto: "symbol"),
     3: .same(proto: "refid"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularBytesField(value: &self.sender)
@@ -463,7 +463,7 @@ extension CancelOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.sender.isEmpty {
       try visitor.visitSingularBytesField(value: self.sender, fieldNumber: 1)
     }
@@ -476,7 +476,7 @@ extension CancelOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: CancelOrder, rhs: CancelOrder) -> Bool {
+  static func ==(lhs: CancelOrder, rhs: CancelOrder) -> Bool {
     if lhs.sender != rhs.sender {return false}
     if lhs.symbol != rhs.symbol {return false}
     if lhs.refid != rhs.refid {return false}
@@ -486,14 +486,14 @@ extension CancelOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
 }
 
 extension TokenFreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = "TokenFreeze"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = "TokenFreeze"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "from"),
     2: .same(proto: "symbol"),
     3: .same(proto: "amount"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularBytesField(value: &self.from)
@@ -504,7 +504,7 @@ extension TokenFreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.from.isEmpty {
       try visitor.visitSingularBytesField(value: self.from, fieldNumber: 1)
     }
@@ -517,7 +517,7 @@ extension TokenFreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: TokenFreeze, rhs: TokenFreeze) -> Bool {
+  static func ==(lhs: TokenFreeze, rhs: TokenFreeze) -> Bool {
     if lhs.from != rhs.from {return false}
     if lhs.symbol != rhs.symbol {return false}
     if lhs.amount != rhs.amount {return false}
@@ -527,14 +527,14 @@ extension TokenFreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
 }
 
 extension TokenUnfreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = "TokenUnfreeze"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = "TokenUnfreeze"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "from"),
     2: .same(proto: "symbol"),
     3: .same(proto: "amount"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularBytesField(value: &self.from)
@@ -545,7 +545,7 @@ extension TokenUnfreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.from.isEmpty {
       try visitor.visitSingularBytesField(value: self.from, fieldNumber: 1)
     }
@@ -558,7 +558,7 @@ extension TokenUnfreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: TokenUnfreeze, rhs: TokenUnfreeze) -> Bool {
+  static func ==(lhs: TokenUnfreeze, rhs: TokenUnfreeze) -> Bool {
     if lhs.from != rhs.from {return false}
     if lhs.symbol != rhs.symbol {return false}
     if lhs.amount != rhs.amount {return false}
@@ -568,13 +568,13 @@ extension TokenUnfreeze: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
 }
 
 extension Send: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = "Send"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = "Send"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "inputs"),
     2: .same(proto: "outputs"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeRepeatedMessageField(value: &self.inputs)
@@ -584,7 +584,7 @@ extension Send: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.inputs.isEmpty {
       try visitor.visitRepeatedMessageField(value: self.inputs, fieldNumber: 1)
     }
@@ -594,7 +594,7 @@ extension Send: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Send, rhs: Send) -> Bool {
+  static func ==(lhs: Send, rhs: Send) -> Bool {
     if lhs.inputs != rhs.inputs {return false}
     if lhs.outputs != rhs.outputs {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -603,13 +603,13 @@ extension Send: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
 }
 
 extension Send.Token: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = Send.protoMessageName + ".Token"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = Send.protoMessageName + ".Token"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "denom"),
     2: .same(proto: "amount"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularStringField(value: &self.denom)
@@ -619,7 +619,7 @@ extension Send.Token: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.denom.isEmpty {
       try visitor.visitSingularStringField(value: self.denom, fieldNumber: 1)
     }
@@ -629,7 +629,7 @@ extension Send.Token: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Send.Token, rhs: Send.Token) -> Bool {
+  static func ==(lhs: Send.Token, rhs: Send.Token) -> Bool {
     if lhs.denom != rhs.denom {return false}
     if lhs.amount != rhs.amount {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -638,13 +638,13 @@ extension Send.Token: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
 }
 
 extension Send.Input: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = Send.protoMessageName + ".Input"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = Send.protoMessageName + ".Input"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "address"),
     2: .same(proto: "coins"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularBytesField(value: &self.address)
@@ -654,7 +654,7 @@ extension Send.Input: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.address.isEmpty {
       try visitor.visitSingularBytesField(value: self.address, fieldNumber: 1)
     }
@@ -664,7 +664,7 @@ extension Send.Input: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Send.Input, rhs: Send.Input) -> Bool {
+  static func ==(lhs: Send.Input, rhs: Send.Input) -> Bool {
     if lhs.address != rhs.address {return false}
     if lhs.coins != rhs.coins {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -673,13 +673,13 @@ extension Send.Input: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
 }
 
 extension Send.Output: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = Send.protoMessageName + ".Output"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = Send.protoMessageName + ".Output"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "address"),
     2: .same(proto: "coins"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularBytesField(value: &self.address)
@@ -689,7 +689,7 @@ extension Send.Output: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.address.isEmpty {
       try visitor.visitSingularBytesField(value: self.address, fieldNumber: 1)
     }
@@ -699,7 +699,7 @@ extension Send.Output: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Send.Output, rhs: Send.Output) -> Bool {
+  static func ==(lhs: Send.Output, rhs: Send.Output) -> Bool {
     if lhs.address != rhs.address {return false}
     if lhs.coins != rhs.coins {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -708,14 +708,14 @@ extension Send.Output: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
 }
 
 extension Vote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = "Vote"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+  static let protoMessageName: String = "Vote"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "proposal_id"),
     2: .same(proto: "voter"),
     3: .same(proto: "option"),
   ]
 
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularInt64Field(value: &self.proposalID)
@@ -726,7 +726,7 @@ extension Vote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
     }
   }
 
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if self.proposalID != 0 {
       try visitor.visitSingularInt64Field(value: self.proposalID, fieldNumber: 1)
     }
@@ -739,7 +739,7 @@ extension Vote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Vote, rhs: Vote) -> Bool {
+  static func ==(lhs: Vote, rhs: Vote) -> Bool {
     if lhs.proposalID != rhs.proposalID {return false}
     if lhs.voter != rhs.voter {return false}
     if lhs.option != rhs.option {return false}

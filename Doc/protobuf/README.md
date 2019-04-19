@@ -7,7 +7,7 @@ Install dependencies:
 
 Generate the swift class files:
 ```console
-% protoc --swift_out=. --swift_opt=Visibility=Public dex.proto
+% protoc --swift_out=. dex.proto
 ```
 
 Copy generated swift into the project:
