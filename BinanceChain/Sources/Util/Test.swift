@@ -45,7 +45,6 @@ public class Test: WebSocketDelegate {
         case .allMinimised:
             self.testAPI(endpoint: .testnet) {
                 self.testWallet(endpoint: .testnet)
-                self.testBroadcast(endpoint: .testnet)
                 self.testWebSocket(minimise: true, endpoint: .testnet)
             }
             
