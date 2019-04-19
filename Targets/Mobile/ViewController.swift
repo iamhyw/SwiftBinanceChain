@@ -10,9 +10,7 @@ class ViewController: UIViewController {
 
         // Run tests
         self.test = Test()
-        self.test?.testAPI() {
-            print("tests complete")
-        }
+        self.test?.runTestsOnTestnet(.allMinimised)
 
     }
 
