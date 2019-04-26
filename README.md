@@ -349,17 +349,17 @@ noderpc.connect(endpoint: .testnet) { (error) in
     }
 
     // Broadcast a transaction asynchronously
-    noderpc.broadcastTxAsync(tx: "") { (response) in
+    noderpc.broadcastAsync(message: message) { (response) in
         print(response.result)
     }
 
     // Broadcast a transaction and wait for check and delivery
-    noderpc.broadcastTxCommit(tx: "") { (response) in
+    noderpc.broadcastCommit(message: message) { (response) in
         print(response.result)
     }
 
     // Broadcast a transaction and wait for check
-    noderpc.broadcastTxSync(tx: "") { (response) in
+    noderpc.broadcastSync(message: message) { (response) in
         print(response.result)
     }
 

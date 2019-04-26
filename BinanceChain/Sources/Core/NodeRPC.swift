@@ -141,21 +141,31 @@ public class NodeRPC {
         self.api(path: .blockchain, parameters: parameters, completion: completion)
     }
 
-    public func broadcastTxAsync(tx: String, completion: Completion? = nil) {
-        let parameters: [String:Any] = [ "tx": tx ]
-        self.api(path: .broadcastTxAsync, parameters: parameters, completion: completion)
+    public func broadcastAsync(message: Message, completion: Completion? = nil) {
+        return self.broadcast(path: .broadcastTxAsync, message: message, completion: completion)
     }
 
-    public func broadcastTxCommit(tx: String, completion: Completion? = nil) {
-        let parameters: [String:Any] = [ "tx": tx ]
-        self.api(path: .broadcastTxCommit, parameters: parameters, completion: completion)
+    public func broadcastCommit(message: Message, completion: Completion? = nil) {
+        return self.broadcast(path: .broadcastTxCommit, message: message, completion: completion)
     }
 
-    public func broadcastTxSync(tx: String, completion: Completion? = nil) {
-        let parameters: [String:Any] = [ "tx": tx ]
-        self.api(path: .broadcastTxSync, parameters: parameters, completion: completion)
+    public func broadcastSync(message: Message, completion: Completion? = nil) {
+        return self.broadcast(path: .broadcastTxSync, message: message, completion: completion)
     }
 
+    private func broadcast(path: Path, message: Message, completion: Completion? = nil) {
+        do {
+            let data = try message.encode()
+            let parameters: [String:Any] = [ "tx": data.hexlify ]
+            self.api(path: path, parameters: parameters, completion: completion)
+        } catch let error {
+            let response = Response()
+            response.isError = true
+            response.error = error
+            if let completion = completion { completion(response) }
+        }
+    }
+    
     public func commit(height: Int? = nil, completion: Completion? = nil) {
         var parameters: [String:Any] = [:]
         if let height = height { parameters["height"] = height }

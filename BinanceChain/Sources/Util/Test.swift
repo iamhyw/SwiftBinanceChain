@@ -383,6 +383,10 @@ public class Test: WebSocketDelegate {
 
     private func testNodeRPC(endpoint: BinanceChain.Endpoint) {
 
+        let wallet = Wallet()
+        let message = Message.newOrder(symbol: "BNB_BTC.B-918", orderType: .limit, side: .buy, price: 100,
+                                       quantity: 1, timeInForce: .goodTillExpire, wallet: wallet)
+
         let noderpc = NodeRPC()
         noderpc.connect(endpoint: .testnet) { (error) in
 
@@ -434,16 +438,16 @@ public class Test: WebSocketDelegate {
             noderpc.blockchain(minHeight: 0, maxHeight: 0) { (response) in
                 self.output("noderpc.blockchain", response.result, response.error)
             }
-
-            noderpc.broadcastTxAsync(tx: "") { (response) in
+            
+            noderpc.broadcastAsync(message: message) { (response) in
                 self.output("noderpc.broadcastTxAsync", response.result, response.error)
             }
 
-            noderpc.broadcastTxCommit(tx: "") { (response) in
+            noderpc.broadcastCommit(message: message) { (response) in
                 self.output("noderpc.broadcastTxCommit", response.result, response.error)
             }
 
-            noderpc.broadcastTxSync(tx: "") { (response) in
+            noderpc.broadcastSync(message: message) { (response) in
                 self.output("noderpc.broadcastTxSync", response.result, response.error)
             }
 
