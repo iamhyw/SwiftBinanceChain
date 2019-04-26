@@ -87,7 +87,7 @@ public class Message {
     }
 
     public static func vote(proposalId: Int, vote option: VoteOption, wallet: Wallet) -> Message {
-        let message = Message(type: .cancelOrder, wallet: wallet)
+        let message = Message(type: .vote, wallet: wallet)
         message.proposalId = proposalId
         message.voteOption = option
         return message
