@@ -370,8 +370,7 @@ noderpc.connect(endpoint: .testnet) { (error) in
 
     // Query transaction results
     noderpc.tx(hash: "AB1B84C7C0B0B195941DCE9CFE1A54214B72D5DB54AD388D8B146A6B62911E8E", prove: true) {
-        (response) in
-            print(response.result)
+        (response) in print(response.result)
     }
 
     // Query for transaction results
