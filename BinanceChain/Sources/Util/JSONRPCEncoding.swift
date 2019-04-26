@@ -27,8 +27,6 @@ struct JSONRPCEncoding: ParameterEncoding {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         guard let body = json.rawString() else { throw BinanceError(message: "JSON encoding error") }
         urlRequest.httpBody = body.data(using: .utf8)
-        print("AABBCC")
-        print(body)
         return urlRequest
 
     }

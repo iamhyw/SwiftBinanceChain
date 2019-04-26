@@ -29,6 +29,19 @@ class Parser {
         // Subclasses to override
     }
 
+    func parse(response: NodeRPC.Response, data: Data) throws {
+        guard let json = try? JSON(data: data) else {
+            guard let body = String(data: data, encoding: .utf8) else { throw ParseError() }
+            response.error = BinanceError(message: body)
+            return
+        }
+        try self.parse(json, response: response)
+    }
+    
+    func parse(_ json: JSON, response: NodeRPC.Response) throws {
+        // Subclasses to override
+    }
+    
     func parseError(_ json: JSON) -> Error {
         let code = json["code"].intValue
         let message = json["message"].stringValue
@@ -488,4 +501,19 @@ class BlockHeightParser: Parser {
     override func parse(_ json: JSON, response: BinanceChain.Response) throws {
         response.blockHeight = parseBlockHeight(json)
     }
+}
+
+class JSONRPCParser: Parser {
+
+    override func parse(_ json: JSON, response: NodeRPC.Response) throws {
+        response.id = json["id"].stringValue
+        if let error = json["error"].string, !error.isEmpty {
+            response.isError = true
+            response.error = BinanceError(message: error)
+        }
+        if let result = json["result"].dictionaryObject {
+            response.result = result
+        }
+    }
+
 }

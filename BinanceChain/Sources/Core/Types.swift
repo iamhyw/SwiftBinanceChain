@@ -97,3 +97,12 @@ public enum VoteOption: Int {
     case no = 3
     case noWithVeto = 4
 }
+
+public enum QueryPath: String {
+    case storeAccountKey = "/store/acc/key"
+    case tokensInfo = "/tokens/info"
+    case tokensList = "/tokens/list"
+    case dexPairs = "/dex/pairs"
+    case dexOrderbook = "/dex/orderbook"
+    case paramFees = "/param/fees"
+}

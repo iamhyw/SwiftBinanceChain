@@ -98,7 +98,8 @@ public class WebSocket {
     public init(delegate: WebSocketDelegate, endpoint: Endpoint = .testnet) {
         self.delegate = delegate
 
-        self.socket = Starscream.WebSocket(url: URL(string: endpoint.rawValue)!)
+        guard let url = URL(string: endpoint.rawValue) else { return }
+        self.socket = Starscream.WebSocket(url: url)
         self.socket.onConnect = { self.onConnect() }
         self.socket.onText = { (text: String) in self.onText(text: text) }
         self.socket.onDisconnect = { (error: Error?) in self.onDisconnect() }

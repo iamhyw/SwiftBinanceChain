@@ -14,7 +14,7 @@ Available tests:
          websocket: Websockets
             wallet: Wallet
          broadcast: Broadcast Transactions
-  broadcastcontrol: Broadcast Transactions (specific example)
+           noderpc: NodeRPC (JSONRPC/HTTP)
 
 """)
    exit(0)

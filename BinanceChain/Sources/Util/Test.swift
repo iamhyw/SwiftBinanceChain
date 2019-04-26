@@ -15,6 +15,7 @@ public class Test: WebSocketDelegate {
         case broadcast = "broadcast"
         case websocket = "websocket"
         case broadcastcontrol = "broadcastcontrol"
+        case noderpc = "noderpc"
     }
 
     private let address = "tbnb10a6kkxlf823w9lwr6l9hzw4uyphcw7qzrud5rr"
@@ -40,12 +41,14 @@ public class Test: WebSocketDelegate {
                 self.testWallet(endpoint: .testnet)
                 self.testBroadcast(endpoint: .testnet)
                 self.testWebSocket(endpoint: .testnet)
+                self.testNodeRPC(endpoint: .testnet)
             }
 
         case .allMinimised:
             self.testAPI(endpoint: .testnet) {
                 self.testWallet(endpoint: .testnet)
                 self.testWebSocket(minimise: true, endpoint: .testnet)
+                self.testNodeRPC(endpoint: .testnet)
             }
             
         case .api:
@@ -62,6 +65,9 @@ public class Test: WebSocketDelegate {
             
         case .broadcastcontrol:
             self.testBroadcastControl(endpoint: .testnet)
+            
+        case .noderpc:
+            self.testNodeRPC(endpoint: .testnet)
             
         }
 
@@ -364,7 +370,7 @@ public class Test: WebSocketDelegate {
         
         let walletAuto = Wallet(endpoint: endpoint)
         output("wallet.auto", walletAuto)
-        
+
         let walletMnemonic = Wallet(mnemonic: mnemonic, endpoint: endpoint)
         output("wallet.mnemonic", walletMnemonic)
 
@@ -373,6 +379,102 @@ public class Test: WebSocketDelegate {
 
     }
     
+    // MARK: - NodeRPC
+
+    private func testNodeRPC(endpoint: BinanceChain.Endpoint) {
+
+        let noderpc = NodeRPC()
+        noderpc.connect(endpoint: .testnet) { (error) in
+
+            if let error = error {
+                self.output("noderpc.connect", error)
+                return
+            }
+
+            noderpc.abciInfo() { (response) in
+                self.output("noderpc.abciInfo", response.result, response.error)
+            }
+
+            noderpc.consensusState() { (response) in
+                self.output("noderpc.consensusState", response.result, response.error)
+            }
+
+            noderpc.dumpConsensusState() { (response) in
+                self.output("noderpc.dumpConsensusState", response.result, response.error)
+            }
+
+            noderpc.genesis() { (response) in
+                self.output("noderpc.genesis", response.result, response.error)
+            }
+
+            noderpc.health() { (response) in
+                self.output("noderpc.health", response.result, response.error)
+            }
+
+            noderpc.netInfo() { (response) in
+                self.output("noderpc.netInfo", response.result, response.error)
+            }
+
+            noderpc.status() { (response) in
+                self.output("noderpc.status", response.result, response.error)
+            }
+
+            noderpc.abciQuery(path: .tokensInfo, data: Data(), prove: true) { (response) in
+                self.output("noderpc.abciQuery", response.result, response.error)
+            }
+
+            noderpc.block() { (response) in
+                self.output("noderpc.block", response.result, response.error)
+            }
+
+            noderpc.blockResult() { (response) in
+                self.output("noderpc.blockResult", response.result, response.error)
+            }
+
+            noderpc.blockchain(minHeight: 0, maxHeight: 0) { (response) in
+                self.output("noderpc.blockchain", response.result, response.error)
+            }
+
+            noderpc.broadcastTxAsync(tx: "") { (response) in
+                self.output("noderpc.broadcastTxAsync", response.result, response.error)
+            }
+
+            noderpc.broadcastTxCommit(tx: "") { (response) in
+                self.output("noderpc.broadcastTxCommit", response.result, response.error)
+            }
+
+            noderpc.broadcastTxSync(tx: "") { (response) in
+                self.output("noderpc.broadcastTxSync", response.result, response.error)
+            }
+
+            noderpc.commit() { (response) in
+                self.output("noderpc.commit", response.result, response.error)
+            }
+
+            noderpc.consensusParams() { (response) in
+                self.output("noderpc.consensusParams", response.result, response.error)
+            }
+
+            noderpc.tx(hash: "AB1B84C7C0B0B195941DCE9CFE1A54214B72D5DB54AD388D8B146A6B62911E8E") { (response) in
+                self.output("noderpc.tx", response.result, response.error)
+            }
+
+            noderpc.txSearch(query: "tx.height=10905636", prove: true, page: 1, perPage: 30) { (response) in
+                self.output("noderpc.txSearch", response.result, response.error)
+            }
+
+            noderpc.numberUnconfirmedTxs(limit: 30) { (response) in
+                self.output("noderpc.numberUnconfirmedTxs", response.result, response.error)
+            }
+
+            noderpc.validators() { (response) in
+                self.output("noderpc.validators", response.result, response.error)
+            }
+
+        }
+        
+    }
+
     // MARK: - Utils
 
     private func output(_ label: String, _ property: Any, _ error: Error? = nil) {

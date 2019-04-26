@@ -12,6 +12,7 @@
 - [x] Wallet
 - [x] WebSockets
 - [x] Broadcast Transactions
+- [x] NodeRPC (using JSONRPC/HTTP)
 
 ## Requirements
 
@@ -237,6 +238,8 @@ wallet.synchronise() { (error) in
 Sign and broadcast a transaction.
 
 ```swift
+import BinanceChain
+
 let binance = BinanceChain()
 let wallet = Wallet()
 
@@ -267,6 +270,122 @@ binance.broadcast(message: msg, sync: true) { (response) in
 
 ```
 
+### NodeRPC
+
+NodeRPC may be used to interact with a node directly.
+
+```swift
+import BinanceChain
+
+// Connect to a specific node
+let url = URL("http://localhost:27146")
+let noderpc = NodeRPC(url)
+
+// Connect to a seed node on the Binance Chain network
+noderpc.connect(endpoint: .testnet) { (error) in
+
+	if let error = error { return print(error) }
+
+	// Get information about the application
+	noderpc.abciInfo() { (response) in
+		if let error = error { return print(error }
+		print(response.result)
+	}
+
+	// Get a concise summary of the consensus state
+	noderpc.consensusState() { (response) in
+		print(response.result)
+	}
+
+	// Get complete consensus state
+	noderpc.dumpConsensusState() { (response) in
+		print(response.result)
+	}
+
+	// Gets network information
+	noderpc.genesis() { (response) in
+		print(response.result)
+	}
+
+	// Gets the genesis file
+	noderpc.health() { (response) in
+		print(response.result)
+	}
+
+	// Get node health
+	noderpc.netInfo() { (response) in
+		print(response.result)
+	}
+
+	// Gets number of unconfirmed transactions
+	noderpc.numberUnconfirmedTxs(limit: 30) { (response) in
+		print(response.result)
+	}
+
+	// Get Tendermint status
+	noderpc.status() { (response) in
+		print(response.result)
+	}
+
+	// Query the application
+	noderpc.abciQuery(path: .tokensInfo, data: "", prove: true) { (response) in
+		print(response.result)
+	}
+
+	// Get the block at a given height (pass nil for the latest block)
+	noderpc.block(height: 10905636) { (response) in
+		print(response.result)
+	}
+
+	// Get results for a given height (pass nil for the latest block)
+	noderpc.blockResult(height: 10905636) { (response) in
+		print(response.result)
+	}
+
+	// Get block headers between minHeight and maxHeight
+	noderpc.blockchain(minHeight: 0, maxHeight: 0) { (response) in
+		print(response.result)
+	}
+
+	// Broadcast a transaction asynchronously
+	noderpc.broadcastTxAsync(tx: "") { (response) in
+		print(response.result)
+	}
+
+	// Broadcast a transaction and wait for check and delivery
+	noderpc.broadcastTxCommit(tx: "") { (response) in
+		print(response.result)
+	}
+
+	// Broadcast a transaction and wait for check
+	noderpc.broadcastTxSync(tx: "") { (response) in
+		print(response.result)
+	}
+
+	// Get the commit at a given height (pass nil for the latest block)
+	noderpc.commit(height: 10905636) { (response) in
+		print(response.result)
+	}
+
+	// Query transaction results
+	noderpc.tx(hash: "AB1B84C7C0B0B195941DCE9CFE1A54214B72D5DB54AD388D8B146A6B62911E8E", prove: true) {
+		(response) in
+			print(response.result)
+	}
+
+	// Query for transaction results
+	noderpc.txSearch(query: "tx.height=10905636", prove: true, page: 1, perPage: 30) { (response) in
+		print(response.result)
+	}
+
+	// Get validators for a block (pass nil for the latest block)
+	noderpc.validators(height: 10905636) { (response) in
+		print(response.result)
+	}
+
+}
+```
+
 ### Changing networks
 
 Switch between mainnet, testnet, or a custom endpoint easily:
@@ -293,6 +412,7 @@ Available tests:
   websocket: Websockets
   broadcast: Broadcast Transactions
      wallet: Wallet
+    noderpc: NodeRPC
 ```
 
 The iOS and macOS apps use Cocoapods and Xcode:
