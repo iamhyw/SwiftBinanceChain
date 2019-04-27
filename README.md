@@ -12,7 +12,7 @@
 - [x] Wallet
 - [x] WebSockets
 - [x] Broadcast Transactions
-- [x] NodeRPC (using JSONRPC/HTTP)
+- [x] Node RPC
 
 ## Requirements
 
@@ -270,9 +270,9 @@ binance.broadcast(message: msg, sync: true) { (response) in
 
 ```
 
-### NodeRPC
+### Node RPC
 
-Interact with a node directly.
+Interact with a node directly, implemented using JSONRPC/HTTP.
 
 ```swift
 import BinanceChain
@@ -282,6 +282,7 @@ let url = URL("http://localhost:27146")
 let noderpc = NodeRPC(url)
 
 // Or, connect to a Binance Chain seed node
+let noderpc = NodeRPC()
 noderpc.connect(endpoint: .testnet) { (error) in
 
     // Check that a suitable peer was found
